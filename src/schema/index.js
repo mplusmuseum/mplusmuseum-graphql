@@ -5,6 +5,10 @@ const typeDefs = `
     id: ID!
     title: String!
   }
+
+  type Query {
+    allArtworks: [Artwork!]!
+  }
 `
 
 module.exports = makeExecutableSchema({ typeDefs })
