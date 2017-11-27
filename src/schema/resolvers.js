@@ -13,4 +13,13 @@ module.exports = {
   Query: {
     allArtworks: () => artworks,
   },
+  Mutation: {
+    createArtwork: (_, data) => {
+      const newArtwork = Object.assign({ id: artworks.length + 1 }, data)
+
+      artworks.push(newArtwork)
+
+      return newArtwork
+    }
+  }
 }
