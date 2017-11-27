@@ -10,6 +10,10 @@ const typeDefs = `
   type Query {
     allArtworks: [Artwork!]!
   }
+
+  type Mutation {
+    createArtwork(title: String!): Artwork
+  }
 `
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
