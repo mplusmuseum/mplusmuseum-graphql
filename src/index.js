@@ -13,5 +13,5 @@ app.use('/graphiql', graphiqlExpress({
 
 const PORT = 3000
 app.listen(PORT, () => {
-  console.log('GraphQL server running on port ${PORT}.')
+  console.log(`GraphQL server running on port ${PORT}.`)
 })
