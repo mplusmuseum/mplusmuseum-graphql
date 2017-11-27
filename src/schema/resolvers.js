@@ -11,15 +11,17 @@ const artworks = [
 
 module.exports = {
   Query: {
-    allArtworks: () => artworks,
+    allArtworks: async (root, data, { mongo: {Artworks } }) => {
+      return await Artworks.find({}).toArray()
+    },
   },
   Mutation: {
-    createArtwork: (_, data) => {
-      const newArtwork = Object.assign({ id: artworks.length + 1 }, data)
-
-      artworks.push(newArtwork)
-
-      return newArtwork
+    createArtwork: async (root, data, { mongo: { Artworks } }) => {
+      const response = await Artworks.insert(data)
+      return Object.assign({ id: response.insertedIds[0] }, data)
     }
+  },
+  Artwork: {
+    id: root => root._id || root.id
   }
 }
