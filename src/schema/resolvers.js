@@ -1,6 +1,6 @@
 module.exports = {
   Query: {
-    allArtworks: async (root, data, { mongo: {Artworks } }) => {
+    allArtworks: async (root, data, { mongo: { Artworks } }) => {
       return await Artworks.find({}).toArray()
     },
   },
