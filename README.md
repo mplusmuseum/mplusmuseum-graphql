@@ -12,7 +12,7 @@ Beginnings of a GraphQL server.
 
 1. Clone and download this repo.
 2. Create a `.env` file using `.env.example`:
-  - `MONGO_URL`: This work-in-progress is currently set up to look at a MongoDB cluster using Atlas.
+  - `MONGO_URL`: This work-in-progress is currently set up to look at a [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/lp/general) cluster.
 
 ## Installation
 ```
