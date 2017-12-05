@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'prod') {
 const express = require('express')
 const bodyParser = require('body-parser')
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
+const voyager = require('graphql-voyager/middleware').express
 const schema = require('./schema')
 const connectMongo = require('./mongo-connector')
 
@@ -22,9 +23,15 @@ const start = async () => {
     })
   )
 
-  app.use('/graphiql',
+  app.use('/api-explorer',
     graphiqlExpress({
       endpointURL: './graphql',
+    })
+  )
+
+  app.use('/api-voyager',
+    voyager({
+      endpointURL: 'http://localhost:3000/graphql'
     })
   )
 
