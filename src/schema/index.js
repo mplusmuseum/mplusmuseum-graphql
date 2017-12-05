@@ -11,7 +11,7 @@ const typeDefs = `
   }
 
   type Query {
-    allArtworks: [Artwork!]!
+    artworks: [Artwork!]!
   }
 
   type Mutation {

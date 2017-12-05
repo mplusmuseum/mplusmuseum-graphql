@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'prod') {
 }
 
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 const voyager = require('graphql-voyager/middleware').express
@@ -14,6 +15,8 @@ const start = async () => {
   const mongo = await connectMongo()
 
   const app = express()
+
+  app.use(cors())
 
   app.use('/graphql',
     bodyParser.json(),
