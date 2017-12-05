@@ -1,14 +1,12 @@
-if (process.env.NODE_ENV !== 'prod') {
-  require('dotenv').load()
-}
+if (process.env.NODE_ENV !== 'prod') require('dotenv').load()
 
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
-const voyager = require('graphql-voyager/middleware').express
-const schema = require('./schema')
-const connectMongo = require('./mongo-connector')
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+// import { express as voyager } from 'graphql-voyager/middleware'
+import schema from './schema'
+import connectMongo from './mongo-connector'
 
 const start = async () => {
 
@@ -32,11 +30,11 @@ const start = async () => {
     })
   )
 
-  app.use('/api-voyager',
-    voyager({
-      endpointURL: 'http://localhost:3000/graphql'
-    })
-  )
+  // app.use('/api-voyager',
+  //   voyager({
+  //     endpointURL: 'http://localhost:3000/graphql'
+  //   })
+  // )
 
   const PORT = 3000
   app.listen(PORT, () => {
