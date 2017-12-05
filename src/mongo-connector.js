@@ -1,6 +1,10 @@
-const { MongoClient } = require('mongodb')
+import { MongoClient } from 'mongodb'
 
-module.exports = async () => {
+const client = async () => {
   const db = await MongoClient.connect(process.env.MONGO_URL)
-  return { Artworks: db.collection('artworks') }
+  return {
+    Artworks: db.collection('artworks')
+  }
 }
+
+export default client

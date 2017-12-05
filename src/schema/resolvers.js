@@ -1,4 +1,4 @@
-module.exports = {
+const resolvers = {
   Query: {
     artworks: async (root, data, { mongo: { Artworks } }) => {
       return await Artworks.find({}).toArray()
@@ -14,3 +14,5 @@ module.exports = {
     id: root => root._id || root.id
   }
 }
+
+export default resolvers

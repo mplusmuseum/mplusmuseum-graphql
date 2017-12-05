@@ -1,22 +1,5 @@
-const { makeExecutableSchema } = require('graphql-tools')
-const resolvers = require('./resolvers')
+import { makeExecutableSchema } from 'graphql-tools'
+import resolvers from './resolvers'
+import typeDefs from './typeDefs'
 
-const typeDefs = `
-  # An artwork in the M+ collection
-  type Artwork {
-    # Artwork ID
-    id: ID!
-    # Artwork title
-    title: String!
-  }
-
-  type Query {
-    artworks: [Artwork!]!
-  }
-
-  type Mutation {
-    createArtwork(title: String!): Artwork
-  }
-`
-
-module.exports = makeExecutableSchema({ typeDefs, resolvers })
+export default makeExecutableSchema({ typeDefs, resolvers })
