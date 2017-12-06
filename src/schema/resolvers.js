@@ -1,8 +1,17 @@
+const mapArtworks = (artworksES) => {
+  return artworksES.map((artwork) => {
+    return artwork._source
+  })
+}
+
 const resolvers = {
   Query: {
-    artworks: async (root, data, { mongo: { Artworks } }) => {
-      return await Artworks.find({}).toArray()
-    },
+    // artworks: async (root, data, { mongo: { Artworks } }) => {
+    //   return await Artworks.find({}).toArray()
+    // },
+    artworks: async (root, data, { elasticsearch: { Artworks } }) => {
+      return await mapArtworks(Artworks)
+    }
   },
   Mutation: {
     createArtwork: async (root, data, { mongo: { Artworks } }) => {
