@@ -3,16 +3,28 @@ const typeDefs = `
   type Artwork {
     # Artwork ID
     id: ID!
+    tms_id: ID!
     # Artwork title
-    title: String!
+    title: [TranslatedText!]!
+  }
+
+  type TranslatedText {
+    language: String!
+    text: String!
+  }
+
+  input TranslatedTextInput {
+    language: String!
+    text: String!
   }
 
   type Query {
     artworks: [Artwork!]!
+    artwork(id: ID!): Artwork
   }
 
   type Mutation {
-    createArtwork(title: String!): Artwork
+    createArtwork(tms_id: ID!, title: [TranslatedTextInput]!): Artwork
   }
 `
 
