@@ -23,8 +23,7 @@ const start = async () => {
   app.use('/graphql',
     bodyParser.json(),
     graphqlExpress({
-      context: { elasticsearch },
-      // context: { mongo },
+      context: { elasticsearch, mongo },
       schema
     })
   )

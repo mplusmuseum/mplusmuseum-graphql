@@ -1,19 +1,14 @@
 import Elasticsearch from 'elasticsearch'
+import artworksQuery from '../queries/artworksQuery'
 
-const ElasticsearchClient = new Elasticsearch.Client({
-  host: process.env.ES_HOST,
-  httpAuth: process.env.ES_HTTP_AUTH
-})
+const unpackElasticsearchObjects = (response) => {
+  const esArtworks = response.hits.hits
 
-const artworksQuery = {
-  index: 'mplusmuseum',
-  body: {
-    query: {
-      match: {
-        _type: "artworks"
-      }
-    }
-  }
+  const artworks = esArtworks.map((artwork) => {
+    return artwork._source
+  })
+
+  return artworks
 }
 
 const client = async () => {
@@ -22,10 +17,10 @@ const client = async () => {
     httpAuth: process.env.ES_HTTP_AUTH
   })
 
-  const artworks = await ElasticsearchClient.search(artworksQuery)
+  const response = await ElasticsearchClient.search(artworksQuery)
 
   return {
-    Artworks: artworks.hits.hits
+    Artworks: unpackElasticsearchObjects(response)
   }
 }
 
