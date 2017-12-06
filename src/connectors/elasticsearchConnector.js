@@ -1,12 +1,23 @@
 import Elasticsearch from 'elasticsearch'
-import artworksQuery from '../queries/artworksQuery'
+import esQueries from '../queries/artworksQuery'
 
 const unpackElasticsearchObjects = (response) => {
-  const esArtworks = response.hits.hits
+  const artworks = response.hits.hits.map((artwork) => {
+    let object = artwork._source
+    let formattedObject = Object.assign({}, object)
 
-  const artworks = esArtworks.map((artwork) => {
-    return artwork._source
+    formattedObject.title = []
+    Object.keys(object.title).map((key) => {
+      formattedObject.title.push({
+        language: key,
+        text: object.title[key]
+      })
+    })
+
+    return formattedObject
   })
+
+  // console.log(artworks[0])
 
   return artworks
 }
@@ -17,7 +28,7 @@ const client = async () => {
     httpAuth: process.env.ES_HTTP_AUTH
   })
 
-  const response = await ElasticsearchClient.search(artworksQuery)
+  const response = await ElasticsearchClient.search(esQueries.artworks)
 
   return {
     Artworks: unpackElasticsearchObjects(response)

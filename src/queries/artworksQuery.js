@@ -1,12 +1,14 @@
-const artworksQuery = {
-  index: 'mplusmuseum',
-  body: {
-    query: {
-      match: {
-        _type: "artworks"
+const esQueries = {
+  artworks: {
+    index: 'mplusmuseum',
+    body: {
+      query: {
+        match: {
+          _type: "artworks"
+        }
       }
     }
   }
 }
 
-export default artworksQuery
+export default esQueries
