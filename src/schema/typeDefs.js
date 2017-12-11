@@ -3,19 +3,23 @@ const typeDefs = `
   type Artwork {
     # Artwork ID
     id: ID!
-    tms_id: ID!
+    tmsid: ID
+    objectnumber: String!
+    datebegin: Int
+    dateend: Int
+    dated: String
     # Artwork title
-    title: [TranslatedText!]!
+    titles: [TranslatedText]!
   }
 
   type TranslatedText {
-    language: String!
-    text: String!
+    lang: String
+    text: String
   }
 
   input TranslatedTextInput {
-    language: String!
-    text: String!
+    lang: String
+    text: String
   }
 
   type Query {
