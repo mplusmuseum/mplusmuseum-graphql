@@ -1,10 +1,11 @@
 const esQueries = {
   artworks: {
-    index: 'mplusmuseum',
+    // index: 'mplusmuseum',
+    index: 'objects',
     body: {
       query: {
         match: {
-          _type: "artworks"
+          _type: "artwork"
         }
       }
     }
