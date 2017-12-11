@@ -8,7 +8,7 @@ const queryResolvers = {
     },
     artwork: async (root, data, { elasticsearch: { Artworks } }) => {
       return await Artworks.find((artwork) => {
-        if (data.id) return artwork.id === data.id
+        if (data.id) return artwork.id == data.id
       })
     }
   }
