@@ -1,13 +1,12 @@
 const esQueries = {
   artworks: {
-    // index: 'mplusmuseum',
     index: 'objects',
     body: {
       query: {
-        match: {
-          _type: "artwork"
-        }
-      }
+        match_all: {}
+      },
+      from: 0,
+      size: 10000
     }
   }
 }
