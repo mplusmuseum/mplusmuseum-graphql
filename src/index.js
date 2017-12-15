@@ -4,16 +4,15 @@ import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
-// import { express as voyager } from 'graphql-voyager/middleware'
 
 import schema from './schema'
 
-import connectMongo from './connectors/mongoConnector'
+// import connectMongo from './connectors/mongoConnector'
 import connectES from './connectors/elasticsearchConnector'
 
 const start = async () => {
 
-  const mongo = await connectMongo()
+  // const mongo = await connectMongo()
   const elasticsearch = await connectES()
 
   const app = express()
@@ -23,7 +22,8 @@ const start = async () => {
   app.use('/graphql',
     bodyParser.json(),
     graphqlExpress({
-      context: { elasticsearch, mongo },
+      // context: { elasticsearch, mongo },
+      context: { elasticsearch },
       schema
     })
   )
@@ -33,12 +33,6 @@ const start = async () => {
       endpointURL: './graphql',
     })
   )
-
-  // app.use('/api-voyager',
-  //   voyager({
-  //     endpointURL: 'http://localhost:3000/graphql'
-  //   })
-  // )
 
   const PORT = 3000
   app.listen(PORT, () => {
