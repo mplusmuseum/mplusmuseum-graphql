@@ -12,43 +12,43 @@ const typeDefs = `
     # Display date
     dated: String
     # Object status can be Accessioned Object, [TK] (translated)
-    objectstatus: [TranslatedText]!
+    objectstatus: [TranslatedText]
     # Credit lines (translated)
-    creditlines: [TranslatedText]!
+    creditlines: [TranslatedText]
     # Medium listing (translated)
-    mediums: [TranslatedText]!
+    mediums: [TranslatedText]
     # Object dimensions (translated)
-    dimensions: [TranslatedText]!
+    dimensions: [TranslatedText]
     # Categories assigned to object
-    areacategories: [AreaCategory]!
+    areacategories: [AreaCategory]
     # Makers assigned to object
-    authors: [Maker]!
-    medias: [Media]!
+    authors: [Maker]
+    medias: [Media]
     # Title (translated)
     titles: [TranslatedText]
   }
 
   type Media {
-    rank: Int!
+    rank: Int
     primarydisplay: Int
-    filename: String!
+    filename: String
   }
 
   type Maker {
-    rank: Int!
+    rank: Int
     author: ID!
     authornameid: ID!
     nationality: String
     name: String
     birthyear_yearformed: Int
     deathyear: Int
-    roles: [TranslatedText]!
+    roles: [TranslatedText]
   }
 
   type AreaCategory {
-    rank: Int!
-    type: String!
-    areacat: [TranslatedText!]!
+    rank: Int
+    type: String
+    areacat: [TranslatedText]
   }
 
   type TranslatedText {
