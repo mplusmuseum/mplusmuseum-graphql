@@ -1,6 +1,7 @@
 const typeResolvers = {
   Artwork: {
-    id: root => root._id || root.id
+    id: root => root._id || root.id,
+    objectNumber: root => root.objectnumber
   }
 }
 

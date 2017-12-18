@@ -4,7 +4,7 @@ const typeDefs = `
     # TMS ID
     id: ID!
     # Accession number
-    objectnumber: String!
+    objectNumber: String!
     # Creation start date
     datebegin: Int
     # Creation end date (if range)
@@ -21,8 +21,8 @@ const typeDefs = `
     dimensions: [TranslatedText]
     # Categories assigned to object
     areacategories: [AreaCategory]
-    # Makers assigned to object
-    authors: [Maker]
+    # Authors/makers assigned to object
+    authors: [Author]
     medias: [Media]
     # Title (translated)
     titles: [TranslatedText]
@@ -34,10 +34,10 @@ const typeDefs = `
     filename: String
   }
 
-  type Maker {
+  type Author {
     rank: Int
-    author: ID!
-    authornameid: ID!
+    author: ID
+    authornameid: ID
     nationality: String
     name: String
     birthyear_yearformed: Int
@@ -63,6 +63,7 @@ const typeDefs = `
 
   type Query {
     artworks: [Artwork!]!
+    authors: [Author]
     artwork(id: ID!): Artwork
   }
 
