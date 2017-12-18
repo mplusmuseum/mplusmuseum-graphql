@@ -3,27 +3,39 @@ const typeDefs = `
   type Artwork {
     # TMS ID
     id: ID!
+
     # Accession number
     objectNumber: String!
+
     # Creation start date
     datebegin: Int
+
     # Creation end date (if range)
     dateend: Int
+
     # Display date
     dated: String
+
     # Object status can be Accessioned Object, [TK] (translated)
     objectstatus: [TranslatedText]
+
     # Credit lines (translated)
     creditlines: [TranslatedText]
+
     # Medium listing (translated)
     mediums: [TranslatedText]
+
     # Object dimensions (translated)
     dimensions: [TranslatedText]
+
     # Categories assigned to object
     areacategories: [AreaCategory]
+
     # Authors/makers assigned to object
     authors: [Author]
+
     medias: [Media]
+
     # Title (translated)
     titles: [TranslatedText]
   }
@@ -42,7 +54,7 @@ const typeDefs = `
     name: String
     birthyear_yearformed: Int
     deathyear: Int
-    roles: [TranslatedText]
+    artworks: [Artwork]
   }
 
   type AreaCategory {
