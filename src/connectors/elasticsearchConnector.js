@@ -3,22 +3,8 @@ import esQueries from '../queries/artworksQuery'
 
 const unpackElasticsearchObjects = (response) => {
   const artworks = response.hits.hits.map((artwork) => {
-    let object = artwork._source
-    let formattedObject = Object.assign({}, object)
-
-    // formattedObject.title = []
-    // Object.keys(object.title).map((key) => {
-    //   formattedObject.title.push({
-    //     language: key,
-    //     text: object.title[key]
-    //   })
-    // })
-
-    return formattedObject
+    return artwork._source
   })
-
-  console.log(artworks[0])
-
   return artworks
 }
 
