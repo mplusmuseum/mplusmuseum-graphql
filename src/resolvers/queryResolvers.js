@@ -1,5 +1,21 @@
 const queryResolvers = {
   Query: {
+    authors: async (root, data, { elasticsearch: { Artworks } }) => {
+      let uniqueAuthors = {}
+      Artworks.map((artwork) => {
+        artwork.authors[0].map((author) => {
+          if (!uniqueAuthors[author.author]) {
+            uniqueAuthors[author.author] = author
+          }
+        })
+      })
+
+      const Authors = Object.entries(uniqueAuthors).map((author) => {
+        return author[1]
+      })
+
+      return await Authors
+    },
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       const unpackedArtworks = Artworks.map((inArtwork) => {
         let outArtwork = Object.assign({}, inArtwork)
