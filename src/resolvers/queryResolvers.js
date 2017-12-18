@@ -1,22 +1,17 @@
-const getUniqueAuthors = (artworks) => {
-  let uniqueAuthors = {}
-  artworks.map((artwork) => {
-    artwork.authors[0].map((author) => {
-      if (!uniqueAuthors[author.author]) {
-        uniqueAuthors[author.author] = author
-      }
-    })
-  })
-
-  const authors = Object.entries(uniqueAuthors).map((author) => {
-    return author[1]
-  })
-
-  return authors
-}
+import { getUniqueAuthors } from '../helpers/resolverHelpers'
 
 const queryResolvers = {
   Query: {
+    author: async (root, data, { elasticsearch: { Artworks } }) => {
+      return await getUniqueAuthors(Artworks).find((author) => {
+        if (data.id) return parseInt(author.author) === parseInt(data.id)
+      })
+    },
+    artwork: async (root, data, { elasticsearch: { Artworks } }) => {
+      return await Artworks.find((artwork) => {
+        if (data.id) return parseInt(artwork.id) === parseInt(data.id)
+      })
+    },
     authors: async (root, data, { elasticsearch: { Artworks } }) => {
       return await getUniqueAuthors(Artworks)
     },
@@ -29,19 +24,6 @@ const queryResolvers = {
         return outArtwork
       })
       return await unpackedArtworks
-    },
-    author: async (root, data, { elasticsearch: { Artworks } }) => {
-      const Authors = getUniqueAuthors(Artworks)
-
-
-      return await Authors.find((author) => {
-        if (data.id) return parseInt(author.author) === parseInt(data.id)
-      })
-    },
-    artwork: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await Artworks.find((artwork) => {
-        if (data.id) return parseInt(artwork.id) === parseInt(data.id)
-      })
     }
   }
 }
