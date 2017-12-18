@@ -6,7 +6,7 @@ const esQueries = {
         match_all: {}
       },
       from: 0,
-      size: 10000
+      size: 100
     }
   }
 }
