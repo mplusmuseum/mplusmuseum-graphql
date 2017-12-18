@@ -65,6 +65,7 @@ const typeDefs = `
     artworks: [Artwork!]!
     authors: [Author]
     artwork(id: ID!): Artwork
+    author(id: ID!): Author
   }
 
   type Mutation {

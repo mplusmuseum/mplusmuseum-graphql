@@ -1,20 +1,24 @@
+const getUniqueAuthors = (artworks) => {
+  let uniqueAuthors = {}
+  artworks.map((artwork) => {
+    artwork.authors[0].map((author) => {
+      if (!uniqueAuthors[author.author]) {
+        uniqueAuthors[author.author] = author
+      }
+    })
+  })
+
+  const authors = Object.entries(uniqueAuthors).map((author) => {
+    return author[1]
+  })
+
+  return authors
+}
+
 const queryResolvers = {
   Query: {
     authors: async (root, data, { elasticsearch: { Artworks } }) => {
-      let uniqueAuthors = {}
-      Artworks.map((artwork) => {
-        artwork.authors[0].map((author) => {
-          if (!uniqueAuthors[author.author]) {
-            uniqueAuthors[author.author] = author
-          }
-        })
-      })
-
-      const Authors = Object.entries(uniqueAuthors).map((author) => {
-        return author[1]
-      })
-
-      return await Authors
+      return await getUniqueAuthors(Artworks)
     },
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       const unpackedArtworks = Artworks.map((inArtwork) => {
@@ -25,6 +29,14 @@ const queryResolvers = {
         return outArtwork
       })
       return await unpackedArtworks
+    },
+    author: async (root, data, { elasticsearch: { Artworks } }) => {
+      const Authors = getUniqueAuthors(Artworks)
+
+
+      return await Authors.find((author) => {
+        if (data.id) return parseInt(author.author) === parseInt(data.id)
+      })
     },
     artwork: async (root, data, { elasticsearch: { Artworks } }) => {
       return await Artworks.find((artwork) => {
