@@ -16,12 +16,20 @@ const typeResolvers = {
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       return await root.artworks.map(id => Artworks
         .find(artwork => parseInt(id) === parseInt(artwork.id)))
+    },
+    mediums: async (root, data, { elasticsearch: { Artworks } }) => {
+      return await getUniqueMediums(Artworks)
+        .filter(medium => root.mediums.indexOf(parseInt(medium.id)) > -1)
     }
   },
   Medium: {
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       return await root.artworks.map(id => Artworks
         .find(artwork => parseInt(id) === parseInt(artwork.id)))
+    },
+    authors: async (root, data, { elasticsearch: { Artworks } }) => {
+      return await getUniqueAuthors(Artworks)
+        .filter(author => author.mediums.indexOf(parseInt(root.id)) > -1)
     }
   }
 }

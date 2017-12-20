@@ -55,12 +55,14 @@ const typeDefs = `
     birthyear_yearformed: Int
     deathyear: Int
     artworks: [Artwork]
+    mediums: [Medium]
   }
 
   type Medium {
     id: ID
     name: [TranslatedText]
     artworks: [Artwork]
+    authors: [Author]
   }
 
   type AreaCategory {
