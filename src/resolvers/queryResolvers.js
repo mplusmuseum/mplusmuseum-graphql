@@ -1,4 +1,4 @@
-import { getUniqueAuthors } from '../helpers/resolverHelpers'
+import { getUniqueAuthors, getUniqueMediums } from '../helpers/resolverHelpers'
 
 const queryResolvers = {
   Query: {
@@ -10,6 +10,11 @@ const queryResolvers = {
     artwork: async (root, data, { elasticsearch: { Artworks } }) => {
       return await Artworks.find((artwork) => {
         if (data.id) return parseInt(artwork.id) === parseInt(data.id)
+      })
+    },
+    medium: async(root, data, { elasticsearch: { Artworks } }) => {
+      return await getUniqueMediums(Artworks).find((medium) => {
+        if (data.id) return parseInt(medium.id) === parseInt(data.id)
       })
     },
     authors: async (root, data, { elasticsearch: { Artworks } }) => {
@@ -24,6 +29,9 @@ const queryResolvers = {
         return outArtwork
       })
       return await unpackedArtworks
+    },
+    mediums: async (root, data, { elasticsearch: { Artworks } }) => {
+      return await getUniqueMediums(Artworks)
     }
   }
 }

@@ -1,3 +1,5 @@
+import hash from 'string-hash'
+
 export const getUniqueAuthors = (artworks) => {
   let uniqueAuthors = {}
   artworks.map((artwork) => {
@@ -13,9 +15,33 @@ export const getUniqueAuthors = (artworks) => {
     })
   })
 
-  const authors = Object.entries(uniqueAuthors).map((author) => {
+  return Object.entries(uniqueAuthors).map((author) => {
     return author[1]
   })
+}
 
-  return authors
+export const getUniqueMediums = (artworks) => {
+  let uniqueMediums = {}
+
+  artworks.map((artwork) => {
+    if (artwork.mediums && artwork.mediums[0].text) {
+      const id = hash(artwork.mediums[0].text.toLowerCase())
+
+      if (!uniqueMediums[id]) {
+        const medium = {
+          id: id,
+          name: artwork.mediums,
+          artworks: []
+        }
+        uniqueMediums[id] = medium
+      }
+
+      if (uniqueMediums[id].artworks.indexOf(artwork.id) < 0)
+        uniqueMediums[id].artworks.push(artwork.id)
+    }
+  })
+
+  return Object.entries(uniqueMediums).map((medium) => {
+    return medium[1]
+  })
 }

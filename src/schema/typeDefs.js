@@ -23,7 +23,7 @@ const typeDefs = `
     creditlines: [TranslatedText]
 
     # Medium listing (translated)
-    mediums: [TranslatedText]
+    medium: Medium
 
     # Object dimensions (translated)
     dimensions: [TranslatedText]
@@ -57,6 +57,12 @@ const typeDefs = `
     artworks: [Artwork]
   }
 
+  type Medium {
+    id: ID
+    name: [TranslatedText]
+    artworks: [Artwork]
+  }
+
   type AreaCategory {
     rank: Int
     type: String
@@ -75,9 +81,11 @@ const typeDefs = `
 
   type Query {
     artworks: [Artwork!]!
-    authors: [Author]
+    authors: [Author!]!
+    mediums: [Medium]
     artwork(id: ID!): Artwork
     author(id: ID!): Author
+    medium(id: ID!): Medium
   }
 
   type Mutation {
