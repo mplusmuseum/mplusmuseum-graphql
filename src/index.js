@@ -7,12 +7,10 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 
 import schema from './schema'
 
-// import connectMongo from './connectors/mongoConnector'
 import connectES from './connectors/elasticsearchConnector'
 
 const start = async () => {
 
-  // const mongo = await connectMongo()
   const elasticsearch = await connectES()
 
   const app = express()
@@ -22,7 +20,6 @@ const start = async () => {
   app.use('/graphql',
     bodyParser.json(),
     graphqlExpress({
-      // context: { elasticsearch, mongo },
       context: { elasticsearch },
       schema
     })

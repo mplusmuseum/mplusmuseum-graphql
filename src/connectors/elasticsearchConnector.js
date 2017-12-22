@@ -3,6 +3,9 @@ import esQueries from '../queries/artworksQuery'
 
 const unpackElasticsearchObjects = (response) => {
   const artworks = response.hits.hits.map((artwork) => {
+    // let source = artwork._source
+    // source.authors = artwork._source.authors[0]
+    // return source
     return artwork._source
   })
   return artworks

@@ -110,10 +110,6 @@ const typeDefs = `
     area(id: ID): Area
     category(id: ID!): Category
   }
-
-  type Mutation {
-    createArtwork(tms_id: ID!, title: [TranslatedTextInput]!): Artwork
-  }
 `
 
 export default typeDefs
