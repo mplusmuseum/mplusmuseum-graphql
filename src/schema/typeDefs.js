@@ -20,7 +20,7 @@ const typeDefs = `
     objectStatus: [TranslatedText]
 
     # Credit lines (translated)
-    creditlines: [TranslatedText]
+    creditLines: [TranslatedText]
 
     # Medium listing (translated)
     medium: Medium
@@ -51,8 +51,8 @@ const typeDefs = `
   }
 
   type Author {
-    rank: Int
     id: ID
+    rank: Int
     nationality: String
     name: String
     birthyear_yearformed: Int

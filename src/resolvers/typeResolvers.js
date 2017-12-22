@@ -11,8 +11,8 @@ const typeResolvers = {
     objectNumber: root => root.objectnumber,
     dateBegin: root => root.datebegin,
     dateEnd: root => root.dateend,
-    authors: root => root.authors[0],
     objectStatus: root => root.objectstatus,
+    creditLines: root => root.creditlines,
     medium: (root) => {
       let medium = {}
       if (root.mediums[0])
@@ -20,11 +20,9 @@ const typeResolvers = {
         medium['name'] = root.mediums
       return medium
     },
-    // medium: async (root, data, { elasticsearch: { Artworks } }) => {
-    //   return await getUniqueMediums(Artworks)
-    //     .filter(medium => medium.artworks.indexOf(parseInt(root.id)) > -1)[0]
-    // },
-    area: root => root.areacategories.filter((ac) => ac.type === 'Area')
+    area: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'area'),
+    category: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'category'),
+    authors: root => root.authors[0]
   },
   Author: {
     id: root => root.author,
@@ -43,8 +41,16 @@ const typeResolvers = {
         .find(artwork => parseInt(id) === parseInt(artwork.id)))
     },
     authors: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await getUniqueAuthors(Artworks)
-        .filter(author => author.mediums.indexOf(parseInt(root.id)) > -1)
+      let authors = {}
+      root.artworks
+        .map(id => Artworks.find(artwork => parseInt(id) === parseInt(artwork.id)))
+        .map(artwork => {
+          artwork.authors[0].map((author) => {
+            authors[author.author] = author
+          })
+        })
+
+      return await Object.entries(authors).map(author => author[1])
     }
   },
   Area: {
