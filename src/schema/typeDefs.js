@@ -8,16 +8,16 @@ const typeDefs = `
     objectNumber: String!
 
     # Creation start date
-    datebegin: Int
+    dateBegin: Int
 
     # Creation end date (if range)
-    dateend: Int
+    dateEnd: Int
 
     # Display date
     dated: String
 
     # Object status can be Accessioned Object, [TK] (translated)
-    objectstatus: [TranslatedText]
+    objectStatus: [TranslatedText]
 
     # Credit lines (translated)
     creditlines: [TranslatedText]
@@ -30,6 +30,10 @@ const typeDefs = `
 
     # Categories assigned to object
     areacategories: [AreaCategory]
+
+    area: [Area]
+
+    category: [Category]
 
     # Authors/makers assigned to object
     authors: [Author]
@@ -48,14 +52,14 @@ const typeDefs = `
 
   type Author {
     rank: Int
-    author: ID
-    authornameid: ID
+    id: ID
     nationality: String
     name: String
     birthyear_yearformed: Int
     deathyear: Int
     artworks: [Artwork]
     mediums: [Medium]
+    roles: [TranslatedText]
   }
 
   type Medium {
@@ -63,6 +67,19 @@ const typeDefs = `
     name: [TranslatedText]
     artworks: [Artwork]
     authors: [Author]
+  }
+
+  type Area {
+    id: ID
+    name: [TranslatedText]
+    artworks: [Artwork]
+    rank: Int
+  }
+
+  type Category {
+    id: ID
+    name: [TranslatedText]
+    artworks: [Artwork]
   }
 
   type AreaCategory {
@@ -82,12 +99,16 @@ const typeDefs = `
   }
 
   type Query {
-    artworks: [Artwork!]!
+    artworks(area: String): [Artwork!]!
     authors: [Author!]!
     mediums: [Medium]
-    artwork(id: ID!): Artwork
+    areas(artwork: ID): [Area]
+    categories: [Category]
+    artwork(id: ID): Artwork
     author(id: ID!): Author
     medium(id: ID!): Medium
+    area(id: ID): Area
+    category(id: ID!): Category
   }
 
   type Mutation {
