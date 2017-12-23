@@ -22,10 +22,10 @@ const typeResolvers = {
     },
     area: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'area'),
     category: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'category'),
-    authors: root => root.authors[0]
+    authors: root => root.authors
   },
   Author: {
-    id: root => root.author,
+    id: root => root.id,
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       return await root.artworks.map(id => Artworks
         .find(artwork => parseInt(id) === parseInt(artwork.id)))
@@ -45,7 +45,7 @@ const typeResolvers = {
       root.artworks
         .map(id => Artworks.find(artwork => parseInt(id) === parseInt(artwork.id)))
         .map(artwork => {
-          artwork.authors[0].map((author) => {
+          artwork.authors.map((author) => {
             authors[author.author] = author
           })
         })
