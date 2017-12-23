@@ -17,34 +17,22 @@ export const getUniqueAuthors = (artworks) => {
 }
 
 export const getUniqueMediums = (artworks) => {
-  let uniqueMediums = {}
-
-  artworks.map((artwork) => {
-    if (artwork.mediums && artwork.mediums[0].text) {
-      const id = hash(artwork.mediums[0].text.toLowerCase())
-
-      if (!uniqueMediums[id]) {
-        const medium = {
+  const mediums = []
+  artworks.forEach((artwork) => {
+    const medium = artwork.mediums
+    if (medium && medium[0].text) {
+      const id = hash(medium[0].text)
+      mediums.push(
+        JSON.stringify({
           id: id,
-          name: artwork.mediums,
-          artworks: [],
-          authors: []
-        }
-        uniqueMediums[id] = medium
-      }
-
-      if (uniqueMediums[id].artworks.indexOf(artwork.id) < 0)
-        uniqueMediums[id].artworks.push(artwork.id)
-
-      artwork.authors.map((author) => {
-        uniqueMediums[id].authors.push(author.author)
-      })
+          name: medium
+        })
+      )
     }
   })
 
-  return Object.entries(uniqueMediums).map((medium) => {
-    return medium[1]
-  })
+  const uniqueMediums = new Set([].concat(...mediums))
+  return Array.from(uniqueMediums).map(medium => JSON.parse(medium))
 }
 
 export const getUniqueAreas = (artworks) => {
