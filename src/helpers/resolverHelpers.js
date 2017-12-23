@@ -1,30 +1,20 @@
 import hash from 'string-hash'
 
 export const getUniqueAuthors = (artworks) => {
-  let uniqueAuthors = {}
-  artworks.map((artwork) => {
-    artwork.authors[0].map((author) => {
-      const id = author.author
-      if (!uniqueAuthors[id]) {
-        uniqueAuthors[id] = author
-        // uniqueAuthors[id].artworks = []
-        uniqueAuthors[id].mediums = []
-      }
-
-      // if (uniqueAuthors[id].artworks.indexOf(artwork.id) < 0)
-      //   uniqueAuthors[id].artworks.push(artwork.id)
-
-      if (artwork.mediums && artwork.mediums[0].text) {
-        const mediumId = hash(artwork.mediums[0].text)
-        if (uniqueAuthors[id].mediums.indexOf(mediumId) < 0)
-          uniqueAuthors[id].mediums.push(mediumId)
-      }
+  const authors = artworks.map(artwork => {
+    return artwork.authors[0].map(author => {
+      return JSON.stringify({
+        id: author.author,
+        name: author.name,
+        birthyear_yearformed: author.birthyear_yearformed,
+        deathyear: author.deathyear
+      })
     })
   })
 
-  return Object.entries(uniqueAuthors).map((author) => {
-    return author[1]
-  })
+  const set = new Set([].concat(...authors))
+  const real_authors = Array.from(set).map(author => JSON.parse(author))
+  return real_authors
 }
 
 export const getUniqueMediums = (artworks) => {
