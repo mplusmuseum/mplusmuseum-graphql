@@ -12,8 +12,7 @@ const unpackElasticsearchObjects = (response) => {
 
 const client = async () => {
   const ElasticsearchClient = new Elasticsearch.Client({
-    host: process.env.ES_HOST,
-    // httpAuth: process.env.ES_HTTP_AUTH
+    host: process.env.ES_HOST
   })
 
   const response = await ElasticsearchClient.search(esQueries.artworks)

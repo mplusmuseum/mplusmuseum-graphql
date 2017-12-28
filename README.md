@@ -1,12 +1,9 @@
 # mplusmuseum-graphql
 
-Beginnings of a GraphQL server.
-
-## How this Fits
-...
+Beginnings of a GraphQL server, where we write adapters to databases to frontends just need to write graphql queries instead of learn about the unique features of each database.
 
 ## Prerequisites
-For development, you'll want to install local copies of Elasticsearch and Kibana:
+For development, you'll want to install local copies of Elasticsearch and Kibana. We use Elasticsearch as our database store, and Kibana to explore that data.
 
 ```bash
 brew install elasticsearch # You may be prompted to install Java first.
@@ -28,35 +25,21 @@ Your local copy of Elasticsearch will be running on port 9200. Kibana will be ru
 
 ## Getting Started
 
-1. Clone and download this repo.
-2. Create a `.env` file using `.env.example`:
-  - `MONGO_URL`: This mongo connector in this repo is currently set up to look at a [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/lp/general) cluster.
-  - `ES_HOST`: For development, point this at `localhost:9200`
-  - `ES_HTTP_AUTH`: You don't need anything here for local development.
-
-## Installation
-```
-npm install
-node ./src/index.js
-```
-
-### Usage
-...
+1. Clone and download this repo
+2. Install dependencies with `npm install` or `yarn`
+3. Make sure elasticsearch is started `brew services start elasticsearch`
+4. Start this server with `npm start` or `yarn start`
+5. Explore the api at http://localhost:3000/api-explorer
 
 ## Tools
-- [Apollo Client Devtools](https://github.com/apollographql/apollo-client-devtools)
 
-## Resources
-...
-
-## Built With
-...
+[Apollo Client Devtools](https://github.com/apollographql/apollo-client-devtools) provides a tab in firefox / chrome dev tools
 
 ## Contributing
-We welcome your contributions. If you have an addition or correction, please fork this repository, make your change, and submit a pull-request.
+We welcome your contributions! If you have a question, or suggestion, please write an [issue](/issues) or create a [pull request](/pulls).
 
 ## Authors
-@rnackman
+[@rnackman](https://github.com/rnackman), [@jedahan](https://github.com/jedahan)
 
 ## License
-We are using the [MIT License](LICENSE).
+We are using the [MIT License](LICENSE)
