@@ -27,18 +27,22 @@ const typeResolvers = {
   Author: {
     id: root => root.id,
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await root.artworks.map(id => Artworks
-        .find(artwork => parseInt(id) === parseInt(artwork.id)))
+      return await Artworks.filter(artwork =>
+        artwork.authors.find(author => author.author === root.id)
+      )
     },
     mediums: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await getUniqueMediums(Artworks)
-        .filter(medium => root.mediums.indexOf(parseInt(medium.id)) > -1)
+      // return await getUniqueMediums(Artworks)
+      //   .filter(medium => root.mediums.indexOf(parseInt(medium.id)) > -1)
     }
   },
   Medium: {
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await root.artworks.map(id => Artworks
-        .find(artwork => parseInt(id) === parseInt(artwork.id)))
+      return await Artworks.filter((artwork) => {
+        return artwork.mediums && artwork.mediums[0] && hash(artwork.mediums[0].text) === root.id
+      })
+      // return await root.artworks.map(id => Artworks
+      //   .find(artwork => parseInt(id) === parseInt(artwork.id)))
     },
     authors: async (root, data, { elasticsearch: { Artworks } }) => {
       let authors = {}
