@@ -10,7 +10,7 @@ const queryResolvers = {
     author: async (root, data, { elasticsearch: { Artworks } }) => {
       if (data.id) {
         return await getUniqueAuthors(Artworks).find((author) => {
-          return parseInt(author.author) === parseInt(data.id)
+          return parseInt(author.id) === parseInt(data.id)
         })
       }
     },
@@ -19,9 +19,9 @@ const queryResolvers = {
         return await Artworks.find(artwork =>parseInt(artwork.id) === parseInt(data.id))
     },
     medium: async(root, data, { elasticsearch: { Artworks } }) => {
-      return await getUniqueMediums(Artworks).find((medium) => {
-        if (data.id) return parseInt(medium.id) === parseInt(data.id)
-      })
+      if (data.id)
+        return await getUniqueMediums(Artworks).find(medium => parseInt(medium.id) === parseInt(data.id)
+        )
     },
     area: async(root, data, { elasticsearch: { Artworks } }) => {
       return await getUniqueAreas(Artworks).find((area) => {
