@@ -22,7 +22,10 @@ const typeResolvers = {
     },
     area: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'area'),
     category: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'category'),
-    authors: root => root.authors
+    authors: root => root.authors.map(root => {
+        root.id = root.author
+        return root
+      })
   },
   Author: {
     id: root => root.id,

@@ -47,7 +47,10 @@ const queryResolvers = {
         }).slice(0, args.limit)
       }
 
-      return await Artworks.slice(0, args.limit)
+      if (args.limit)
+        return await Artworks.slice(0, args.limit)
+
+      return await Artworks
     },
     mediums: async (obj, args, { elasticsearch: { Artworks } }) => {
       return await getUniqueMediums(Artworks)
