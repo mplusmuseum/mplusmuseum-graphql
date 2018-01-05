@@ -99,7 +99,7 @@ const typeDefs = `
   }
 
   type Query {
-    artworks(area: String): [Artwork!]!
+    artworks(limit: Int = 100, area: String): [Artwork!]!
     authors: [Author!]!
     mediums: [Medium]
     areas(artwork: ID): [Area]

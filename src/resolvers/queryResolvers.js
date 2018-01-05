@@ -7,56 +7,61 @@ import {
 
 const queryResolvers = {
   Query: {
-    author: async (root, data, { elasticsearch: { Artworks } }) => {
-      if (data.id) {
+    author: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.id) {
         return await getUniqueAuthors(Artworks).find((author) => {
-          return parseInt(author.id) === parseInt(data.id)
+          return parseInt(author.id) === parseInt(args.id)
         })
       }
     },
-    artwork: async (root, data, { elasticsearch: { Artworks } }) => {
-      if (data.id)
-        return await Artworks.find(artwork =>parseInt(artwork.id) === parseInt(data.id))
+    artwork: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.id) {
+        return await Artworks.find((artwork) => {
+          return parseInt(artwork.id) === parseInt(args.id)
+        })
+      }
     },
-    medium: async(root, data, { elasticsearch: { Artworks } }) => {
-      if (data.id)
-        return await getUniqueMediums(Artworks).find(medium => parseInt(medium.id) === parseInt(data.id)
-        )
+    medium: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.id) {
+        return await getUniqueMediums(Artworks).find((medium) => {
+          return parseInt(medium.id) === parseInt(args.id)
+        })
+      }
     },
-    area: async(root, data, { elasticsearch: { Artworks } }) => {
+    area: async (obj, args, { elasticsearch: { Artworks } }) => {
       return await getUniqueAreas(Artworks).find((area) => {
-        if (data.id) return parseInt(area.id) === parseInt(data.id)
+        if (args.id) return parseInt(area.id) === parseInt(args.id)
       })
     },
-    authors: async (root, data, { elasticsearch: { Artworks } }) => {
+    authors: async (obj, args, { elasticsearch: { Artworks } }) => {
       return await getUniqueAuthors(Artworks)
     },
-    artworks: async (root, data, { elasticsearch: { Artworks } }) => {
-      if (data.area) {
+    artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.area) {
         return await Artworks.filter((artwork) => {
           return artwork.areacategories.find((ac) => {
             return ac.areacat.find((areacat) => {
-              return areacat.text === data.area
+              return areacat.text === args.area
             })
           })
-        })
+        }).slice(0, args.limit)
       }
 
-      return await Artworks
+      return await Artworks.slice(0, args.limit)
     },
-    mediums: async (root, data, { elasticsearch: { Artworks } }) => {
+    mediums: async (obj, args, { elasticsearch: { Artworks } }) => {
       return await getUniqueMediums(Artworks)
     },
-    areas: async (root, data, { elasticsearch: { Artworks } }) => {
-      if (data.artwork) {
+    areas: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.artwork) {
          return await Artworks.find((artwork) => {
-          return parseInt(data.artwork) === parseInt(artwork.id)
+          return parseInt(args.artwork) === parseInt(artwork.id)
         }).areacategories.filter((ac) => ac.type.toLowerCase() === 'area')
       } else {
         return await getUniqueAreas(Artworks)
       }
     },
-    categories: async (root, data, { elasticsearch: { Artworks } }) => {
+    categories: async (obj, args, { elasticsearch: { Artworks } }) => {
       return await getUniqueCategories(Artworks)
     }
   }
