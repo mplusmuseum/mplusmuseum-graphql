@@ -47,6 +47,14 @@ const queryResolvers = {
         }).slice(0, args.limit)
       }
 
+      if (args.maker) {
+        return await Artworks.filter(artwork => {
+          return artwork.makers.find(maker => {
+            return parseInt(maker.author) === parseInt(args.maker)
+          })
+        })
+      }
+
       if (args.limit)
         return await Artworks.slice(0, args.limit)
 
