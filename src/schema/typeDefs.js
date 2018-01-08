@@ -35,8 +35,8 @@ const typeDefs = `
 
     category: [Category]
 
-    # Authors/makers assigned to object
-    authors: [Author]
+    # Makers assigned to object
+    makers: [Maker]
 
     medias: [Media]
 
@@ -50,7 +50,7 @@ const typeDefs = `
     filename: String
   }
 
-  type Author {
+  type Maker {
     id: ID
     rank: Int
     nationality: String
@@ -66,7 +66,7 @@ const typeDefs = `
     id: ID
     name: [TranslatedText]
     artworks: [Artwork]
-    authors: [Author]
+    makers: [Maker]
   }
 
   type Area {
@@ -100,12 +100,12 @@ const typeDefs = `
 
   type Query {
     artworks(limit: Int = 100, area: String): [Artwork!]!
-    authors: [Author!]!
+    makers: [Maker!]!
     mediums: [Medium]
     areas(artwork: ID): [Area]
     categories: [Category]
     artwork(id: ID): Artwork
-    author(id: ID!): Author
+    maker(id: ID!): Maker
     medium(id: ID!): Medium
     area(id: ID): Area
     category(id: ID!): Category

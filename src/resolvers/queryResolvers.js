@@ -1,5 +1,5 @@
 import {
-  getUniqueAuthors,
+  getUniqueMakers,
   getUniqueMediums,
   getUniqueAreas,
   getUniqueCategories
@@ -7,10 +7,10 @@ import {
 
 const queryResolvers = {
   Query: {
-    author: async (obj, args, { elasticsearch: { Artworks } }) => {
+    maker: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.id) {
-        return await getUniqueAuthors(Artworks).find((author) => {
-          return parseInt(author.id) === parseInt(args.id)
+        return await getUniqueMakers(Artworks).find((maker) => {
+          return parseInt(maker.id) === parseInt(args.id)
         })
       }
     },
@@ -33,8 +33,8 @@ const queryResolvers = {
         if (args.id) return parseInt(area.id) === parseInt(args.id)
       })
     },
-    authors: async (obj, args, { elasticsearch: { Artworks } }) => {
-      return await getUniqueAuthors(Artworks)
+    makers: async (obj, args, { elasticsearch: { Artworks } }) => {
+      return await getUniqueMakers(Artworks)
     },
     artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.area) {

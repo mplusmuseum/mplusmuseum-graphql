@@ -1,6 +1,6 @@
 import hash from 'string-hash'
 import {
-  getUniqueAuthors,
+  getUniqueMakers,
   getUniqueMediums,
   getUniqueAreas,
   getUniqueCategories
@@ -22,16 +22,16 @@ const typeResolvers = {
     },
     area: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'area'),
     category: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'category'),
-    authors: root => root.authors.map(root => {
-        root.id = root.author
+    makers: root => root.makers.map(root => {
+        root.id = root.maker
         return root
       })
   },
-  Author: {
+  Maker: {
     id: root => root.id,
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       return await Artworks.filter(artwork =>
-        artwork.authors.find(author => author.author === root.id)
+        artwork.makers.find(maker => maker.maker === root.id)
       )
     },
     mediums: async (root, data, { elasticsearch: { Artworks } }) => {
@@ -47,17 +47,17 @@ const typeResolvers = {
       // return await root.artworks.map(id => Artworks
       //   .find(artwork => parseInt(id) === parseInt(artwork.id)))
     },
-    authors: async (root, data, { elasticsearch: { Artworks } }) => {
-      let authors = {}
+    makers: async (root, data, { elasticsearch: { Artworks } }) => {
+      let makers = {}
       root.artworks
         .map(id => Artworks.find(artwork => parseInt(id) === parseInt(artwork.id)))
         .map(artwork => {
-          artwork.authors.map((author) => {
-            authors[author.author] = author
+          artwork.makers.map((maker) => {
+            makers[maker.maker] = maker
           })
         })
 
-      return await Object.entries(authors).map(author => author[1])
+      return await Object.entries(makers).map(maker => maker[1])
     }
   },
   Area: {

@@ -1,19 +1,19 @@
 import hash from 'string-hash'
 
-export const getUniqueAuthors = (artworks) => {
-  const authors = artworks.map((artwork) => {
-    return artwork.authors.map((author) => {
+export const getUniqueMakers = (artworks) => {
+  const makers = artworks.map((artwork) => {
+    return artwork.makers.map((maker) => {
       return JSON.stringify({
-        id: parseInt(author.author),
-        name: author.name,
-        birthyear_yearformed: author.birthyear_yearformed,
-        deathyear: author.deathyear
+        id: parseInt(maker.author),
+        name: maker.name,
+        birthyear_yearformed: maker.birthyear_yearformed,
+        deathyear: maker.deathyear
       })
     })
   })
 
-  const uniqueAuthors = new Set([].concat(...authors))
-  return Array.from(uniqueAuthors).map(author => JSON.parse(author))
+  const uniqueMakers = new Set([].concat(...makers))
+  return Array.from(uniqueMakers).map(maker => JSON.parse(maker))
 }
 
 export const getUniqueMediums = (artworks) => {
