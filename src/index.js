@@ -31,7 +31,7 @@ const start = async () => {
     })
   )
 
-  const PORT = 3000
+  const PORT = ( process.env.GRAPHQL_PORT || 3000 );
   app.listen(PORT, () => {
     console.log(`GraphQL server running on port ${PORT}.`)
   })
