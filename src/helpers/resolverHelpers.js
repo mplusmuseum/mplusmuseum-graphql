@@ -3,12 +3,13 @@ import hash from 'string-hash'
 export const getUniqueMakers = (artworks) => {
   const makers = artworks.map((artwork) => {
     return artwork.makers.map((maker) => {
-      return JSON.stringify({
-        id: parseInt(maker.author),
-        name: maker.name,
-        birthyear_yearformed: maker.birthyear_yearformed,
-        deathyear: maker.deathyear
-      })
+      if (maker.author)
+        return JSON.stringify({
+          id: parseInt(maker.author),
+          name: maker.name,
+          birthyear_yearformed: maker.birthyear_yearformed,
+          deathyear: maker.deathyear
+        })
     })
   })
 

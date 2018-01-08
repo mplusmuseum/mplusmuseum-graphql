@@ -23,7 +23,7 @@ const typeResolvers = {
     area: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'area'),
     category: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'category'),
     makers: root => root.makers.map(root => {
-        root.id = root.maker
+        root.id = root.author
         return root
       })
   },
@@ -31,7 +31,7 @@ const typeResolvers = {
     id: root => root.id,
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       return await Artworks.filter(artwork =>
-        artwork.makers.find(maker => maker.maker === root.id)
+        artwork.makers.find(maker => maker.author === root.id)
       )
     },
     mediums: async (root, data, { elasticsearch: { Artworks } }) => {

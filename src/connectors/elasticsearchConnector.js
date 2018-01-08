@@ -4,7 +4,13 @@ import esQueries from '../queries/artworksQuery'
 const unpackElasticsearchObjects = (response) => {
   const artworks = response.hits.hits.map((artwork) => {
     let source = artwork._source
-    if (source.authors) source.makers = artwork._source.authors[0]
+
+    if (source.authors && source.authors.length && source.authors[0][0].author) {
+      source.makers = source.authors[0]
+    } else {
+      source.makers = []
+    }
+
     return source
   })
   return artworks
