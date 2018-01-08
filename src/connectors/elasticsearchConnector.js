@@ -4,7 +4,7 @@ import esQueries from '../queries/artworksQuery'
 const unpackElasticsearchObjects = (response) => {
   const artworks = response.hits.hits.map((artwork) => {
     let source = artwork._source
-    source.authors = artwork._source.authors[0]
+    if (source.authors) source.makers = artwork._source.authors[0]
     return source
   })
   return artworks
@@ -15,7 +15,8 @@ const client = async () => {
     host: process.env.ES_HOST || 'localhost:9200'
   })
 
-  const response = await ElasticsearchClient.search(esQueries.artworks)
+  const count = await ElasticsearchClient.count({ index: 'objects', type: 'object' })
+  const response = await ElasticsearchClient.search(esQueries.artworks(count))
 
   return {
     Artworks: unpackElasticsearchObjects(response)
