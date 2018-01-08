@@ -1,14 +1,13 @@
 const esQueries = {
-  artworks: {
+  artworks: (size) => ({
     index: 'objects',
     body: {
       query: {
         match_all: {}
       },
-      from: 0,
-      size: 1000
+      size: size.count
     }
-  }
+  })
 }
 
 export default esQueries
