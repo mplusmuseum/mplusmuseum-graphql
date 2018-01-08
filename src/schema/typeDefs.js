@@ -99,16 +99,38 @@ const typeDefs = `
   }
 
   type Query {
-    artworks(limit: Int = 100, area: String, maker: ID): [Artwork!]!
-    makers: [Maker!]!
-    mediums: [Medium]
-    areas(artwork: ID): [Area]
-    categories: [Category]
     artwork(id: ID): Artwork
     maker(id: ID!): Maker
     medium(id: ID!): Medium
     area(id: ID): Area
     category(id: ID!): Category
+
+    artworks(
+      limit: Int = 100,
+      area: String,
+      category: String,
+      maker: ID
+    ): [Artwork!]!
+
+    makers: [Maker!]!
+
+    mediums(
+      limit: Int = 100,
+      maker: ID
+    ): [Medium]
+
+    areas(
+      limit: Int = 100,
+      artwork: ID,
+      maker: ID
+    ): [Area]
+
+    categories(
+      limit: Int = 100,
+      artwork: ID,
+      maker: ID,
+      area: String
+    ): [Category]
   }
 `
 
