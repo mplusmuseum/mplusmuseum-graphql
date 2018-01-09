@@ -57,8 +57,6 @@ const typeDefs = `
     name: String
     birthyear_yearformed: Int
     deathyear: Int
-    artworks: [Artwork]
-    mediums: [Medium]
     roles: [TranslatedText]
   }
 

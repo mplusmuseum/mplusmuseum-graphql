@@ -36,6 +36,9 @@ const queryResolvers = {
         )
       }
 
+      if (args.limit)
+        return await getUniqueMakers(Artworks).slice(0, args.limit)
+
       return await getUniqueMakers(Artworks)
     },
     artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
