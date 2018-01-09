@@ -2,8 +2,7 @@ import hash from 'string-hash'
 import {
   getUniqueMakers,
   getUniqueMediums,
-  getUniqueAreas,
-  getUniqueCategories
+  getUniqueAreaCats
 } from '../helpers/resolverHelpers'
 
 const typeResolvers = {
@@ -27,37 +26,11 @@ const typeResolvers = {
         return root
       })
   },
-  Maker: {
-    id: root => root.id,
-    artworks: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await Artworks.filter(artwork =>
-        artwork.makers.find(maker => maker.author === root.id)
-      )
-    },
-    mediums: async (root, data, { elasticsearch: { Artworks } }) => {
-      // return await getUniqueMediums(Artworks)
-      //   .filter(medium => root.mediums.indexOf(parseInt(medium.id)) > -1)
-    }
-  },
   Medium: {
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
       return await Artworks.filter((artwork) => {
         return artwork.mediums && artwork.mediums[0] && hash(artwork.mediums[0].text) === root.id
       })
-      // return await root.artworks.map(id => Artworks
-      //   .find(artwork => parseInt(id) === parseInt(artwork.id)))
-    },
-    makers: async (root, data, { elasticsearch: { Artworks } }) => {
-      let makers = {}
-      root.artworks
-        .map(id => Artworks.find(artwork => parseInt(id) === parseInt(artwork.id)))
-        .map(artwork => {
-          artwork.makers.map((maker) => {
-            makers[maker.maker] = maker
-          })
-        })
-
-      return await Object.entries(makers).map(maker => maker[1])
     }
   },
   Area: {

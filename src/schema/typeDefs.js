@@ -112,7 +112,10 @@ const typeDefs = `
       maker: ID
     ): [Artwork!]!
 
-    makers: [Maker!]!
+    makers(
+      limit: Int = 100,
+      medium: ID
+    ): [Maker!]!
 
     mediums(
       limit: Int = 100,

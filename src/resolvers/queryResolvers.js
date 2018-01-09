@@ -1,3 +1,5 @@
+import hash from 'string-hash'
+
 import {
   getUniqueMakers,
   getUniqueMediums,
@@ -25,6 +27,15 @@ const queryResolvers = {
           .find(area => parseInt(area.id) === parseInt(args.id))
     },
     makers: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.medium) {
+        return await getUniqueMakers(
+          Artworks.filter(artwork =>
+            artwork.mediums && artwork.mediums[0] && artwork.mediums[0].text &&
+            parseInt(hash(artwork.mediums[0].text)) === parseInt(args.medium)
+          )
+        )
+      }
+
       return await getUniqueMakers(Artworks)
     },
     artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
