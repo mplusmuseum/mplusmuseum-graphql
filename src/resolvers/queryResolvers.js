@@ -26,6 +26,11 @@ const queryResolvers = {
         return await getUniqueAreaCats(Artworks, 'area')
           .find(area => parseInt(area.id) === parseInt(args.id))
     },
+    category: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.id)
+        return await getUniqueAreaCats(Artworks, 'category')
+          .find(category => parseInt(category.id) === parseInt(args.id))
+    },
     makers: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.artwork) {
         return await getUniqueMakers(
@@ -102,6 +107,12 @@ const queryResolvers = {
       return await getUniqueAreaCats(Artworks, 'area')
     },
     categories: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.artwork) {
+         return await Artworks.find((artwork) => {
+          return parseInt(args.artwork) === parseInt(artwork.id)
+        }).areacategories.filter((ac) => ac.type.toLowerCase() === 'category')
+      }
+
       if (args.limit)
         return await getUniqueAreaCats(Artworks, 'category').slice(0, args.limit)
 

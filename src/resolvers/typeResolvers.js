@@ -40,9 +40,10 @@ const typeResolvers = {
     name: root => root.areacat
   },
   Category: {
-    artworks: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await root.artworks.map(id => Artworks.find(artwork => parseInt(id) === parseInt(artwork.id)))
-    }
+    // artworks: async (root, data, { elasticsearch: { Artworks } }) => {
+    //   return await root.artworks.map(id => Artworks.find(artwork => parseInt(id) === parseInt(artwork.id)))
+    // }
+    name: root => root.areacat
   }
 }
 

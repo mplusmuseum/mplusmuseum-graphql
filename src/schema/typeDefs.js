@@ -97,10 +97,10 @@ const typeDefs = `
   }
 
   type Query {
-    artwork(id: ID): Artwork
+    artwork(id: ID!): Artwork
     maker(id: ID!): Maker
     medium(id: ID!): Medium
-    area(id: ID): Area
+    area(id: ID!): Area
     category(id: ID!): Category
 
     artworks(
