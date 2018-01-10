@@ -8,7 +8,8 @@ export const getUniqueMakers = (artworks) => {
             id: parseInt(maker.author),
             name: maker.name,
             birthyear_yearformed: maker.birthyear_yearformed,
-            deathyear: maker.deathyear
+            deathyear: maker.deathyear,
+            roles: maker.roles
           })
       }
     )

@@ -27,6 +27,12 @@ const queryResolvers = {
           .find(area => parseInt(area.id) === parseInt(args.id))
     },
     makers: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.artwork) {
+        return await getUniqueMakers(
+          Artworks.filter(artwork =>
+            parseInt(artwork.id) === parseInt(args.artwork)))
+      }
+
       if (args.medium) {
         return await getUniqueMakers(
           Artworks.filter(artwork =>

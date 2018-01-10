@@ -112,6 +112,7 @@ const typeDefs = `
 
     makers(
       limit: Int = 100,
+      artwork: ID,
       medium: ID
     ): [Maker!]!
 
