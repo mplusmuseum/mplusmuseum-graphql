@@ -91,11 +91,14 @@ const queryResolvers = {
          return await Artworks.find((artwork) => {
           return parseInt(args.artwork) === parseInt(artwork.id)
         }).areacategories.filter((ac) => ac.type.toLowerCase() === 'area')
-      } else {
-        return await getUniqueAreaCats(Artworks, 'area')
       }
+
+      return await getUniqueAreaCats(Artworks, 'area')
     },
     categories: async (obj, args, { elasticsearch: { Artworks } }) => {
+      if (args.limit)
+        return await getUniqueAreaCats(Artworks, 'category').slice(0, args.limit)
+
       return await getUniqueAreaCats(Artworks, 'category')
     }
   }
