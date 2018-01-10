@@ -51,9 +51,9 @@ const queryResolvers = {
       if (args.area) {
         return await Artworks.filter(artwork =>
           artwork.areacategories.find(areacat =>
-            areacat.areacat.find(ac => ac.text === args.area)
+            areacat.areacat.find(ac => ac.text == args.area)
           )
-        ).slice(0, args.limit)
+        )
       }
 
       if (args.category) {
