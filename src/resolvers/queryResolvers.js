@@ -3,7 +3,8 @@ import hash from 'string-hash'
 import {
   getUniqueMakers,
   getUniqueMediums,
-  getUniqueAreaCats
+  getUniqueAreaCats,
+  compileMakerRoles
 } from '../helpers/resolverHelpers'
 
 const queryResolvers = {
@@ -33,9 +34,9 @@ const queryResolvers = {
     },
     makers: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.artwork) {
-        return await getUniqueMakers(
+        return await compileMakerRoles(getUniqueMakers(
           Artworks.filter(artwork =>
-            parseInt(artwork.id) === parseInt(args.artwork)))
+            parseInt(artwork.id) === parseInt(args.artwork))))
       }
 
       if (args.medium) {
@@ -56,17 +57,22 @@ const queryResolvers = {
       if (args.area) {
         return await Artworks.filter(artwork =>
           artwork.areacategories.find(areacat =>
-            areacat.areacat.find(ac => ac.text == args.area)
-          )
-        )
+          {
+            if (areacat.type && areacat.type.toLowerCase() === 'area') {
+              return hash(areacat.areacat[0].text) == args.area
+            }
+          }
+        ))
       }
 
       if (args.category) {
         return await Artworks.filter(artwork =>
-          artwork.areacategories.find(areacat =>
-            areacat.areacat.find(ac => ac.text === args.category)
-          )
-        ).slice(0, args.limit)
+          artwork.areacategories.find(areacat => {
+            if (areacat.type && areacat.type.toLowerCase() === 'category') {
+              return hash(areacat.areacat[0].text) == args.area
+            }
+          }
+        )).slice(0, args.limit)
       }
 
       if (args.maker) {

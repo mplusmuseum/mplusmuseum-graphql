@@ -19,6 +19,21 @@ export const getUniqueMakers = (artworks) => {
     .map(maker => JSON.parse(maker))
 }
 
+export const compileMakerRoles = (makers) => {
+  let uniqueMakers = {}
+
+  makers.map(maker => {
+    if (uniqueMakers[maker.id]) {
+      uniqueMakers[maker.id]['roles'] = uniqueMakers[maker.id]['roles'].concat(maker.roles)
+    } else {
+      uniqueMakers[maker.id] = maker
+    }
+  })
+
+  return Object.values(uniqueMakers)
+  // return makers
+}
+
 export const getUniqueMediums = (artworks) => {
   const mediums = []
   artworks.forEach(artwork => {
