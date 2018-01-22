@@ -6,6 +6,15 @@ Beginnings of a GraphQL server, where we write adapters to databases to frontend
 For development, you'll want to install local copies of Elasticsearch and Kibana. We use Elasticsearch as our database store, and Kibana to explore that data.
 
 ```bash
+(($+commands[brew])) && brew cask install docker # for macOS
+(($+commands[apt])) && sudo apt install docker # for debian or ubuntu
+
+docker run --publish 9200:9200 --publish 9300:9300 --env "discovery.type=single-node" --name mplusmuseum_elasticsearch docker.elastic.co/elasticsearch/elasticsearch:6.1.2
+```
+
+-p 9300:9300 -e "discovery.type=single-node"
+
+```bash
 brew install elasticsearch # You may be prompted to install Java first.
 
 # To start elasticsearch:
