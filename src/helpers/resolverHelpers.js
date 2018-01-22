@@ -3,15 +3,16 @@ import hash from 'string-hash'
 export const getUniqueMakers = (artworks) => {
   const makers = artworks.map(artwork =>
     artwork.makers.map(maker => {
-        if (maker.author)
-          return JSON.stringify({
-            id: parseInt(maker.author),
-            name: maker.name,
-            birthyear_yearformed: maker.birthyear_yearformed,
-            deathyear: maker.deathyear,
-            roles: maker.roles
-          })
+      if (maker.author) {
+        return JSON.stringify({
+          id: parseInt(maker.author),
+          name: maker.name,
+          birthyear_yearformed: maker.birthyear_yearformed,
+          deathyear: maker.deathyear,
+          roles: maker.roles
+        })
       }
+    }
     )
   )
 

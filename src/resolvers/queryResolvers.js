@@ -1,4 +1,5 @@
 import hash from 'string-hash'
+import searchhash from 'searchhash'
 
 import {
   getUniqueMakers,
@@ -10,27 +11,28 @@ import {
 const queryResolvers = {
   Query: {
     maker: async (obj, args, { elasticsearch: { Artworks } }) => {
-      if (args.id)
-        return await getUniqueMakers(Artworks).find(maker => parseInt(maker.id) === parseInt(args.id))
+      if (args.id) { return await getUniqueMakers(Artworks).find(maker => parseInt(maker.id) === parseInt(args.id)) }
     },
     artwork: async (obj, args, { elasticsearch: { Artworks } }) => {
-      if (args.id)
-        return await Artworks.find(artwork => parseInt(artwork.id) === parseInt(args.id))
+      if (args.id) { return await Artworks.find(artwork => parseInt(artwork.id) === parseInt(args.id)) }
     },
     medium: async (obj, args, { elasticsearch: { Artworks } }) => {
-      if (args.id)
+      if (args.id) {
         return await getUniqueMediums(Artworks)
           .find(medium => parseInt(medium.id) === parseInt(args.id))
+      }
     },
     area: async (obj, args, { elasticsearch: { Artworks } }) => {
-      if (args.id)
+      if (args.id) {
         return await getUniqueAreaCats(Artworks, 'area')
           .find(area => parseInt(area.id) === parseInt(args.id))
+      }
     },
     category: async (obj, args, { elasticsearch: { Artworks } }) => {
-      if (args.id)
+      if (args.id) {
         return await getUniqueAreaCats(Artworks, 'category')
           .find(category => parseInt(category.id) === parseInt(args.id))
+      }
     },
     makers: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.artwork) {
@@ -48,16 +50,14 @@ const queryResolvers = {
         )
       }
 
-      if (args.limit)
-        return await getUniqueMakers(Artworks).slice(0, args.limit)
+      if (args.limit) { return await getUniqueMakers(Artworks).slice(0, args.limit) }
 
       return await getUniqueMakers(Artworks)
     },
     artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.area) {
         return await Artworks.filter(artwork =>
-          artwork.areacategories.find(areacat =>
-          {
+          artwork.areacategories.find(areacat => {
             if (areacat.type && areacat.type.toLowerCase() === 'area') {
               return hash(areacat.areacat[0].text) == args.area
             }
@@ -83,11 +83,16 @@ const queryResolvers = {
         ).slice(0, args.limit)
       }
 
-      if (args.limit)
-        return await Artworks.slice(0, args.limit)
+      const query = new RegExp(args.filter)
+      console.log(query)
 
-      return await Artworks
+      return Artworks
+        .filter(({makers, titles, mediums}) => {
+          return searchhash.forValue({makers, titles, mediums}, query).length
+        })
+        .slice(0, args.limit)
     },
+
     mediums: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.maker) {
         return await getUniqueMediums(
@@ -98,14 +103,13 @@ const queryResolvers = {
         .slice(0, args.limit)
       }
 
-      if (args.limit)
-        return await getUniqueMediums(Artworks).slice(0, args.limit)
+      if (args.limit) { return await getUniqueMediums(Artworks).slice(0, args.limit) }
 
       return await getUniqueMediums(Artworks)
     },
     areas: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.artwork) {
-         return await Artworks.find((artwork) => {
+        return await Artworks.find((artwork) => {
           return parseInt(args.artwork) === parseInt(artwork.id)
         }).areacategories.filter((ac) => ac.type.toLowerCase() === 'area')
       }
@@ -114,13 +118,12 @@ const queryResolvers = {
     },
     categories: async (obj, args, { elasticsearch: { Artworks } }) => {
       if (args.artwork) {
-         return await Artworks.find((artwork) => {
+        return await Artworks.find((artwork) => {
           return parseInt(args.artwork) === parseInt(artwork.id)
         }).areacategories.filter((ac) => ac.type.toLowerCase() === 'category')
       }
 
-      if (args.limit)
-        return await getUniqueAreaCats(Artworks, 'category').slice(0, args.limit)
+      if (args.limit) { return await getUniqueAreaCats(Artworks, 'category').slice(0, args.limit) }
 
       return await getUniqueAreaCats(Artworks, 'category')
     }

@@ -105,6 +105,7 @@ const typeDefs = `
 
     artworks(
       limit: Int = 100,
+      filter: String,
       area: ID,
       category: ID,
       maker: ID,
