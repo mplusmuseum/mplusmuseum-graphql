@@ -1,5 +1,4 @@
 import hash from 'string-hash'
-import searchhash from 'searchhash'
 
 import {
   getUniqueMakers,
@@ -87,9 +86,11 @@ const queryResolvers = {
       console.log(query)
 
       return Artworks
-        .filter(({makers, titles, mediums}) => {
-          const found = searchhash.forValue({makers, titles, mediums}, query)
-          return found.length > 0
+        .filter(({objectid, makers, titles, mediums}) => {
+          return (objectid && query.test(objectid)) ||
+            (makers && makers.some(maker => query.test(maker.name))) ||
+            (titles && titles.some(title => query.test(title.text))) ||
+            (mediums && mediums.some(medium => query.test(medium.text)))
         })
         .slice(0, args.limit)
     },
