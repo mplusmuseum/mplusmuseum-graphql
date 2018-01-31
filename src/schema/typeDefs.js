@@ -31,32 +31,50 @@ const typeDefs = `
     # Categories assigned to object
     areacategories: [AreaCategory]
 
+    # Broad areas such as Design & Architecture, Visual Art, Moving Image
     area: [Area]
 
+    # Specific mediums and tags, like product design, or ink art
     category: [Category]
 
     # Makers assigned to object
     makers: [Maker]
 
+    # url of images, videos
     medias: [Media]
 
     # Title (translated)
     titles: [TranslatedText]
   }
 
+  # urls of associated images, audio and video recordings
   type Media {
     rank: Int
-    primarydisplay: Int
+
+    # is this the main file to show the artwork
+    primarydisplay: Boolean
+
+    # relative url to image, sound, or video
     filename: String
   }
 
   type Maker {
     id: ID
     rank: Int
+
+    # Country of origin / identification
     nationality: String
+
+    # Primary name
     name: String
+
+    # year of birth if known
     birthyear_yearformed: Int
+
+    # year of death if known, null if still alive
     deathyear: Int
+
+    # role related to the artwork
     roles: [TranslatedText]
   }
 
@@ -67,6 +85,7 @@ const typeDefs = `
     makers: [Maker]
   }
 
+  # Broad areas such as Design & Architecture, Visual Art, Moving Image
   type Area {
     id: ID
     name: [TranslatedText]
@@ -74,12 +93,15 @@ const typeDefs = `
     rank: Int
   }
 
+
+  # Specific mediums and tags, like product design, or ink art
   type Category {
     id: ID
     name: [TranslatedText]
     artworks: [Artwork]
   }
 
+  # Categories assigned to object
   type AreaCategory {
     rank: Int
     type: String
@@ -96,6 +118,14 @@ const typeDefs = `
     text: String
   }
 
+  # Ways to ask the db about stuff, try
+  #
+  #    query {
+  #      artworks {
+  #        titles
+  #        maker
+  #      }
+  #    }
   type Query {
     artwork(id: ID!): Artwork
     maker(id: ID!): Maker
@@ -135,6 +165,18 @@ const typeDefs = `
       maker: ID,
       area: String
     ): [Category]
+  }
+
+  schema {
+    #Right now, we just support queries - try
+    #
+    #    query {
+    #      artworks {
+    #        titles
+    #        maker
+    #      }
+    #    }
+    query: Query
   }
 `
 
