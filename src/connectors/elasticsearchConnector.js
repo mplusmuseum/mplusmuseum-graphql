@@ -17,9 +17,9 @@ const unpackElasticsearchObjects = (response) => {
 }
 
 const client = async () => {
-  const ElasticsearchClient = new Elasticsearch.Client({
-    host: process.env.ES_HOST || 'localhost:9200'
-  })
+  const { ELASTICSEARCH_HOST = 'localhost' , ELASTICSEARCH_PORT = 9200 } = process.env
+  const host = `${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}`
+  const ElasticsearchClient = new Elasticsearch.Client({host})
 
   const count = await ElasticsearchClient.count({ index: 'objects', type: 'object' })
   const response = await ElasticsearchClient.search(esQueries.artworks(count))

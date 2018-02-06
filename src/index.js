@@ -31,11 +31,10 @@ const start = async () => {
     })
   )
 
-  const PORT = ( process.env.GRAPHQL_PORT || 3000 );
-  const HOST = ( process.env.GRAPHQL_HOST || '' );
+  const {GRAPHQL_HOST='localhost', GRAPHQL_PORT=3000} = process.env;
 
-  app.listen(PORT, HOST, () => {
-    console.log(`GraphQL server running on port ${PORT}.`)
+  app.listen(GRAPHQL_PORT, GRAPHQL_HOST, () => {
+    console.log(`GraphQL listening on ${GRAPHQL_HOST}:${GRAPHQL_PORT}`)
   })
 }
 
