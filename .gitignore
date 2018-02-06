@@ -65,4 +65,8 @@ build/
 
 # End of https://www.gitignore.io/api/node
 
+# aws
 .elasticbeanstalk
+
+# vim files
+*~
