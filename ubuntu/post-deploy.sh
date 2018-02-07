@@ -4,6 +4,8 @@ export HOME=/home/ubuntu
 
 cd /usr/local/mplusmuseum/projects/mplusmuseum-graphql
 
-# sudo yarn
+sudo npm install
 
-# pm2 restart "mplusmuseum-graphql" --update-env
+sudo npm run build
+
+pm2 restart "mplusmuseum-graphql" --update-env
