@@ -4,6 +4,6 @@ export HOME=/home/ubuntu
 
 cd /usr/local/mplusmuseum/projects/mplusmuseum-graphql
 
-sudo yarn
+# sudo yarn
 
-pm2 restart "mplusmuseum-graphql" --update-env
+# pm2 restart "mplusmuseum-graphql" --update-env
