@@ -8,6 +8,12 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const marked = require('marked');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
+const auth = require('http-auth');
+
+const basic = auth.basic({
+  realm: 'Private area',
+  file: path.join(__dirname + '/../htpasswd')
+});
 
 import schema from './schema';
 
@@ -27,6 +33,7 @@ const start = async () => {
   app.set('view engine', 'html');
   app.set('views', path.join(__dirname + '/../src/templates'));
 
+  app.use(auth.connect(basic));
   app.use(cors());
 
   //  The homepage. To keep things super simple(ish) the actual page contents
