@@ -70,3 +70,5 @@ build/
 
 # vim files
 *~
+
+package-lock.json
