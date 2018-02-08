@@ -40,7 +40,7 @@ const start = async () => {
    * Redirect to https if we aren't already and the flag is set in .env
    */
   app.use(function(req, res, next) {
-    if (!req.secure && process.env.REDIRECT_HTTPS) {
+    if (!(req.secure === true) && process.env.REDIRECT_HTTPS === true) {
       var secureUrl = 'https://' + req.headers['host'] + req.url;
       res.writeHead(301, { Location: secureUrl });
       res.end();
