@@ -5,11 +5,7 @@ const unpackElasticsearchObjects = response => {
   const artworks = response.hits.hits.map(artwork => {
     let source = artwork._source;
 
-    if (
-      source.authors &&
-      source.authors.length &&
-      source.authors[0][0].author
-    ) {
+    if (source.authors && source.authors.length) {
       source.makers = source.authors[0];
     } else {
       source.makers = [];
