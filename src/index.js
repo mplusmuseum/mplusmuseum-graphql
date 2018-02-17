@@ -12,7 +12,7 @@ const auth = require('http-auth');
 
 const basic = auth.basic({
   realm: 'Private area',
-  file: path.join(__dirname + '/../htpasswd')
+  file: path.join(__dirname + '/../.htpasswd')
 });
 
 import schema from './schema';
@@ -34,7 +34,14 @@ const start = async () => {
   app.set('views', path.join(__dirname + '/../src/templates'));
 
   app.use(auth.connect(basic));
-  app.use(cors());
+
+  // see https://www.apollographql.com/docs/react/recipes/authentication.html
+  app.use(cors({
+    // We should be able to omit this origin key, because it just defaults to *
+    // origin: process.env.CORS_DOMAIN,
+    // origin: 'http://localhost:3001',
+    credentials: true
+  }));
 
   /*
    * Redirect to https if we aren't already and the flag is set in .env

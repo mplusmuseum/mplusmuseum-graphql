@@ -72,3 +72,6 @@ build/
 *~
 
 package-lock.json
+
+# password files
+.htpasswd
