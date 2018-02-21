@@ -9,11 +9,14 @@ const exphbs = require('express-handlebars');
 const marked = require('marked');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 const auth = require('http-auth');
-
 const basic = auth.basic({
   realm: 'Private area',
   file: path.join(__dirname + '/../.htpasswd')
 });
+
+//Note: '*' will whitelist all domains.
+// If we remove the auth, we may want to lock this down.
+const coorsAllowedOrigin = '*';
 
 import schema from './schema';
 
@@ -33,16 +36,6 @@ const start = async () => {
   app.set('view engine', 'html');
   app.set('views', path.join(__dirname + '/../src/templates'));
 
-  app.use(auth.connect(basic));
-
-  // see https://www.apollographql.com/docs/react/recipes/authentication.html
-  app.use(cors({
-    // We should be able to omit this origin key, because it just defaults to *
-    // origin: process.env.CORS_DOMAIN,
-    // origin: 'http://localhost:3001',
-    credentials: true
-  }));
-
   /*
    * Redirect to https if we aren't already and the flag is set in .env
    */
@@ -55,6 +48,24 @@ const start = async () => {
       next();
     }
   });
+
+  // bypass auth for preflight requests
+  // we need this because the apolloClient uses fetch which triggers a preflight request
+  app.options('/*', function(req, res, next){
+    res.header('Access-Control-Allow-Origin', coorsAllowedOrigin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.sendStatus(200)
+  });
+
+  // now use auth (this should come after the "options" method bypass)
+  app.use(auth.connect(basic));
+
+  // enable cors. "credentials: true" is needed to pass auth through cors.
+  app.use(cors({
+    origin: coorsAllowedOrigin,
+    credentials: true,
+  }));
 
   //  The homepage. To keep things super simple(ish) the actual page contents
   //  is in a markdown file.
