@@ -7,6 +7,9 @@ const unpackElasticsearchObjects = response => {
 
     if (source.authors && source.authors.length) {
       source.makers = source.authors[0];
+      if (!Array.isArray(source.makers)) {
+        source.makers = [source.makers];
+      }
     } else {
       source.makers = [];
     }
