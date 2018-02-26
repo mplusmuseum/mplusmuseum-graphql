@@ -56,6 +56,9 @@ const typeDefs = `
 
     # relative url to image, sound, or video
     filename: String
+
+    # remote url snippet to image, sound, or video
+    remote: String
   }
 
   type Maker {
@@ -178,6 +181,6 @@ const typeDefs = `
     #    }
     query: Query
   }
-`
+`;
 
-export default typeDefs
+export default typeDefs;
