@@ -82,7 +82,8 @@ const queryResolvers = {
         ).slice(0, args.limit)
       }
 
-      const query = new RegExp(`.*${args.filter}.*`)
+      const query = new RegExp(`.*${args.filter}.*`, 'i')
+      console.log(query)
 
       return Artworks
         .filter(({objectid, makers, titles, mediums}) => {
