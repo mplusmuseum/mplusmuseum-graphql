@@ -9,10 +9,8 @@ For development, you'll want to install local copies of Elasticsearch and Kibana
 (($+commands[brew])) && brew cask install docker # for macOS
 (($+commands[apt])) && sudo apt install docker # for debian or ubuntu
 
-docker run --publish 9200:9200 --publish 9300:9300 --env "discovery.type=single-node" --name mplusmuseum_elasticsearch docker.elastic.co/elasticsearch/elasticsearch:6.1.2
+docker run --publish 9200:9200 --publish 9300:9300 --env "discovery.type=single-node" --name mplusmuseum_elasticsearch docker.elastic.co/elasticsearch/elasticsearch:6.1.2 -p 9300:9300 -e "discovery.type=single-node"
 ```
-
--p 9300:9300 -e "discovery.type=single-node"
 
 ```bash
 brew install elasticsearch # You may be prompted to install Java first.
@@ -37,8 +35,9 @@ Your local copy of Elasticsearch will be running on port 9200. Kibana will be ru
 1. Clone and download this repo
 2. Install dependencies with `npm install` or `yarn`
 3. Make sure elasticsearch is started `brew services start elasticsearch`
-4. Start this server with `npm start` or `yarn start`
-5. Explore the api at http://localhost:3000/api-explorer
+4. Make a **.htpasswd** file `htpasswd -bc .htpasswd someusername somepassword`
+5. Start this server with `npm start` or `yarn start`
+6. Explore the api at http://localhost:3000/api-explorer
 
 ## Tools
 
