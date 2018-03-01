@@ -57,8 +57,33 @@ const typeDefs = `
     # relative url to image, sound, or video
     filename: String
 
+    # if the image exists on a server somewhere
+    exists: Boolean
+
     # remote url snippet to image, sound, or video
     remote: String
+
+    # Original width of the image
+    width: Int
+
+    # Original height of the image
+    height: Int
+
+    # Base url for the image
+    baseUrl: String
+
+    # url for a square thumbnail
+    squareUrl: String
+
+    # url for small version of the image
+    smallUrl: String
+
+    # url for medium version of the image
+    mediumUrl: String
+
+    # url for large version of the image
+    largeUrl: String
+
   }
 
   type Maker {
