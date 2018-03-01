@@ -54,6 +54,9 @@ const typeDefs = `
     # is this the main file to show the artwork
     primarydisplay: Boolean
 
+    # relative url to image, sound, or video
+    filename: String
+
     # remote url snippet to image, sound, or video
     remote: String
   }
