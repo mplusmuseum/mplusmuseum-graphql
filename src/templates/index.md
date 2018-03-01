@@ -112,16 +112,10 @@ If there are no images it'll return an empty array. There's a slim chance the sy
 
 Here are the two example queries done with Curl. Note there is authorisation needed using the same username and password you used to access this site.
 
-````
+```
 curl 'https://api.mplus.org.hk/graphql?query=query%20%7B%0A%20%20artworks%20%7B%0A%20%20%20%20id%0A%20%20%20%20titles%20%7B%0A%20%20%20%20%20%20lang%0A%20%20%20%20%20%20text%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D' -H 'Upgrade-Insecure-Requests: 1' -H 'Accept: text/html' -H 'Cache-Control: no-cache' -u [username]:[password]
-
 ```
 
 ```
-
 curl 'https://api.mplus.org.hk/graphql?query=query%20%7B%0A%20%20%20%20artwork(id%3A1814)%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20titles%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D' -H 'Upgrade-Insecure-Requests: 1' -H 'Accept: text/html' -H 'Cache-Control: no-cache' -u [username]:[password]
-
 ```
-
-```
-````
