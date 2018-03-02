@@ -2,7 +2,12 @@
 
 export HOME=/home/ubuntu
 
-cd /usr/local/mplusmuseum/projects/mplusmuseum-graphql
+cd /usr/local/mplusmuseum/projects
+
+# the deploy installs as root, so just chown all the things
+sudo chown -R ubuntu:ubuntu ./mplusmuseum-graphql
+
+cd ./mplusmuseum-graphql
 
 yarn install
 
