@@ -1,41 +1,6 @@
 import hash from 'string-hash'
 
-export const getUniqueMakers = (artworks) => {
-  const makers = artworks.map(artwork =>
-    artwork.makers.map(maker => {
-      if (maker.author) {
-        return JSON.stringify({
-          id: parseInt(maker.author),
-          name: maker.name,
-          birthyear_yearformed: maker.birthyear_yearformed,
-          deathyear: maker.deathyear,
-          roles: maker.roles
-        })
-      }
-    }
-    )
-  )
-
-  return Array.from(new Set([].concat(...makers)))
-    .map(maker => JSON.parse(maker))
-}
-
-export const compileMakerRoles = (makers) => {
-  let uniqueMakers = {}
-
-  makers.map(maker => {
-    if (uniqueMakers[maker.id]) {
-      uniqueMakers[maker.id]['roles'] = uniqueMakers[maker.id]['roles'].concat(maker.roles)
-    } else {
-      uniqueMakers[maker.id] = maker
-    }
-  })
-
-  return Object.values(uniqueMakers)
-  // return makers
-}
-
-export const getUniqueMediums = (artworks) => {
+export const getUniqueMediums = artworks => {
   const mediums = []
   artworks.forEach(artwork => {
     const medium = artwork.mediums
@@ -50,8 +15,9 @@ export const getUniqueMediums = (artworks) => {
     }
   })
 
-  return Array.from(new Set([].concat(...mediums)))
-    .map(medium => JSON.parse(medium))
+  return Array.from(new Set([].concat(...mediums))).map(medium =>
+    JSON.parse(medium)
+  )
 }
 
 export const getUniqueAreaCats = (artworks, type) => {

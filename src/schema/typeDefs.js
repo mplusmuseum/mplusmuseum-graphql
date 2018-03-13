@@ -90,11 +90,14 @@ const typeDefs = `
     id: ID
     rank: Int
 
-    # Country of origin / identification
-    nationality: String
+    # artisan integer
+    artInt: Int
 
-    # Primary name
-    name: String
+    # Public access to this maker
+    publicaccess: Boolean
+
+    # Type
+    type: String
 
     # year of birth if known
     birthyear_yearformed: Int
@@ -102,8 +105,15 @@ const typeDefs = `
     # year of death if known, null if still alive
     deathyear: Int
 
-    # role related to the artwork
-    roles: [TranslatedText]
+    # list of names
+    names: [MakerNames]
+
+    # Nationality
+    nationality: String
+
+    # Places where this maker is connected to
+    places: [Places]
+
   }
 
   type Medium {
@@ -146,6 +156,24 @@ const typeDefs = `
     text: String
   }
 
+  # Names assigned to a maker
+  type MakerNames {
+    id: Int,
+    lang: String,
+    institution: String,
+    alphasort: String,
+    displayname: String
+  }
+
+  # Places you can find a maker
+  type Places {
+    type: String,
+    placename: [TranslatedText],
+    placenamesearch: [TranslatedText],
+    nation: [TranslatedText],
+    continent: [TranslatedText],
+    
+  }
   # Ways to ask the db about stuff, try
   #
   #    query {
@@ -206,6 +234,6 @@ const typeDefs = `
     #    }
     query: Query
   }
-`;
+`
 
-export default typeDefs;
+export default typeDefs

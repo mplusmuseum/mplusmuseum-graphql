@@ -1,9 +1,5 @@
 import hash from 'string-hash'
-import {
-  getUniqueMakers,
-  getUniqueMediums,
-  getUniqueAreaCats
-} from '../helpers/resolverHelpers'
+import { getUniqueMediums, getUniqueAreaCats } from '../helpers/resolverHelpers'
 
 const typeResolvers = {
   Artwork: {
@@ -14,22 +10,28 @@ const typeResolvers = {
     creditLines: root => root.creditlines,
     medium: root => {
       let medium = {}
-      if (Object.keys(root.mediums[0]).length)
-        medium['id'] = hash(root.mediums[0].text)
-        medium['name'] = root.mediums
+      if (Object.keys(root.mediums[0]).length) { medium['id'] = hash(root.mediums[0].text) }
+      medium['name'] = root.mediums
       return medium
     },
-    area: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'area'),
-    category: root => root.areacategories.filter(ac => ac.type.toLowerCase() === 'category'),
-    makers: root => root.makers.map(root => {
-      root.id = root.author
-      return root
-    })
+    area: root =>
+      root.areacategories.filter(ac => ac.type.toLowerCase() === 'area'),
+    category: root =>
+      root.areacategories.filter(ac => ac.type.toLowerCase() === 'category'),
+    makers: root =>
+      root.makers.map(root => {
+        root.id = root.author
+        return root
+      })
   },
   Medium: {
     artworks: async (root, data, { elasticsearch: { Artworks } }) => {
-      return await Artworks.filter((artwork) => {
-        return artwork.mediums && artwork.mediums[0] && hash(artwork.mediums[0].text) === root.id
+      return await Artworks.filter(artwork => {
+        return (
+          artwork.mediums &&
+          artwork.mediums[0] &&
+          hash(artwork.mediums[0].text) === root.id
+        )
       })
     }
   },
