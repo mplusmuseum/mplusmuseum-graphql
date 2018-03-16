@@ -75,3 +75,7 @@ package-lock.json
 
 # password files
 .htpasswd
+
+# Dev environment settings
+.vscode
+

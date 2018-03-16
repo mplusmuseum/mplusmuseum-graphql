@@ -16,6 +16,8 @@ https://cloudacademy.com/blog/how-to-write-graphql-apps-using-aws-lambda/
 
 You can enter the following queries at [/api-explorer](/api-explorer) to see an example of GraphQL running.
 
+### Artworks
+
 [example 1](/api-explorer?query=query%20%7B%0A%20%20artworks%20%7B%0A%20%20%20%20id%0A%20%20%20%20titles%20%7B%0A%20%20%20%20%20%20lang%0A%20%20%20%20%20%20text%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D):
 
 ```
@@ -107,6 +109,65 @@ The `medias` query can return an array of images for the item. With the followin
 ...so check **`exist`** first :)
 
 If there are no images it'll return an empty array. There's a slim chance the system things something exists but **`remote`** will still be null, so that aught to be checked for too.
+
+### Makers
+
+[example 1](/api-explorer?query=query%20%7B%0A%20%20makers%20%7B%0A%20%20%20%20id%0A%20%20%20%20names%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20displayname%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D):
+
+```
+query {
+  makers {
+    id
+    names {
+    	lang
+      displayname
+    }
+  }
+}
+```
+
+This is a request you can make to get _all_ the information about a single item. See the notes about image URLs below.
+
+[example 2](http://localhost:3000/api-explorer?query=%7B%0A%20%20maker%28id%3A%20543%29%20%7B%0A%20%20%20%20id%0A%20%20%20%20publicaccess%0A%20%20%20%20birthyear_yearformed%0A%20%20%20%20deathyear%0A%20%20%20%20type%0A%20%20%20%20artInt%0A%20%20%20%20names%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20institution%0A%20%20%20%20%20%20alphasort%0A%20%20%20%20%20%20displayname%0A%20%20%20%20%7D%0A%20%20%20%20places%20%7B%0A%20%20%20%20%20%20type%0A%20%20%20%20%20%20placename%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20placenamesearch%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20nation%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20continent%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D):
+
+```
+{
+  maker(id: 543) {
+    id
+    publicaccess
+    birthyear_yearformed
+    deathyear
+    type
+    artInt
+    names {
+      id
+    	lang
+    	institution
+      alphasort
+      displayname
+    }
+    places {
+      type
+      placename {
+        lang
+        text
+      }
+      placenamesearch {
+        lang
+        text
+      }
+      nation {
+        lang
+        text
+      }
+      continent {
+        lang
+        text
+      }
+    }
+  }
+}
+```
 
 ## Using curl
 
