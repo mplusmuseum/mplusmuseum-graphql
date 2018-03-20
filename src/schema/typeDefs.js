@@ -38,7 +38,7 @@ const typeDefs = `
     category: [Category]
 
     # Makers assigned to object
-    makers: [Maker]
+    makers: [ArtMaker]
 
     # url of images, videos
     medias: [Media]
@@ -83,6 +83,27 @@ const typeDefs = `
 
     # url for large version of the image
     largeUrl: String
+
+  }
+
+  type ArtMaker {
+    id: ID
+    rank: Int
+
+    # Nationality
+    nationality: String
+
+    # the makers name
+    name: String
+
+    # year of birth if known
+    birthyear_yearformed: Int
+
+    # year of death if known, null if still alive
+    deathyear: Int
+
+    # The roles the maker has related to this artwork
+    roles: [TranslatedText]
 
   }
 
