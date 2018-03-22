@@ -34,71 +34,135 @@ query {
 
 This is a request you can make to get _all_ the information about a single item. See the notes about image URLs below.
 
-[example 2](/api-explorer?query=%7B%0D%0A%20%20artwork%28id%3A%201814%29%20%7B%0A%20%20%20%20id%0A%20%20%20%20area%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%7D%0A%20%20%20%20areacategories%20%7B%0A%20%20%20%20%20%20rank%0A%20%20%20%20%20%20type%0A%20%20%20%20%7D%0A%20%20%20%20category%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%7D%0A%20%20%20%20creditLines%20%7B%0A%20%20%20%20%20%20lang%0A%20%20%20%20%20%20text%0A%20%20%20%20%7D%0A%20%20%20%20dated%0A%20%20%20%20dateBegin%0A%20%20%20%20dateEnd%0A%20%20%20%20dimensions%20%7B%0A%20%20%20%20%20%20lang%0A%20%20%20%20%20%20text%0A%20%20%20%20%7D%0A%20%20%20%20makers%20%7B%0A%20%20%20%20%20%20rank%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20nationality%0A%20%20%20%20%20%20birthyear_yearformed%0A%20%20%20%20%20%20deathyear%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20roles%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20medias%20%7B%0A%20%20%20%20%20%20rank%0A%20%20%20%20%20%20primarydisplay%0A%20%20%20%20%20%20filename%0A%20%20%20%20%20%20exists%0A%20%20%20%20%20%20remote%0A%20%20%20%20%20%20width%0A%20%20%20%20%20%20height%0A%20%20%20%20%20%20baseUrl%0A%20%20%20%20%20%20squareUrl%0A%20%20%20%20%20%20smallUrl%0A%20%20%20%20%20%20mediumUrl%0A%20%20%20%20%20%20largeUrl%0A%20%20%20%20%7D%0A%20%20%20%20medium%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%7D%0A%20%20%20%20objectNumber%0A%20%20%20%20objectStatus%20%7B%0A%20%20%20%20%20%20lang%0A%20%20%20%20%20%20text%0A%20%20%20%20%7D%0A%20%20%20%20titles%20%7B%0A%20%20%20%20%20%20lang%0A%20%20%20%20%20%20text%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D):
+[example 2](/api-explorer?query=%7B%0D%0A%20%20artwork%28id%3A%201814%29%20%7B%0A%20%20%20%20id%0A%20%20%20%20areacategories%20%7B%0A%20%20%20%20%20%20areacat%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20rank%0A%20%20%20%20%20%20type%0A%20%20%20%20%7D%0A%20%20%09areacategory_concat%20%7B%0A%20%20%09%20%20value%0A%20%20%09%7D%0A%20%20%20%20makers%20%7B%0A%20%20%20%20%20%20maker%0A%20%20%20%20%20%20makernameid%0A%20%20%20%20%20%20rank%0A%20%20%20%20%20%20nationality%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20birthyear_yearformed%0A%20%20%20%20%20%20deathyear%0A%20%20%20%20%20%20roles%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20makers_concat%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20makerBeginDate%0A%20%20%20%20%20%20makerEndDate%0A%20%20%20%20%20%20makerNames%0A%20%20%20%20%20%20makerNationalities%0A%20%20%20%20%20%20makers%0A%20%20%20%20%20%20name%0A%20%20%20%20%7D%0A%20%20%20%20copyrightcreditlines%20%7B%0A%20%20%20%20%20%20lang%0A%20%20%20%20%20%20text%0A%20%20%20%20%7D%0A%09%09creditlines%20%7B%0A%09%09%20%20lang%0A%09%09%20%20text%0A%09%09%7D%0A%20%20%09datebegin%0A%20%20%09dated%0A%20%20%09dateend%0A%20%20%09dimensions%20%7B%0A%20%20%09%20%20lang%0A%20%20%09%20%20text%0A%20%20%09%7D%0A%20%20%09exhibitions%20%7B%0A%20%20%09%20%20id%0A%20%20%20%20%20%20begindate%0A%20%20%20%20%20%20enddate%0A%20%20%20%20%20%20ExhibitionID%0A%20%20%20%20%20%20venues%20%7B%0A%20%20%20%20%20%20%20%20begindate%0A%20%20%20%20%20%20%20%20enddate%0A%20%20%20%20%20%20%20%20name%20%7B%0A%20%20%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20title%20%7B%0A%20%20%20%20%20%20%20%20lang%0A%20%20%20%20%20%20%20%20text%0A%20%20%20%20%20%20%7D%0A%20%20%09%7D%0A%20%20%09exhibitions_concat%20%7B%0A%20%20%09%20%20ObjectID%0A%20%20%09%20%20exhinfo%0A%20%20%09%7D%0A%20%20%09exhlabels%20%7B%0A%20%20%09%20%20text%0A%20%20%09%20%20lang%0A%20%20%09%20%20purpose%0A%20%20%09%7D%0A%20%20%09medias%20%7B%0A%20%20%09%20%20rank%0A%20%20%09%20%20primarydisplay%0A%20%20%09%20%20filename%0A%20%20%09%20%20exists%0A%20%20%09%20%20remote%0A%20%20%09%20%20width%0A%20%20%09%20%20height%0A%20%20%09%20%20baseUrl%0A%20%20%09%20%20squareUrl%0A%20%20%09%20%20smallUrl%0A%20%20%09%20%20mediumUrl%0A%20%20%09%20%20largeUrl%0A%20%20%09%7D%0A%20%20%09mediums%20%7B%0A%20%20%09%20%20lang%0A%20%20%09%20%20text%0A%20%20%09%7D%0A%20%20%09MPlusRights%20%7B%0A%20%20%09%20%20ObjRightsID%0A%20%20%09%20%20ObjectID%0A%20%20%09%20%20ObjRightsTypeID%0A%20%20%09%20%20ObjRightsType%0A%20%20%09%20%20ContractNumber%0A%20%20%09%20%20CopyrightRegNumber%0A%20%20%09%20%20Copyright%0A%20%20%09%20%20Restrictions%0A%20%20%09%20%20AgreementSentISO%0A%20%20%09%20%20AgreementSignedISO%0A%20%20%09%20%20ExpirationISODate%0A%20%20%09%20%20CreditLineRepro%0A%20%20%09%7D%0A%20%20%09MPlusRightsFlexFields%20%7B%0A%20%20%09%20%20RightGroup%0A%20%20%09%20%20Value%0A%20%20%09%20%20Date%0A%20%20%09%20%20Remarks%0A%20%20%09%7D%0A%20%20%09objectnumber%0A%20%20%09objectstatus%20%7B%0A%20%20%09%20%20lang%0A%20%20%09%20%20text%0A%20%20%09%7D%0A%20%20%09PublicAccess%0A%20%20%09summaries%0A%20%20%09titles%20%7B%0A%20%20%09%20%20lang%0A%20%20%09%20%20text%0A%20%20%09%7D%0A%20%20%7D%0A%7D):
 
 ```
 {
   artwork(id: 1814) {
     id
-    area {
-      id
-    }
     areacategories {
+      areacat {
+        lang
+        text
+      }
       rank
       type
     }
-    category {
-      id
-    }
-    creditLines {
-      lang
-      text
-    }
-    dated
-    dateBegin
-    dateEnd
-    dimensions {
-      lang
-      text
-    }
+  	areacategory_concat {
+  	  value
+  	}
     makers {
+      maker
       rank
-      id
       nationality
+      name
       birthyear_yearformed
       deathyear
-      name
       roles {
         lang
         text
       }
     }
-    medias {
-      rank
-      primarydisplay
-      filename
-      exists
-      remote
-      width
-      height
-      baseUrl
-      squareUrl
-      smallUrl
-      mediumUrl
-      largeUrl
-    }
-    medium {
+    makers_concat {
       id
+      makerBeginDate
+      makerEndDate
+      makerNames
+      makerNationalities
+      makers
+      name
     }
-    objectNumber
-    objectStatus {
+    copyrightcreditlines {
       lang
       text
     }
-    titles {
-      lang
-      text
-    }
+		creditlines {
+		  lang
+		  text
+		}
+  	datebegin
+  	dated
+  	dateend
+  	dimensions {
+  	  lang
+  	  text
+  	}
+  	exhibitions {
+  	  id
+      begindate
+      enddate
+      ExhibitionID
+      venues {
+        begindate
+        enddate
+        name {
+          lang
+          text
+        }
+      }
+      title {
+        lang
+        text
+      }
+  	}
+  	exhibitions_concat {
+  	  ObjectID
+  	  exhinfo
+  	}
+  	exhlabels {
+  	  text
+  	  lang
+  	  purpose
+  	}
+  	medias {
+  	  rank
+  	  primarydisplay
+  	  filename
+  	  exists
+  	  remote
+  	  width
+  	  height
+  	  baseUrl
+  	  squareUrl
+  	  smallUrl
+  	  mediumUrl
+  	  largeUrl
+  	}
+  	mediums {
+  	  lang
+  	  text
+  	}
+  	MPlusRights {
+  	  ObjRightsID
+  	  ObjectID
+  	  ObjRightsTypeID
+  	  ObjRightsType
+  	  ContractNumber
+  	  CopyrightRegNumber
+  	  Copyright
+  	  Restrictions
+  	  AgreementSentISO
+  	  AgreementSignedISO
+  	  ExpirationISODate
+  	  CreditLineRepro
+  	}
+  	MPlusRightsFlexFields {
+  	  RightGroup
+  	  Value
+  	  Date
+  	  Remarks
+  	}
+  	objectnumber
+  	objectstatus {
+  	  lang
+  	  text
+  	}
+  	PublicAccess
+  	summaries
+  	titles {
+  	  lang
+  	  text
+  	}
   }
 }
 ```

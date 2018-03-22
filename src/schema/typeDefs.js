@@ -97,7 +97,7 @@ const typeDefs = `
 
   # A maker
   type ArtMaker {
-    id: ID
+    maker: String
     rank: Int
 
     # Nationality
@@ -105,6 +105,9 @@ const typeDefs = `
 
     # the makers name
     name: String
+
+    # the id of the makers name
+    makernameid: Int
 
     # year of birth if known
     birthyear_yearformed: Int

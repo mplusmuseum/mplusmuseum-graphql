@@ -4,7 +4,7 @@ const queryResolvers = {
       if (args.maker) {
         return Artworks.filter(artwork =>
           artwork.makers.find(
-            maker => parseInt(maker.author) === parseInt(args.maker)
+            maker => parseInt(maker.maker) === parseInt(args.maker)
           )
         ).slice(0, args.limit)
       }
