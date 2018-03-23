@@ -1,6 +1,7 @@
 const queryResolvers = {
   Query: {
     artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
+      /*
       if (args.maker) {
         return Artworks.filter(artwork =>
           artwork.makers.find(
@@ -19,12 +20,31 @@ const queryResolvers = {
           (mediums && mediums.some(medium => query.test(medium.text)))
         )
       }).slice(0, args.limit)
+      */
+      return Artworks.slice(0, args.limit)
     },
+
+    /*
+     * This is attempting to get a single artwork, note the _only_ thing
+     * we are looking for is an id which is coming across in the `args`
+     * what is `obj`, no idea.
+     */
+
     artwork: async (obj, args, { elasticsearch: { Artworks } }) => {
+      //  If we are searching based on an id we do that here
       if (args.id) {
-        return Artworks.find(
+        const artwork = Artworks.find(
           artwork => parseInt(artwork.id) === parseInt(args.id)
         )
+        return artwork
+      }
+      //  Example search that matches what we have in typeDefs.js
+      if (args.examplesSearchOptionOne) {
+        const artwork = Artworks.find(
+          artwork =>
+            parseInt(artwork.id) === parseInt(args.examplesSearchOptionOne)
+        )
+        return artwork
       }
     },
     makers: async (obj, args, { elasticsearch: { Makers } }) => {

@@ -5,7 +5,7 @@ const typeDefs = `
   # This is an artwork
   type Artwork {
     # TMS ID
-    id: ID!
+    id: ID
 
     # Categories assigned to object
     areacategories: [AreaCategory]
@@ -356,7 +356,7 @@ const typeDefs = `
   #      }
   #    }
   type Query {
-    artwork(id: ID!): Artwork
+    artwork(id: ID, examplesSearchOptionOne: Int, examplesSearchOptionTwo: String): Artwork
     maker(id: ID!): Maker
 
     artworks(
