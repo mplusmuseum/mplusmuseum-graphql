@@ -316,10 +316,8 @@ const typeDefs = `
   #
   # This is a medium
   type Medium {
-    id: ID!
-    name: [TranslatedText]
-    artworks: [Artwork]
-    makers: [Maker]
+    lang: String
+    text: String
   }
 
   ##################################################################
@@ -356,19 +354,35 @@ const typeDefs = `
   #      }
   #    }
   type Query {
-    artwork(id: ID, examplesSearchOptionOne: Int, examplesSearchOptionTwo: String): Artwork
-    maker(id: ID!): Maker
-
     artworks(
       limit: Int = 100,
+      examplesSearchOptionOne: Int = 0,
+      examplesSearchOptionTwo: String = "",
+      maker: String = "",
       filter: String
     ): [Artwork!]!
 
+    artwork(
+      id: ID,
+      examplesSearchOptionOne: Int,
+      examplesSearchOptionTwo: String
+    ): Artwork
+    
     makers(
       limit: Int = 100,
       artwork: ID,
       medium: ID
     ): [Maker!]!
+
+    maker(
+      id: ID!
+    ): Maker
+
+    mediums(
+      limit: Int = 100,
+      lang: String
+    ): [Medium!]!
+
 
   }
 
