@@ -322,11 +322,18 @@ const typeDefs = `
 
   ##################################################################
   #
+  # This is an area
+  type Area {
+    lang: String
+    text: String
+  }
+
+  ##################################################################
+  #
   # This is a category
   type Category {
-    id: ID!
-    name: [TranslatedText]
-    artworks: [Artwork]
+    lang: String
+    text: String
   }
 
 
@@ -382,6 +389,16 @@ const typeDefs = `
       limit: Int = 100,
       lang: String
     ): [Medium!]!
+
+    areas(
+      limit: Int = 100,
+      lang: String
+    ): [Area!]!
+
+    categories(
+      limit: Int = 100,
+      lang: String
+    ): [Category!]!
 
 
   }

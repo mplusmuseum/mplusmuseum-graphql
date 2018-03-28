@@ -146,6 +146,130 @@ const queryResolvers = {
 
       //  Finally return the number of records we've been asked for
       return mediums.slice(0, args.limit)
+    },
+
+    /*
+     * We don't have a "table" of areas, so we're going to build on from
+     * all of the artworks. We'll do this by looping through them grabbing
+     * the medium and language from each one and sticking it into a new
+     * array that we then return
+     */
+    areas: async (obj, args, { elasticsearch: { Artworks } }) => {
+      //  These are the mediums we are going to keep
+      let areas = []
+      //  This is a set of "keys" so we can keep an index of what
+      //  we've found so far and quickly look them up
+      const areaKeys = {}
+
+      //  Loop through the artworks
+      Artworks.forEach(artwork => {
+        //  See if the artwork has a areacategories node within it
+        if (
+          'areacategories' in artwork &&
+          artwork.areacategories !== null &&
+          artwork.areacategories !== undefined
+        ) {
+          //  Make sure we're working with an array
+          let theseAreacategories = artwork.areacategories
+          if (!Array.isArray(theseAreacategories)) {
+            theseAreacategories = [theseAreacategories]
+          }
+          theseAreacategories.forEach(thisAreacategory => {
+            //  Check to see if it's an area or catergory
+            if (
+              'type' in thisAreacategory &&
+              thisAreacategory.type === 'Area'
+            ) {
+              if ('areacat' in thisAreacategory) {
+                let areacats = thisAreacategory.areacat
+                if (!Array.isArray(areacats)) {
+                  areacats = [areacats]
+                }
+                areacats.forEach(thisAreacat => {
+                  if (!(thisAreacat.text in areaKeys)) {
+                    areaKeys[thisAreacat.text] = true
+                    areas.push({
+                      text: thisAreacat.text,
+                      lang: thisAreacat.lang
+                    })
+                  }
+                })
+              }
+            }
+          })
+        }
+      })
+
+      //  If we've been passed a language filter then we do that here
+      if ('lang' in args) {
+        areas = areas.filter(area => {
+          return args.lang === area.lang
+        })
+      }
+
+      //  Finally return the number of records we've been asked for
+      return areas.slice(0, args.limit)
+    },
+
+    /*
+     * This is all the same logic as areas above, but we make sure
+     * we only grab the category node :)
+     */
+    categories: async (obj, args, { elasticsearch: { Artworks } }) => {
+      //  These are the mediums we are going to keep
+      let categories = []
+      //  This is a set of "keys" so we can keep an index of what
+      //  we've found so far and quickly look them up
+      const categoryKeys = {}
+
+      //  Loop through the artworks
+      Artworks.forEach(artwork => {
+        //  See if the artwork has a areacategories node within it
+        if (
+          'areacategories' in artwork &&
+          artwork.areacategories !== null &&
+          artwork.areacategories !== undefined
+        ) {
+          //  Make sure we're working with an array
+          let theseAreacategories = artwork.areacategories
+          if (!Array.isArray(theseAreacategories)) {
+            theseAreacategories = [theseAreacategories]
+          }
+          theseAreacategories.forEach(thisAreacategory => {
+            //  Check to see if it's an area or catergory
+            if (
+              'type' in thisAreacategory &&
+              thisAreacategory.type === 'Category'
+            ) {
+              if ('areacat' in thisAreacategory) {
+                let areacats = thisAreacategory.areacat
+                if (!Array.isArray(areacats)) {
+                  areacats = [areacats]
+                }
+                areacats.forEach(thisAreacat => {
+                  if (!(thisAreacat.text in categoryKeys)) {
+                    categoryKeys[thisAreacat.text] = true
+                    categories.push({
+                      text: thisAreacat.text,
+                      lang: thisAreacat.lang
+                    })
+                  }
+                })
+              }
+            }
+          })
+        }
+      })
+
+      //  If we've been passed a language filter then we do that here
+      if ('lang' in args) {
+        categories = categories.filter(area => {
+          return args.lang === area.lang
+        })
+      }
+
+      //  Finally return the number of records we've been asked for
+      return categories.slice(0, args.limit)
     }
   }
 }
