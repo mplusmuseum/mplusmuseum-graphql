@@ -8,7 +8,6 @@ const queryResolvers = {
        * easily see what's going on and drop breakpoints in when we
        * want to study what's going on in the debugger. You're welcome!
        */
-
       if (args.maker) {
         // Run .filter on the Artworks to get just the matching ones
         const matchingArtworks = Artworks.filter(artwork => {
@@ -32,6 +31,60 @@ const queryResolvers = {
           })
           // Now we can do our check, if we have anything left
           // in the array then we had a match. Otherwise no dice!
+          return foundMaker.length > 0
+        })
+        return matchingArtworks.slice(0, args.limit)
+      }
+
+      if (args.area) {
+        // Run .filter on the Artworks to get just the matching ones
+        const matchingArtworks = Artworks.filter(artwork => {
+          if (!('areacategories' in artwork)) return false
+          if (artwork.areacategories === null) return false
+          const foundArea = artwork.areacategories.filter(areacategory => {
+            if (!('areacat' in areacategory)) return false
+            if (areacategory.areacat === null) return false
+            if (!('type' in areacategory)) return false
+            if (areacategory.type !== 'Area') return false
+            const foundAreaMatch = areacategory.areacat.filter(areacat => {
+              if (areacat.text === args.area) return true
+              return false
+            })
+            return foundAreaMatch.length > 0
+          })
+          return foundArea.length > 0
+        })
+        return matchingArtworks.slice(0, args.limit)
+      }
+
+      if (args.category) {
+        const matchingArtworks = Artworks.filter(artwork => {
+          if (!('areacategories' in artwork)) return false
+          if (artwork.areacategories === null) return false
+          const foundArea = artwork.areacategories.filter(areacategory => {
+            if (!('areacat' in areacategory)) return false
+            if (areacategory.areacat === null) return false
+            if (!('type' in areacategory)) return false
+            if (areacategory.type !== 'Category') return false
+            const foundAreaMatch = areacategory.areacat.filter(areacat => {
+              if (areacat.text === args.category) return true
+              return false
+            })
+            return foundAreaMatch.length > 0
+          })
+          return foundArea.length > 0
+        })
+        return matchingArtworks.slice(0, args.limit)
+      }
+
+      if (args.medium) {
+        const matchingArtworks = Artworks.filter(artwork => {
+          if (!('mediums' in artwork)) return false
+          if (artwork.mediums === null) return false
+          const foundMaker = artwork.mediums.filter(medium => {
+            if (medium.text === args.medium) return true
+            return false
+          })
           return foundMaker.length > 0
         })
         return matchingArtworks.slice(0, args.limit)

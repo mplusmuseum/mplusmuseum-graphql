@@ -366,6 +366,9 @@ const typeDefs = `
       examplesSearchOptionOne: Int = 0,
       examplesSearchOptionTwo: String = "",
       maker: String = "",
+      area: String = "",
+      category: String = "",
+      medium: String = "",
       filter: String
     ): [Artwork!]!
 
