@@ -4,17 +4,6 @@ import esQueries from '../queries/query'
 const unpackElasticsearchArtworksObjects = response => {
   const artworks = response.hits.hits.map(artwork => {
     let source = artwork._source
-
-    //  What is this even doing?
-    if (source.authors && source.authors.length) {
-      source.makers = source.authors[0]
-      if (!Array.isArray(source.makers)) {
-        source.makers = [source.makers]
-      }
-    } else {
-      source.makers = []
-    }
-
     return source
   })
   return artworks
