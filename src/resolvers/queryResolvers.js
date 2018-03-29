@@ -1,6 +1,7 @@
 const queryResolvers = {
   Query: {
     artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
+      let matchingArtworks = Artworks
       /*
        * This is a *VERY* verbose way to filter all the artworks
        * by a maker. We can easily shorten this code down but
@@ -10,7 +11,7 @@ const queryResolvers = {
        */
       if (args.maker) {
         // Run .filter on the Artworks to get just the matching ones
-        const matchingArtworks = Artworks.filter(artwork => {
+        matchingArtworks = matchingArtworks.filter(artwork => {
           // If there's no makers or the makers are null, return false
           if (!('makers' in artwork)) return false
           if (artwork.makers === null) return false
@@ -33,12 +34,11 @@ const queryResolvers = {
           // in the array then we had a match. Otherwise no dice!
           return foundMaker.length > 0
         })
-        return matchingArtworks.slice(0, args.limit)
       }
 
       if (args.area) {
         // Run .filter on the Artworks to get just the matching ones
-        const matchingArtworks = Artworks.filter(artwork => {
+        matchingArtworks = matchingArtworks.filter(artwork => {
           if (!('areacategories' in artwork)) return false
           if (artwork.areacategories === null) return false
           const foundArea = artwork.areacategories.filter(areacategory => {
@@ -54,11 +54,10 @@ const queryResolvers = {
           })
           return foundArea.length > 0
         })
-        return matchingArtworks.slice(0, args.limit)
       }
 
       if (args.category) {
-        const matchingArtworks = Artworks.filter(artwork => {
+        matchingArtworks = matchingArtworks.filter(artwork => {
           if (!('areacategories' in artwork)) return false
           if (artwork.areacategories === null) return false
           const foundArea = artwork.areacategories.filter(areacategory => {
@@ -74,11 +73,10 @@ const queryResolvers = {
           })
           return foundArea.length > 0
         })
-        return matchingArtworks.slice(0, args.limit)
       }
 
       if (args.medium) {
-        const matchingArtworks = Artworks.filter(artwork => {
+        matchingArtworks = matchingArtworks.filter(artwork => {
           if (!('mediums' in artwork)) return false
           if (artwork.mediums === null) return false
           const foundMaker = artwork.mediums.filter(medium => {
@@ -87,7 +85,18 @@ const queryResolvers = {
           })
           return foundMaker.length > 0
         })
-        return matchingArtworks.slice(0, args.limit)
+      }
+
+      if (args.ExhibitionID) {
+        matchingArtworks = matchingArtworks.filter(artwork => {
+          if (!('exhibitions' in artwork)) return false
+          if (artwork.exhibitions === null) return false
+          const foundMaker = artwork.exhibitions.filter(exhibition => {
+            if (exhibition.ExhibitionID === args.ExhibitionID) return true
+            return false
+          })
+          return foundMaker.length > 0
+        })
       }
 
       /* The stuff below is all to do with "free text" search, we'll
@@ -104,8 +113,7 @@ const queryResolvers = {
         )
       }).slice(0, args.limit)
       */
-
-      return Artworks.slice(0, args.limit)
+      return matchingArtworks.slice(0, args.limit)
     },
 
     /*

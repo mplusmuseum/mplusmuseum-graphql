@@ -369,7 +369,7 @@ const typeDefs = `
       area: String = "",
       category: String = "",
       medium: String = "",
-      filter: String
+      ExhibitionID: String = ""
     ): [Artwork!]!
 
     artwork(
