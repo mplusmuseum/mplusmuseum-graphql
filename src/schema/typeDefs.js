@@ -122,16 +122,13 @@ const typeDefs = `
 
   # Concatenated maker information
   type ArtMakerConcat {
-    id: ID
+    id: Int
 
     # Makers' names
     makerNames: String
 
     # Nationalities
     makerNationalities: String
-
-    # The makers' names
-    name: String
 
     # Years of birth if known
     makerBeginDate: String
@@ -163,6 +160,9 @@ const typeDefs = `
     # The title
     title: [TranslatedText]
 
+    # The section
+    Section: String
+
   }
 
   # Concatenated exhibition information
@@ -187,11 +187,23 @@ const typeDefs = `
   type Medias {
     rank: Int
 
+    # is it publically accessible
+    PublicAccess: Boolean
+
     # is this the main file to show the artwork
     primarydisplay: Boolean
 
     # relative url to image, sound, or video
     filename: String
+
+    # alt text for the image
+    alttext: String
+
+    # credit line
+    imagecreditlines: String
+
+    # image caption
+    imagecaption: String
 
     # if the image exists on a server somewhere
     exists: Boolean
@@ -249,7 +261,6 @@ const typeDefs = `
   # Concatenated additional M+ rights information
   type MPlusRightsFlexFieldsConcat {
     Rights: String
-    Remarks: String
   }
 
   # A venue
@@ -291,6 +302,8 @@ const typeDefs = `
     # Places where this maker is connected to
     places: [Places]
 
+    # Bios
+    bios: [TranslatedText]
   }
 
   # Names assigned to a maker
