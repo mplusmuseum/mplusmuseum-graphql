@@ -143,8 +143,6 @@ const typeDefs = `
 
   # Exhibitions
   type Exhibitions {
-    id: ID
-
     # Begin Date
     begindate: String
 
