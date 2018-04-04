@@ -1,7 +1,5 @@
 const typeDefs = `
 
-  ##################################################################
-  #
   # This is an artwork
   type Artwork {
     # TMS ID
@@ -269,8 +267,6 @@ const typeDefs = `
   }
 
   
-  ##################################################################
-  #
   # This is a maker
   type Maker {
     id: ID!
@@ -308,6 +304,8 @@ const typeDefs = `
   type MakerNames {
     id: Int,
     lang: String,
+    firstname: String,
+    lastname: String,
     institution: String,
     alphasort: String,
     displayname: String
@@ -323,32 +321,23 @@ const typeDefs = `
     
   }
 
-  ##################################################################
-  #
   # This is a medium
   type Medium {
     lang: String
     text: String
   }
 
-  ##################################################################
-  #
   # This is an area
   type Area {
     lang: String
     text: String
   }
 
-  ##################################################################
-  #
   # This is a category
   type Category {
     lang: String
     text: String
   }
-
-
-  ##################################################################
 
   input TranslatedTextInput {
     lang: String
@@ -361,21 +350,10 @@ const typeDefs = `
   }
   
 
-  ##################################################################
-  #
-  # Ways to ask the db about stuff, try
-  #
-  #    query {
-  #      artworks {
-  #        titles
-  #        maker
-  #      }
-  #    }
+  # The possible queries you can run, and their filters
   type Query {
     artworks(
       limit: Int = 100,
-      examplesSearchOptionOne: Int = 0,
-      examplesSearchOptionTwo: String = "",
       maker: String = "",
       area: String = "",
       category: String = "",
@@ -384,15 +362,11 @@ const typeDefs = `
     ): [Artwork!]!
 
     artwork(
-      id: ID,
-      examplesSearchOptionOne: Int,
-      examplesSearchOptionTwo: String
+      id: ID
     ): Artwork
     
     makers(
-      limit: Int = 100,
-      artwork: ID,
-      medium: ID
+      limit: Int = 100
     ): [Maker!]!
 
     maker(
@@ -418,14 +392,7 @@ const typeDefs = `
   }
 
   schema {
-    #Right now, we just support queries - try
-    #
-    #    query {
-    #      artworks {
-    #        titles
-    #        maker
-    #      }
-    #    }
+    #Right now, we just support queries
     query: Query
   }
 `
