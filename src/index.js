@@ -7,11 +7,6 @@ const fs = require('fs')
 const exphbs = require('express-handlebars')
 const marked = require('marked')
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
-const auth = require('http-auth')
-const basic = auth.basic({
-  realm: 'Private area',
-  file: path.join(__dirname + '/../.htpasswd')
-})
 
 // Note: '*' will whitelist all domains.
 // If we remove the auth, we may want to lock this down.
@@ -59,9 +54,6 @@ const start = async () => {
     )
     res.sendStatus(200)
   })
-
-  // now use auth (this should come after the "options" method bypass)
-  app.use(auth.connect(basic))
 
   // enable cors. "credentials: true" is needed to pass auth through cors.
   app.use(
