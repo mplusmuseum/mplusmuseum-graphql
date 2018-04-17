@@ -1,6 +1,10 @@
 const queryResolvers = {
   Query: {
-    artworks: async (obj, args, { elasticsearch: { Artworks } }) => {
+    artworks: async (obj, args, {
+      elasticsearch: {
+        Artworks
+      }
+    }) => {
       let matchingArtworks = Artworks
       /*
        * This is a *VERY* verbose way to filter all the artworks
@@ -113,7 +117,36 @@ const queryResolvers = {
         )
       }).slice(0, args.limit)
       */
-      return matchingArtworks.slice(0, args.limit)
+
+      /*
+       * For the moment I want to return objects that have images first
+       */
+      const hasMedia = matchingArtworks.filter((artwork) => {
+        if (!('medias' in artwork)) return false
+        if (artwork.medias === null) return false
+        let exists = false
+        artwork.medias.forEach((media) => {
+          if ('exists' in media && media.exists === true) {
+            exists = true
+          }
+        })
+        return exists
+      })
+
+      const hasntMedia = matchingArtworks.filter((artwork) => {
+        if (!('medias' in artwork)) return true
+        if (artwork.medias === null) return true
+        let exists = false
+        artwork.medias.forEach((media) => {
+          if ('exists' in media && media.exists === true) {
+            exists = true
+          }
+        })
+        return !exists
+      })
+
+      const sortedMedia = [...hasMedia, ...hasntMedia]
+      return sortedMedia.slice(0, args.limit)
     },
 
     /*
@@ -121,7 +154,11 @@ const queryResolvers = {
      * we are looking for is an id which is coming across in the `args`
      * what is `obj`, no idea.
      */
-    artwork: async (obj, args, { elasticsearch: { Artworks } }) => {
+    artwork: async (obj, args, {
+      elasticsearch: {
+        Artworks
+      }
+    }) => {
       //  If we are searching based on an id we do that here
       if (args.id) {
         const artwork = Artworks.find(
@@ -133,7 +170,7 @@ const queryResolvers = {
       if (args.examplesSearchOptionOne) {
         const artwork = Artworks.find(
           artwork =>
-            parseInt(artwork.id) === parseInt(args.examplesSearchOptionOne)
+          parseInt(artwork.id) === parseInt(args.examplesSearchOptionOne)
         )
         return artwork
       }
@@ -142,7 +179,11 @@ const queryResolvers = {
     /*
      * This grabs all the makers from the Makers records
      */
-    makers: async (obj, args, { elasticsearch: { Makers } }) => {
+    makers: async (obj, args, {
+      elasticsearch: {
+        Makers
+      }
+    }) => {
       if (args.limit) {
         return Makers.slice(0, args.limit)
       }
@@ -153,7 +194,11 @@ const queryResolvers = {
     /*
      * Getting a single maker
      */
-    maker: async (obj, args, { elasticsearch: { Makers } }) => {
+    maker: async (obj, args, {
+      elasticsearch: {
+        Makers
+      }
+    }) => {
       if (args.id) {
         return Makers.find(maker => parseInt(maker.id) === parseInt(args.id))
       }
@@ -165,7 +210,11 @@ const queryResolvers = {
      * the medium and language from each one and sticking it into a new
      * array that we then return
      */
-    mediums: async (obj, args, { elasticsearch: { Artworks } }) => {
+    mediums: async (obj, args, {
+      elasticsearch: {
+        Artworks
+      }
+    }) => {
       //  These are the mediums we are going to keep
       let mediums = []
       //  This is a set of "keys" so we can keep an index of what
@@ -192,7 +241,10 @@ const queryResolvers = {
             //  then we can add it
             if (!(thisMedium.text in mediumKeys)) {
               mediumKeys[thisMedium.text] = true
-              mediums.push({ text: thisMedium.text, lang: thisMedium.lang })
+              mediums.push({
+                text: thisMedium.text,
+                lang: thisMedium.lang
+              })
             }
           })
         }
@@ -215,7 +267,11 @@ const queryResolvers = {
      * the medium and language from each one and sticking it into a new
      * array that we then return
      */
-    areas: async (obj, args, { elasticsearch: { Artworks } }) => {
+    areas: async (obj, args, {
+      elasticsearch: {
+        Artworks
+      }
+    }) => {
       //  These are the mediums we are going to keep
       let areas = []
       //  This is a set of "keys" so we can keep an index of what
@@ -276,7 +332,11 @@ const queryResolvers = {
      * This is all the same logic as areas above, but we make sure
      * we only grab the category node :)
      */
-    categories: async (obj, args, { elasticsearch: { Artworks } }) => {
+    categories: async (obj, args, {
+      elasticsearch: {
+        Artworks
+      }
+    }) => {
       //  These are the mediums we are going to keep
       let categories = []
       //  This is a set of "keys" so we can keep an index of what
