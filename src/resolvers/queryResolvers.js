@@ -126,7 +126,7 @@ const queryResolvers = {
         if (artwork.medias === null) return false
         let exists = false
         artwork.medias.forEach((media) => {
-          if ('exists' in media && media.exists === true) {
+          if ('exists' in media && media.exists === true && 'remote' in media && media.remote !== null) {
             exists = true
           }
         })
@@ -138,7 +138,7 @@ const queryResolvers = {
         if (artwork.medias === null) return true
         let exists = false
         artwork.medias.forEach((media) => {
-          if ('exists' in media && media.exists === true) {
+          if ('exists' in media && media.exists === true && 'remote' in media && media.remote !== null) {
             exists = true
           }
         })
