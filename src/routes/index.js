@@ -144,6 +144,12 @@ router.use(function (req, res, next) {
 const root = {
   hello: () => {
     return `world`
+  },
+  objects: (args) => {
+    return queries.getObjects(args)
+  },
+  object: (args) => {
+    return queries.getObject(args)
   }
 }
 
