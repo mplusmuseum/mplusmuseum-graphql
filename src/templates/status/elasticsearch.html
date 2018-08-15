@@ -1,0 +1,59 @@
+<html>
+
+<head>
+  <title>GraphQL - ElasticSearch Status</title>
+  {{> head}}
+  <meta http-equiv="refresh" content="60;url=/"></meta>
+</head>
+
+<body class="cover" style="background-image: url(/images/cover_001.jpg);">
+
+  {{> nav}}
+
+  <div class="wrapper">
+    <div class="container admin-layout documentation">
+
+      <h1>ElasticSearch Status</h1>
+      {{#if config.elasticsearch}}
+      <p>
+        This is the current status of the ElasticSearch server, we attempt to ping it once per minute.
+      </p>
+      <p>
+        <table>
+          <thead>
+            <tr>
+              <th>Milliseconds</th>
+              <th>Time pinged</th>
+              <th>Success</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each elasticsearchping}}
+            <tr>
+              <td>{{ms}}ms</td>
+              <td>{{timeAgo timestamp}}</td>
+              <td>{{valid}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </p>
+      {{#if user.roles.isAdmin}}
+      <p>
+        You can
+        <a href="/config#elasticsearch">reconfigure the ElasticSearch server connection here</a>.
+      </p>
+      {{/if}} {{else}}
+      <p>
+        ElasticSearch has not been configured yet. {{#if user.roles.isAdmin}}You can
+        <a href="/config#elasticsearch">configure that now</a> if you wish.{{else}}You should ask the admin user to set that up new{{/if}}
+      </p>
+      {{/if}}
+
+    </div>
+  </div>
+
+  {{> tail}}
+</body>
+
+</html>

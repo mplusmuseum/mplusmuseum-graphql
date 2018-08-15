@@ -1,0 +1,27 @@
+<html>
+
+<head>
+  <title>M+</title>
+  {{> head}}
+</head>
+
+<body class="cover" style="background-image: url(/images/{{design.cover}});">
+
+  {{> nav}}
+
+  <div class="wrapper">
+    <div class="container holding">
+      <div class="splash" style='background: {{design.bgcolor}}; color: {{design.fgcolor}}'>
+        <h1>Welcome to the GraphQL server</h1>
+        <p>
+          Please
+          <a href="/login">login</a> to get started
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {{> tail}}
+</body>
+
+</html>
