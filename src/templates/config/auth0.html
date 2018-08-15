@@ -1,0 +1,110 @@
+<html>
+
+<head>
+  <title>Setup Auth0</title>
+  {{> head}}
+</head>
+
+<body>
+
+  {{> nav}}
+
+  <div class="wrapper">
+    <div class="container admin-layout">
+      <h1>Auth0</h1>
+      <p>
+        To use this dashboard you should first set up and be familiar with
+        <a href="https://auth0.com/">Auth0</a> which will act as your authentication and allow users to register and log into the dashboard. You as the
+        1st user will be an admin user, who will then control the roles and rights of new users who sign up.
+      </p>
+      <p>
+        Before you fill in the details in the form, please create an Auth0 account, create an application and then use the details
+        provided.
+      </p>
+      <p>
+        <form method="POST">
+          <table>
+            <tr>
+              <td>Auth0 domain</td>
+              <td>
+                <input type="text" name="AUTH0_DOMAIN" value="" placeholder="domain.auth0.com" />
+              </td>
+            </tr>
+            <tr>
+              <td>Auth0 client ID</td>
+              <td>
+                <input type="text" name="AUTH0_CLIENT_ID" value="" placeholder="abcdef0123456789" />
+              </td>
+            </tr>
+            <tr>
+              <td>Auth0 secret</td>
+              <td>
+                <input type="text" name="AUTH0_SECRET" value="" placeholder="abcdef0123456789" />
+              </td>
+            </tr>
+            <tr>
+              <td>Auth0 callback url</td>
+              <td>
+                <input type="text" name="AUTH0_CALLBACK_URL" value="{{callbackUrl}}" placeholder="https://domain.com/callback" />
+              </td>
+            </tr>
+            <tr>
+              <td>Handshake</td>
+              <td>
+                <input type="text" name="handshake" value="{{handshake}}" placeholder="Your handshake token" />
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>
+                <button type="submit" name="action" value="save">Save</button>
+              </td>
+            </tr>
+          </table>
+
+        </form>
+      </p>
+      <hr />
+      <h2>Helpful information!</h2>
+      <p>
+        1. When you've created an Auth0 account, you will need to create a new application by pressing the NEW APPLICATION button.
+        <img class="medium border" src="/images/auth0_1.png">
+      </p>
+      <p>
+        2. Give the app a name and create it as a "Regular Web Application".
+        <img class="medium border" src="/images/auth0_2.png">
+      </p>
+      <p>
+        3. You will then copy the domain, Client ID and Client Secret from the form.
+        <img class="medium border" src="/images/auth0_3.png">
+      </p>
+      <p>
+        4. And you will need to set up the Callback, Origins and Logout URLs roughly as follow. You will need to substitute in your
+        own domains, ports and callback.
+        <img class="medium border" src="/images/auth0_4.png">
+      </p>
+      <p>
+        <strong>NOTE:</strong> for development purposes it is useful to map the domain
+        <code>auth.localhost</code> to
+        <code>localhost</code>. To do this edit your
+        <code>/etc/hosts</code> file to look something like the following...
+        <pre>
+  ##
+  # Host Database
+  #
+  # localhost is used to configure the loopback interface
+  # when the system is booting.  Do not change this entry.
+  ##
+  127.0.0.1       localhost
+  255.255.255.255 broadcasthost
+  ::1             localhost
+  auth.localhost  localhost  
+</pre> Where the last line is "
+        <code>auth.localhost localhost</code>".
+      </p>
+    </div>
+  </div>
+  {{> tail}}
+</body>
+
+</html>

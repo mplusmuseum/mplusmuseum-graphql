@@ -1,0 +1,300 @@
+body {
+  background: #fff;
+  color: #111;
+  font-family: sans-serif;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  &.cover {
+    background: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .container {
+      font-size: 2rem;
+      &.holding {
+        margin-top: 8rem;
+        p {
+          font-size: 2rem;
+        }
+      }
+      .splash {
+        text-align: center;
+        background: white;
+        padding: 4rem;
+        border-radius: 15px;
+        a {
+          color: inherit;
+        }
+      }
+    }
+  }
+  .container {
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 90%;
+    p {
+      font-size: 1.125rem;
+      line-height: 2rem;
+    }
+    a {
+      color: #039be5;
+    }
+    img {
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+      &.full {
+        width: 100%
+      }
+      &.medium {
+        width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+      &.border {
+        border: 1px solid #ccc;
+      }
+    }
+    &.admin-layout {
+      code {
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+      table {
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 1em;
+        background: #f9f9f9;
+        th {
+          text-align: left;
+          &.span {
+            text-align: center;
+          }
+        }
+        td {
+          &.error {
+            color: red;
+          }
+        }
+        input[type='text'] {
+          width: 100%;
+          font-size: 1.2em;
+          padding: 8px;
+        }
+        button {
+          font-size: 1.2em;
+          padding: 8px;
+          background: #0d47a1;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          transition: background-color 0.3s;
+          cursor: pointer;
+          &:hover {
+            background-color: #039be5;
+          }
+        }
+        ul {
+          &.tmsSelect {
+            list-style: none;
+            padding-top: 1.5rem;
+            li {
+              font-size: 2rem;
+              line-height: 2rem;
+              input {
+                margin-right: 1rem;
+                vertical-align: middle;
+                width: 2rem;
+                height: 2rem;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.documentation {
+      background: white;
+      padding: 2rem;
+      h1,
+      h2,
+      h3 {
+        a {
+          color: inherit;
+        }
+      }
+      ul {
+        font-size: 1.2rem;
+        li {
+          a {
+            text-decoration: none;
+          }
+        }
+        &.toc {
+          font-size: 1.8rem;
+          list-style-type: none;
+          line-height: 2rem;
+          ul {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+          }
+        }
+      }
+      p {
+        font-size: 1.2rem;
+        &.runinexplore {
+          margin-bottom: 0;
+          a {
+            font-size: 1rem;
+          }
+        }
+      }
+      code {
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        display: inline-block;
+        font-size: 1.2rem;
+        padding-left: 6px;
+        padding-right: 6px;
+        &.red {
+          color: #DD0000;
+          padding: 0;
+          border: none;
+          background-color: inherit;
+          font-size: 1.5rem;
+          font-weight: 100;
+        }
+      }
+      p.note {
+        color: #264c72;
+        border: 1px solid #97c1da;
+        background-color: #d8ebf8;
+        position: relative;
+        padding: 15px 15px 15px;
+        margin-bottom: 20px;
+        border-radius: 3px;
+        font-weight: 400;
+      }
+      pre {
+        &.query {
+          margin: 0 0 32px;
+          background-color: #f5f5f5;
+          border: 1px solid #e5e5e5;
+          border-radius: 6px;
+          line-height: 1.4em;
+          padding: 10px;
+          overflow: auto;
+          font-size: 1.2rem
+        }
+        &.terminal {
+          background: #1E1E1E;
+          color: #E1E1E1;
+        }
+      }
+      table.api {
+        font-size: 1.6rem;
+        td.token {
+          font-family: monospace;
+          font-weight: bold;
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+  nav {
+    &.header {
+      background-color: #CDDAD0;
+      color: white;
+    }
+    .nav-wrapper {
+      min-height: 64px;
+      height: auto;
+      position: relative;
+      line-height: 64px;
+      .brand-logo {
+        color: #000;
+        display: inline-block;
+        font-size: 2.1rem;
+        padding: 0;
+        &.left {
+          float: left;
+          padding-left: 0.5em;
+          padding-right: 0.5em;
+        }
+      }
+      a {
+        -webkit-transition: background-color 0.3s;
+        -o-transition: background-color 0.3s;
+        transition: background-color 0.3s;
+        font-size: 1rem;
+        color: #000;
+        display: block;
+        padding: 0 15px;
+        text-decoration: none;
+        cursor: pointer;
+        &:hover {
+          background-color: #ECCDD6;
+        }
+      }
+      ul {
+        padding-left: 0;
+        list-style-type: none;
+        float: left;
+        margin: 0;
+        li {
+          list-style-type: none;
+          transition: background-color 0.3s;
+          float: left;
+          padding: 0;
+          box-sizing: inherit;
+        }
+        &.right {
+          float: right;
+        }
+      }
+      img {
+        &.avatar {
+          margin-top: 7px;
+          padding-right: 15px;
+          vertical-align: top;
+          width: 50px;
+        }
+      }
+    }
+  }
+  .connections {
+    background: #fcfcfc;
+    min-height: 32px;
+    line-height: 32px;
+    height: auto;
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid #CDDAD0;
+    font-size: 0.8em;
+    margin-bottom: 1rem;
+    .graphQL,
+    .elasticsearch {
+      float: right;
+      margin-right: 2em;
+      cursor: pointer;
+      .alert {
+        color: red;
+        font-weight: bold;
+      }
+      .warn {
+        color: orange;
+        font-weight: bold;
+      }
+      .good {
+        color: green;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  }
+}

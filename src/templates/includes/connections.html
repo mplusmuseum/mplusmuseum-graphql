@@ -1,0 +1,7 @@
+<div class="connections">
+  <div class="elasticsearch">
+    Elastic Search: {{#if config.elasticsearch.host}}
+    <a href="/status/elasticsearch">{{{elasticsearchStatus}}}</a> {{else}} {{#if user.roles.isAdmin}}
+    <a href="/config">Not configured</a>{{else}}Not configured{{/if}} {{/if}}
+  </div>
+</div>

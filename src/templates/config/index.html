@@ -1,0 +1,93 @@
+<html>
+
+<head>
+  <title>GraphQL - config</title>
+  {{> head}}
+  <link href="/css/prism.css" rel="stylesheet" />
+</head>
+
+<body class="cover" style="background-image: url(/images/cover_001.jpg);">
+
+  {{> nav}}
+
+  <div class="wrapper">
+    <div class="container admin-layout documentation">
+
+      <h1>Config</h1>
+
+      <h2>
+        <a name="handshake">Dashboard</a>
+      </h2>
+
+      <p>
+        <form method="post">
+          <table>
+            <tr>
+              <td>Dashboard URL</td>
+              <td>
+                <input type="text" name="dashboard" placeholder="{{#ifEqual NODE_ENV 'development'}}http://localhost:4002{{else}}https://domain.com{{/ifEqual}}"
+                  {{#if config.dashboard.host}}value="{{config.dashboard.host}}" {{/if}}>
+              </td>
+            </tr>
+            <tr>
+              <td>Dashboard Handshake</td>
+              <p>
+                You should visit the Dashboard and go to the
+                <code>/config</code> page, at the top you will see a "handshake" token, copy that token and enter it here that
+                will allow the GraphQL server to talk to the dashboard.
+              </p>
+              <td>
+                <input type="text" name="handshake" placeholder="a1b2c3d4e5f6g7h8i9j0k" {{#if config.dashboard.handshake}}value="{{config.dashboard.handshake}}"
+                  {{/if}}>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button type="submit" value="updatedashboard" name="action">Update</button>
+              </td>
+            </tr>
+          </table>
+
+        </form>
+      </p>
+
+      <hr />
+
+      <h2>
+        <a name="elasticsearch">Elastic Search</a>
+      </h2>
+      {{#if config.elasticsearch}}
+      <p>
+        Congratulations ElasticSearch has been set up
+      </p>
+      <p>
+        You can reconfigure it below if needed.
+      </p>
+      {{/if}}
+      <p>
+        <form method="post">
+          <table>
+            <tr>
+              <td>Elastic Search</td>
+              <td>
+                <input type="text" name="elasticsearch" placeholder="{{#ifEqual NODE_ENV 'development'}}http://localhost:9200{{else}}https://domain.com{{/ifEqual}}"
+                  {{#if config.elasticsearch.host}}value="{{config.elasticsearch.host}}" {{/if}}>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button type="submit" value="updateelasticsearch" name="action">Update</button>
+              </td>
+            </tr>
+          </table>
+
+        </form>
+      </p>
+
+    </div>
+  </div>
+
+  {{> tail}}
+</body>
+
+</html>

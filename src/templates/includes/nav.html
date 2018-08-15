@@ -1,0 +1,29 @@
+<nav class="header">
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo left">M+ - GraphQL</a>
+    {{#if user}}
+    <ul>
+      {{#if user.roles.isAdmin}}
+      <li>
+        <a href="/status">Status</a>
+      </li>
+      <li>
+        <a href="/config">Config</a>
+      </li>
+      {{/if}}
+    </ul>
+    <ul class="right">
+      <li>
+        <a href="/logout">Logout</a>
+      </li>
+    </ul>
+    {{else}}
+    <ul class="right">
+      <li>
+        <a href="/login">Login</a>
+      </li>
+    </ul>
+    {{/if}}
+  </div>
+</nav>
+{{#if user}} {{> connections}} {{/if}}
