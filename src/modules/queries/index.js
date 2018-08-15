@@ -192,6 +192,26 @@ const getObject = async (args) => {
 
   if (object !== undefined && object !== null && 'found' in object && object.found === true) {
     const newObject = object._source
+    let match = null
+    //  Get the default value of title
+    match = getSingleTextFromArrayByLang(newObject.titles, args.lang)
+    delete newObject.titles
+    if (match !== null) newObject.title = match
+
+    //  Get the default value of dimensions
+    match = getSingleTextFromArrayByLang(newObject.dimensions, args.lang)
+    delete newObject.dimensions
+    if (match !== null) newObject.dimensions = match
+
+    //  Get the default value of credit lines
+    match = getSingleTextFromArrayByLang(newObject.creditLines, args.lang)
+    delete newObject.creditLines
+    if (match !== null) newObject.creditLine = match
+
+    //  Get the default value of medium
+    match = getSingleTextFromArrayByLang(newObject.mediums, args.lang)
+    delete newObject.mediums
+    if (match !== null) newObject.medium = match
     return newObject
   }
 

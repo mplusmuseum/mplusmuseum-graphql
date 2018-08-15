@@ -8,7 +8,10 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
   ): [Object]
-  object(id: Int!): SingleObject
+  object(
+    id: Int!
+    lang: String = "en"
+  ): SingleObject
 }
 type Object {
   id: Int
