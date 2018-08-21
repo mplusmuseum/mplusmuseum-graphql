@@ -17,6 +17,16 @@ type Query {
     per_page: Int
     lang: String = "en"
   ): [Area]
+  categories(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+  ): [Categories]
+  mediums(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+  ): [Mediums]
 }
 type Object {
   id: Int
@@ -43,7 +53,15 @@ type SingleObject {
   medium: String
 }
 type Area {
-  text: String
+  title: String
+  count: Int
+}
+type Categories {
+  title: String
+  count: Int
+}
+type Mediums {
+  title: String
   count: Int
 }
 `

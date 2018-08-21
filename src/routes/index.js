@@ -153,6 +153,12 @@ const root = {
   },
   areas: (args) => {
     return queries.getAreas(args)
+  },
+  categories: (args) => {
+    return queries.getCategories(args)
+  },
+  mediums: (args) => {
+    return queries.getMediums(args)
   }
 }
 
