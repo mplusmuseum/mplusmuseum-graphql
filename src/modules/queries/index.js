@@ -49,6 +49,26 @@ const getSingleTextFromArrayByLang = (thisArray, lang) => {
   return match
 }
 
+exports.getAreas = async (args) => {
+  const config = new Config()
+
+  //  Grab the elastic search config details
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return []
+  }
+
+  //  Set up the client
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const page = getPage(args)
+  const perPage = getPerPage(args)
+  const body = {
+    from: page * perPage,
+    size: perPage
+  }
+  return []
+}
+
 const getItems = async (args, index) => {
   const config = new Config()
 

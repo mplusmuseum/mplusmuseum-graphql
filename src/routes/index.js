@@ -150,6 +150,9 @@ const root = {
   },
   object: (args) => {
     return queries.getObject(args)
+  },
+  areas: (args) => {
+    return queries.getAreas(args)
   }
 }
 

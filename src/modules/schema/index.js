@@ -12,6 +12,11 @@ type Query {
     id: Int!
     lang: String = "en"
   ): SingleObject
+  areas(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+  ): [Area]
 }
 type Object {
   id: Int
@@ -36,5 +41,9 @@ type SingleObject {
   dimensions: String
   creditLine: String
   medium: String
+}
+type Area {
+  text: String
+  count: Int
 }
 `
