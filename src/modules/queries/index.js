@@ -49,7 +49,7 @@ const getSingleTextFromArrayByLang = (thisArray, lang) => {
   return match
 }
 
-exports.getAreas = async (args) => {
+const getAggregates = async (args, index) => {
   const config = new Config()
 
   //  Grab the elastic search config details
@@ -66,7 +66,39 @@ exports.getAreas = async (args) => {
     from: page * perPage,
     size: perPage
   }
-  return []
+  body.query = {
+    'term': {
+      'lang.keyword': args.lang
+    }
+  }
+  body.sort = [{
+    'count': {
+      'order': 'desc'
+    }
+  }]
+
+  const areas = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+  })
+  let records = areas.hits.hits.map((hit) => hit._source).map((record) => {
+    return record
+  })
+  return records
+}
+
+exports.getAreas = async (args) => {
+  return getAggregates(args, 'object_areas_mplus')
+}
+
+exports.getCategories = async (args) => {
+  return getAggregates(args, 'object_categories_mplus')
+}
+
+exports.getMediums = async (args) => {
+  return getAggregates(args, 'object_mediums_mplus')
 }
 
 const getItems = async (args, index) => {
