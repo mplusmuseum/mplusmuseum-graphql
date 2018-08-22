@@ -33,20 +33,13 @@ const getPerPage = (args) => {
   return defaultPerPage
 }
 
-const getSingleTextFromArrayByLang = (thisArray, lang) => {
-  let match = null
-
-  //  Defensive code
-  if (thisArray === null || thisArray === undefined) return null
-  if (!Array.isArray(thisArray)) return thisArray
-
-  thisArray.forEach((thing) => {
-    if (thing.lang === 'en' && 'text' in thing) match = thing.text
-  })
-  thisArray.forEach((thing) => {
-    if (thing.lang === lang && 'text' in thing) match = thing.text
-  })
-  return match
+const getSingleTextFromArrayByLang = (thisObj, lang) => {
+  //  If we can't find the language in the object then
+  //  fall back to 'en' and try again
+  if (thisObj === null || thisObj === undefined) return null
+  if (!(lang in thisObj) && lang !== 'en') lang = 'en'
+  if (!(lang in thisObj)) return null
+  return thisObj[lang]
 }
 
 const getAggregates = async (args, index) => {
@@ -156,8 +149,6 @@ exports.getObjects = async (args) => {
     }]
   }
 
-  console.log(body.sort)
-
   //  If we've been sent over specific ids then we go and get just those
   if (
     ('ids' in args && Array.isArray(args.ids))
@@ -197,48 +188,35 @@ exports.getObjects = async (args) => {
     let match = null
 
     //  Get the default value of title
-    match = getSingleTextFromArrayByLang(record.titles, args.lang)
+    match = getSingleTextFromArrayByLang(record.title, args.lang)
     delete record.titles
     if (match !== null) record.title = match
 
     //  Get the default value of dimensions
-    match = getSingleTextFromArrayByLang(record.dimensions, args.lang)
+    match = getSingleTextFromArrayByLang(record.dimension, args.lang)
     delete record.dimensions
-    if (match !== null) record.dimensions = match
+    if (match !== null) record.dimension = match
 
     //  Get the default value of credit lines
-    match = getSingleTextFromArrayByLang(record.creditLines, args.lang)
+    match = getSingleTextFromArrayByLang(record.creditLine, args.lang)
     delete record.creditLines
     if (match !== null) record.creditLine = match
 
     //  Get the default value of medium
-    match = getSingleTextFromArrayByLang(record.mediums, args.lang)
+    match = getSingleTextFromArrayByLang(record.medium, args.lang)
     delete record.mediums
     if (match !== null) record.medium = match
 
     //  Clean up the area and category
     if ('classification' in record) {
       const classFields = ['area', 'category']
-
+      const classification = {}
       classFields.forEach((field) => {
-        //  Go and grab the area/category, make sure we have everything we need first and the
-        //  arrays are set up
-        if (field in record.classification && 'areacat' in record.classification[field]) {
-          if (!Array.isArray(record.classification[field].areacat)) record.classification[field].areacat = [record.classification[field].areacat]
-          record.classification[field] = record.classification[field].areacat.filter((textLang) => {
-            return textLang.lang === args.lang
-          }).map((textLang) => {
-            return textLang.text
-          })
-          //  In theory we have a single record now, lets get the values and
-          //  return what's expected by the schema
-          if (record.classification[field].length === 1) {
-            record.classification[field] = record.classification[field][0]
-          } else {
-            return null
-          }
+        if (field in record.classification) {
+          if (!(field in classification)) classification[field] = getSingleTextFromArrayByLang(record.classification[field].areacat, args.lang)
         }
       })
+      record.classification = classification
     }
 
     return record

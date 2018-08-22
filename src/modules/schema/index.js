@@ -38,7 +38,7 @@ type Object {
   displayDate: String
   beginDate: Int
   endDate: Int
-  dimensions: String
+  dimension: String
   creditLine: String
   medium: String
   classification: Classification
@@ -52,7 +52,7 @@ type SingleObject {
   displayDate: String
   beginDate: Int
   endDate: Int
-  dimensions: String
+  dimension: String
   creditLine: String
   medium: String
   classification: Classification
