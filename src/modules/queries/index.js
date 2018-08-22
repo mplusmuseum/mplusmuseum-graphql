@@ -70,20 +70,64 @@ const getAggregates = async (args, index) => {
     }
   }]
 
-  const areas = await esclient.search({
+  const results = await esclient.search({
     index,
     body
   }).catch((err) => {
     console.error(err)
   })
-  let records = areas.hits.hits.map((hit) => hit._source).map((record) => {
+  let records = results.hits.hits.map((hit) => hit._source).map((record) => {
     return record
   })
   return records
 }
 
 exports.getAreas = async (args) => {
-  return getAggregates(args, 'object_areas_mplus')
+  console.log('In JHERE')
+  const config = new Config()
+  const index = 'objects_mplus'
+
+  //  Grab the elastic search config details
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return []
+  }
+
+  //  Set up the client
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const page = getPage(args)
+  const perPage = getPerPage(args)
+  const body = {
+    from: page * perPage,
+    size: perPage
+  }
+  body.aggs = {
+    'areas': {
+      'terms': {
+        'field': `classification.area.areacat.${args.lang}.keyword`
+      }
+    }
+  }
+  /*
+  body.sort = [{
+    'count': {
+      'order': 'desc'
+    }
+  }]
+  */
+  const areas = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+  })
+  return areas.aggregations.areas.buckets.map((record) => {
+    return {
+      title: record.key,
+      count: record.doc_count
+    }
+  })
+  // return areas
 }
 
 exports.getCategories = async (args) => {
