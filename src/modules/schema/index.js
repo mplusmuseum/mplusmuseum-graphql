@@ -4,6 +4,7 @@ type Query {
   objects(
     page: Int
     per_page: Int
+    ids: [Int]
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -39,6 +40,7 @@ type Object {
   dimensions: String
   creditLine: String
   medium: String
+  classification: Classification
 }
 type SingleObject {
   id: Int
@@ -51,8 +53,13 @@ type SingleObject {
   dimensions: String
   creditLine: String
   medium: String
+  classification: Classification
 }
-type Area {
+type Classification {
+  area: Area
+  category: Category
+}
+type Areas {
   title: String
   count: Int
 }
@@ -63,5 +70,17 @@ type Categories {
 type Mediums {
   title: String
   count: Int
+}
+type Area {
+  title: String
+  lang: String
+}
+type Category {
+  title: String
+  lang: String
+}
+type Medium {
+  title: String
+  lang: String
 }
 `

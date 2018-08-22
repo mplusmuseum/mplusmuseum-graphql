@@ -101,8 +101,9 @@ exports.getMediums = async (args) => {
   return getAggregates(args, 'object_mediums_mplus')
 }
 
-const getItems = async (args, index) => {
+exports.getObjects = async (args) => {
   const config = new Config()
+  const index = 'objects_mplus'
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')
@@ -119,55 +120,52 @@ const getItems = async (args, index) => {
     size: perPage
   }
 
-  //  Sort by count if the index is one of these
-  const sortIfIndex = ['objects_mplus']
-  if (sortIfIndex.includes(index)) {
-    //  Check to see if we have been passed valid sort fields values, if we have
-    //  then use that for a sort. Otherwise use a default one
-    const validFields = ['id']
-    const keywordFields = []
-    const validSorts = ['asc', 'desc']
-    if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
-      //  To actually sort on a title we need to really sort on `title.keyword`
-      let sortField = args.sort_field
-      if (keywordFields.includes(sortField)) sortField = `${sortField}.keyword`
-      //  For objects we want to actually want to sort by the _id
-      const sortObj = {}
-      sortObj[sortField] = {
-        order: args.sort
-      }
-      body.sort = [sortObj]
-    } else {
-      body.sort = [{
-        id: {
-          order: 'asc'
-        }
-      }]
+  //  Check to see if we have been passed valid sort fields values, if we have
+  //  then use that for a sort. Otherwise use a default one
+  const keywordFields = []
+  const validFields = ['id']
+  const validSorts = ['asc', 'desc']
+  if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
+    //  To actually sort on a title we need to really sort on `title.keyword`
+    let sortField = args.sort_field
+    if (keywordFields.includes(sortField)) sortField = `${sortField}.keyword`
+
+    //  For objects we want to actually want to sort by the _id
+    const sortObj = {}
+    sortObj[sortField] = {
+      order: args.sort
     }
+    body.sort = [sortObj]
+  } else {
+    body.sort = [{
+      id: {
+        order: 'asc'
+      }
+    }]
   }
 
-  if (index === 'objects_mplus') {
-    if (
-      ('ids' in args && Array.isArray(args.ids))
-    ) {
-      const must = []
+  //  If we've been sent over specific ids then we go and get just those
+  if (
+    ('ids' in args && Array.isArray(args.ids))
+  ) {
+    const must = []
 
-      if ('ids' in args && Array.isArray(args.ids)) {
-        must.push({
-          terms: {
-            id: args.ids
-          }
-        })
-      }
-
-      body.query = {
-        bool: {
-          must
+    if ('ids' in args && Array.isArray(args.ids)) {
+      must.push({
+        terms: {
+          id: args.ids
         }
+      })
+    }
+
+    body.query = {
+      bool: {
+        must
       }
     }
   }
 
+  //  Run the search
   const objects = await esclient.search({
     index,
     body
@@ -204,14 +202,37 @@ const getItems = async (args, index) => {
     delete record.mediums
     if (match !== null) record.medium = match
 
+    //  Clean up the area and category
+    if ('classification' in record) {
+      const classFields = ['area', 'category']
+
+      classFields.forEach((field) => {
+        //  Go and grab the area/category, make sure we have everything we need first and the
+        //  arrays are set up
+        if (field in record.classification && 'areacat' in record.classification[field]) {
+          if (!Array.isArray(record.classification[field].areacat)) record.classification[field].areacat = [record.classification[field].areacat]
+          record.classification[field] = record.classification[field].areacat.filter((textLang) => {
+            return textLang.lang === args.lang
+          }).map((textLang) => {
+            return {
+              title: textLang.text,
+              lang: textLang.lang
+            }
+          })
+          //  In theory we have a single record now, lets get the values and
+          //  return what's expected by the schema
+          if (record.classification[field].length === 1) {
+            record.classification[field] = record.classification[field][0]
+          } else {
+            return null
+          }
+        }
+      })
+    }
+
     return record
   })
 
-  return records
-}
-
-exports.getObjects = async (args) => {
-  const records = await getItems(args, 'objects_mplus')
   return records
 }
 
