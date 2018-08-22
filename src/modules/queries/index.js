@@ -214,10 +214,7 @@ exports.getObjects = async (args) => {
           record.classification[field] = record.classification[field].areacat.filter((textLang) => {
             return textLang.lang === args.lang
           }).map((textLang) => {
-            return {
-              title: textLang.text,
-              lang: textLang.lang
-            }
+            return textLang.text
           })
           //  In theory we have a single record now, lets get the values and
           //  return what's expected by the schema

@@ -33,6 +33,7 @@ type Object {
   id: Int
   publicAccess: Boolean
   objectNumber: String
+  sortNumber: Float
   title: String
   displayDate: String
   beginDate: Int
@@ -46,6 +47,7 @@ type SingleObject {
   id: Int
   publicAccess: Boolean
   objectNumber: String
+  sortNumber: Float
   title: String
   displayDate: String
   beginDate: Int
@@ -56,10 +58,10 @@ type SingleObject {
   classification: Classification
 }
 type Classification {
-  area: Area
-  category: Category
+  area: String
+  category: String
 }
-type Areas {
+type Area {
   title: String
   count: Int
 }
@@ -70,17 +72,5 @@ type Categories {
 type Mediums {
   title: String
   count: Int
-}
-type Area {
-  title: String
-  lang: String
-}
-type Category {
-  title: String
-  lang: String
-}
-type Medium {
-  title: String
-  lang: String
 }
 `
