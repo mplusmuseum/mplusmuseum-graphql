@@ -101,6 +101,15 @@ exports.getMediums = async (args) => {
   return getAggregates(args, 'object_mediums_mplus')
 }
 
+/*
+##########################################################
+##########################################################
+
+This is where we get all the objects
+
+##########################################################
+##########################################################
+*/
 exports.getObjects = async (args) => {
   const config = new Config()
   const index = 'objects_mplus'
@@ -122,13 +131,16 @@ exports.getObjects = async (args) => {
 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
-  const keywordFields = []
-  const validFields = ['id']
+  const keywordFields = ['objectnumber', 'displaydate']
+  const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'classification.area', 'classification.category']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
     let sortField = args.sort_field
-    if (keywordFields.includes(sortField)) sortField = `${sortField}.keyword`
+    if (keywordFields.includes(sortField.toLowerCase())) sortField = `${sortField}.keyword`
+
+    //  Special cases
+    if (sortField === 'title') sortField = 'titles.text.keyword'
 
     //  For objects we want to actually want to sort by the _id
     const sortObj = {}
@@ -143,6 +155,8 @@ exports.getObjects = async (args) => {
       }
     }]
   }
+
+  console.log(body.sort)
 
   //  If we've been sent over specific ids then we go and get just those
   if (
