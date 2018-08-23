@@ -17,6 +17,22 @@ const getPage = (args) => {
   return defaultPage
 }
 
+const getAggPerPage = (args) => {
+  const defaultPerPage = 10000
+  if ('per_page' in args) {
+    try {
+      const perPage = parseInt(args.per_page, 10)
+      if (perPage < 0) {
+        return defaultPerPage
+      }
+      return perPage
+    } catch (er) {
+      return defaultPerPage
+    }
+  }
+  return defaultPerPage
+}
+
 const getPerPage = (args) => {
   const defaultPerPage = 50
   if ('per_page' in args) {
@@ -33,23 +49,16 @@ const getPerPage = (args) => {
   return defaultPerPage
 }
 
-const getSingleTextFromArrayByLang = (thisArray, lang) => {
-  let match = null
-
-  //  Defensive code
-  if (thisArray === null || thisArray === undefined) return null
-  if (!Array.isArray(thisArray)) return thisArray
-
-  thisArray.forEach((thing) => {
-    if (thing.lang === 'en' && 'text' in thing) match = thing.text
-  })
-  thisArray.forEach((thing) => {
-    if (thing.lang === lang && 'text' in thing) match = thing.text
-  })
-  return match
+const getSingleTextFromArrayByLang = (thisObj, lang) => {
+  //  If we can't find the language in the object then
+  //  fall back to 'en' and try again
+  if (thisObj === null || thisObj === undefined) return null
+  if (!(lang in thisObj) && lang !== 'en') lang = 'en'
+  if (!(lang in thisObj)) return null
+  return thisObj[lang]
 }
 
-const getAggregates = async (args, index) => {
+const getAggregates = async (args, field, index) => {
   const config = new Config()
 
   //  Grab the elastic search config details
@@ -60,47 +69,69 @@ const getAggregates = async (args, index) => {
 
   //  Set up the client
   const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const page = getPage(args)
-  const perPage = getPerPage(args)
-  const body = {
-    from: page * perPage,
-    size: perPage
-  }
-  body.query = {
-    'term': {
-      'lang.keyword': args.lang
-    }
-  }
-  body.sort = [{
-    'count': {
-      'order': 'desc'
-    }
-  }]
+  const perPage = getAggPerPage(args)
+  const body = {}
 
-  const areas = await esclient.search({
+  body.aggs = {
+    'results': {
+      'terms': {
+        'field': field,
+        'size': perPage
+      }
+    }
+  }
+
+  // Now let us add extra sorting if needed
+  if ('sort_field' in args && (args.sort_field === 'title' || args.sort_field === 'count')) {
+    let sortOrder = 'asc'
+    if ('sort' in args && args.sort === 'desc') sortOrder = 'desc'
+    if (args.sort_field === 'title') {
+      body.aggs.results.terms.order = {
+        '_key': sortOrder
+      }
+    } else {
+      body.aggs.results.terms.order = {
+        '_count': sortOrder
+      }
+    }
+  }
+
+  //  Run the search
+  const results = await esclient.search({
     index,
     body
   }).catch((err) => {
     console.error(err)
   })
-  let records = areas.hits.hits.map((hit) => hit._source).map((record) => {
-    return record
+  return results.aggregations.results.buckets.map((record) => {
+    return {
+      title: record.key,
+      count: record.doc_count
+    }
   })
-  return records
 }
 
 exports.getAreas = async (args) => {
-  return getAggregates(args, 'object_areas_mplus')
+  return getAggregates(args, `classification.area.areacat.${args.lang}.keyword`, 'objects_mplus')
 }
 
 exports.getCategories = async (args) => {
-  return getAggregates(args, 'object_categories_mplus')
+  return getAggregates(args, `classification.category.areacat.${args.lang}.keyword`, 'objects_mplus')
 }
 
 exports.getMediums = async (args) => {
-  return getAggregates(args, 'object_mediums_mplus')
+  return getAggregates(args, `medium.${args.lang}.keyword`, 'objects_mplus')
 }
 
+/*
+##########################################################
+##########################################################
+
+This is where we get all the objects
+
+##########################################################
+##########################################################
+*/
 exports.getObjects = async (args) => {
   const config = new Config()
   const index = 'objects_mplus'
@@ -122,13 +153,16 @@ exports.getObjects = async (args) => {
 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
-  const keywordFields = []
-  const validFields = ['id']
+  const keywordFields = ['objectnumber', 'displaydate']
+  const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'classification.area', 'classification.category']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
     let sortField = args.sort_field
-    if (keywordFields.includes(sortField)) sortField = `${sortField}.keyword`
+    if (keywordFields.includes(sortField.toLowerCase())) sortField = `${sortField}.keyword`
+
+    //  Special cases
+    if (sortField === 'title') sortField = 'titles.text.keyword'
 
     //  For objects we want to actually want to sort by the _id
     const sortObj = {}
@@ -144,20 +178,67 @@ exports.getObjects = async (args) => {
     }]
   }
 
-  //  If we've been sent over specific ids then we go and get just those
-  if (
-    ('ids' in args && Array.isArray(args.ids))
-  ) {
-    const must = []
+  const must = []
 
-    if ('ids' in args && Array.isArray(args.ids)) {
-      must.push({
-        terms: {
-          id: args.ids
-        }
-      })
+  //  Sigh, very bad way to add filters
+  //  NOTE: This doesn't combine filters
+  if ('ids' in args && Array.isArray(args.ids)) {
+    must.push({
+      terms: {
+        id: args.ids
+      }
+    })
+  }
+
+  if ('area' in args && args.area !== '') {
+    const pushThis = {
+      match: {}
     }
+    pushThis.match[`classification.area.areacat.${args.lang}.keyword`] = args.area
+    must.push(pushThis)
+  }
 
+  if ('category' in args && args.category !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`classification.category.areacat.${args.lang}.keyword`] = args.category
+    must.push(pushThis)
+  }
+
+  if ('medium' in args && args.medium !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`medium.${args.lang}.keyword`] = args.medium
+    must.push(pushThis)
+  }
+
+  if ('displayDate' in args && args.displayDate !== '') {
+    must.push({
+      match: {
+        'displayDate': args.displayDate
+      }
+    })
+  }
+
+  if ('beginDate' in args && args.beginDate !== '') {
+    must.push({
+      match: {
+        'beginDate': args.beginDate
+      }
+    })
+  }
+
+  if ('endDate' in args && args.endDate !== '') {
+    must.push({
+      match: {
+        'endDate': args.endDate
+      }
+    })
+  }
+
+  if (must.length > 0) {
     body.query = {
       bool: {
         must
@@ -183,51 +264,35 @@ exports.getObjects = async (args) => {
     let match = null
 
     //  Get the default value of title
-    match = getSingleTextFromArrayByLang(record.titles, args.lang)
+    match = getSingleTextFromArrayByLang(record.title, args.lang)
     delete record.titles
     if (match !== null) record.title = match
 
     //  Get the default value of dimensions
-    match = getSingleTextFromArrayByLang(record.dimensions, args.lang)
+    match = getSingleTextFromArrayByLang(record.dimension, args.lang)
     delete record.dimensions
-    if (match !== null) record.dimensions = match
+    if (match !== null) record.dimension = match
 
     //  Get the default value of credit lines
-    match = getSingleTextFromArrayByLang(record.creditLines, args.lang)
+    match = getSingleTextFromArrayByLang(record.creditLine, args.lang)
     delete record.creditLines
     if (match !== null) record.creditLine = match
 
     //  Get the default value of medium
-    match = getSingleTextFromArrayByLang(record.mediums, args.lang)
+    match = getSingleTextFromArrayByLang(record.medium, args.lang)
     delete record.mediums
     if (match !== null) record.medium = match
 
     //  Clean up the area and category
     if ('classification' in record) {
       const classFields = ['area', 'category']
-
+      const classification = {}
       classFields.forEach((field) => {
-        //  Go and grab the area/category, make sure we have everything we need first and the
-        //  arrays are set up
-        if (field in record.classification && 'areacat' in record.classification[field]) {
-          if (!Array.isArray(record.classification[field].areacat)) record.classification[field].areacat = [record.classification[field].areacat]
-          record.classification[field] = record.classification[field].areacat.filter((textLang) => {
-            return textLang.lang === args.lang
-          }).map((textLang) => {
-            return {
-              title: textLang.text,
-              lang: textLang.lang
-            }
-          })
-          //  In theory we have a single record now, lets get the values and
-          //  return what's expected by the schema
-          if (record.classification[field].length === 1) {
-            record.classification[field] = record.classification[field][0]
-          } else {
-            return null
-          }
+        if (field in record.classification) {
+          if (!(field in classification)) classification[field] = getSingleTextFromArrayByLang(record.classification[field].areacat, args.lang)
         }
       })
+      record.classification = classification
     }
 
     return record

@@ -8,36 +8,46 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    category: String
+    area: String
+    medium: String
+    displayDate: String
+    beginDate: Int
+    endDate: Int
   ): [Object]
   object(
     id: Int!
     lang: String = "en"
   ): SingleObject
   areas(
-    page: Int
     per_page: Int
     lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
   ): [Area]
   categories(
-    page: Int
     per_page: Int
     lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
   ): [Categories]
   mediums(
-    page: Int
     per_page: Int
     lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
   ): [Mediums]
 }
 type Object {
   id: Int
   publicAccess: Boolean
   objectNumber: String
+  sortNumber: Float
   title: String
   displayDate: String
   beginDate: Int
   endDate: Int
-  dimensions: String
+  dimension: String
   creditLine: String
   medium: String
   classification: Classification
@@ -46,20 +56,21 @@ type SingleObject {
   id: Int
   publicAccess: Boolean
   objectNumber: String
+  sortNumber: Float
   title: String
   displayDate: String
   beginDate: Int
   endDate: Int
-  dimensions: String
+  dimension: String
   creditLine: String
   medium: String
   classification: Classification
 }
 type Classification {
-  area: Area
-  category: Category
+  area: String
+  category: String
 }
-type Areas {
+type Area {
   title: String
   count: Int
 }
@@ -70,17 +81,5 @@ type Categories {
 type Mediums {
   title: String
   count: Int
-}
-type Area {
-  title: String
-  lang: String
-}
-type Category {
-  title: String
-  lang: String
-}
-type Medium {
-  title: String
-  lang: String
 }
 `
