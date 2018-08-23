@@ -17,6 +17,22 @@ const getPage = (args) => {
   return defaultPage
 }
 
+const getAggPerPage = (args) => {
+  const defaultPerPage = 10000
+  if ('per_page' in args) {
+    try {
+      const perPage = parseInt(args.per_page, 10)
+      if (perPage < 0) {
+        return defaultPerPage
+      }
+      return perPage
+    } catch (er) {
+      return defaultPerPage
+    }
+  }
+  return defaultPerPage
+}
+
 const getPerPage = (args) => {
   const defaultPerPage = 50
   if ('per_page' in args) {
@@ -42,7 +58,7 @@ const getSingleTextFromArrayByLang = (thisObj, lang) => {
   return thisObj[lang]
 }
 
-const getAggregates = async (args, index) => {
+const getAggregates = async (args, field, index) => {
   const config = new Config()
 
   //  Grab the elastic search config details
@@ -53,89 +69,58 @@ const getAggregates = async (args, index) => {
 
   //  Set up the client
   const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const page = getPage(args)
-  const perPage = getPerPage(args)
-  const body = {
-    from: page * perPage,
-    size: perPage
-  }
-  body.query = {
-    'term': {
-      'lang.keyword': args.lang
-    }
-  }
-  body.sort = [{
-    'count': {
-      'order': 'desc'
-    }
-  }]
+  const perPage = getAggPerPage(args)
+  const body = {}
 
+  body.aggs = {
+    'results': {
+      'terms': {
+        'field': field,
+        'size': perPage
+      }
+    }
+  }
+
+  // Now let us add extra sorting if needed
+  if ('sort_field' in args && (args.sort_field === 'title' || args.sort_field === 'count')) {
+    let sortOrder = 'asc'
+    if ('sort' in args && args.sort === 'desc') sortOrder = 'desc'
+    if (args.sort_field === 'title') {
+      body.aggs.results.terms.order = {
+        '_key': sortOrder
+      }
+    } else {
+      body.aggs.results.terms.order = {
+        '_count': sortOrder
+      }
+    }
+  }
+
+  //  Run the search
   const results = await esclient.search({
     index,
     body
   }).catch((err) => {
     console.error(err)
   })
-  let records = results.hits.hits.map((hit) => hit._source).map((record) => {
-    return record
-  })
-  return records
-}
-
-exports.getAreas = async (args) => {
-  console.log('In JHERE')
-  const config = new Config()
-  const index = 'objects_mplus'
-
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
-  //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const page = getPage(args)
-  const perPage = getPerPage(args)
-  const body = {
-    from: page * perPage,
-    size: perPage
-  }
-  body.aggs = {
-    'areas': {
-      'terms': {
-        'field': `classification.area.areacat.${args.lang}.keyword`
-      }
-    }
-  }
-  /*
-  body.sort = [{
-    'count': {
-      'order': 'desc'
-    }
-  }]
-  */
-  const areas = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-  })
-  return areas.aggregations.areas.buckets.map((record) => {
+  return results.aggregations.results.buckets.map((record) => {
     return {
       title: record.key,
       count: record.doc_count
     }
   })
-  // return areas
+}
+
+exports.getAreas = async (args) => {
+  return getAggregates(args, `classification.area.areacat.${args.lang}.keyword`, 'objects_mplus')
 }
 
 exports.getCategories = async (args) => {
-  return getAggregates(args, 'object_categories_mplus')
+  return getAggregates(args, `classification.category.areacat.${args.lang}.keyword`, 'objects_mplus')
 }
 
 exports.getMediums = async (args) => {
-  return getAggregates(args, 'object_mediums_mplus')
+  return getAggregates(args, `medium.${args.lang}.keyword`, 'objects_mplus')
 }
 
 /*

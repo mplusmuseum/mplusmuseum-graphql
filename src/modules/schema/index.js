@@ -14,19 +14,22 @@ type Query {
     lang: String = "en"
   ): SingleObject
   areas(
-    page: Int
     per_page: Int
     lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
   ): [Area]
   categories(
-    page: Int
     per_page: Int
     lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
   ): [Categories]
   mediums(
-    page: Int
     per_page: Int
     lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
   ): [Mediums]
 }
 type Object {
