@@ -8,6 +8,12 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    category: String
+    area: String
+    medium: String
+    displayDate: String
+    beginDate: Int
+    endDate: Int
   ): [Object]
   object(
     id: Int!

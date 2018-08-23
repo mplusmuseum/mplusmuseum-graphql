@@ -178,26 +178,75 @@ exports.getObjects = async (args) => {
     }]
   }
 
-  //  If we've been sent over specific ids then we go and get just those
-  if (
-    ('ids' in args && Array.isArray(args.ids))
-  ) {
-    const must = []
+  const must = []
 
-    if ('ids' in args && Array.isArray(args.ids)) {
-      must.push({
-        terms: {
-          id: args.ids
-        }
-      })
+  //  Sigh, very bad way to add filters
+  //  NOTE: This doesn't combine filters
+  if ('ids' in args && Array.isArray(args.ids)) {
+    must.push({
+      terms: {
+        id: args.ids
+      }
+    })
+  }
+
+  if ('area' in args && args.area !== '') {
+    const pushThis = {
+      match: {}
     }
+    pushThis.match[`classification.area.areacat.${args.lang}.keyword`] = args.area
+    must.push(pushThis)
+  }
 
+  if ('category' in args && args.category !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`classification.category.areacat.${args.lang}.keyword`] = args.category
+    must.push(pushThis)
+  }
+
+  if ('medium' in args && args.medium !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`medium.${args.lang}.keyword`] = args.medium
+    must.push(pushThis)
+  }
+
+  if ('displayDate' in args && args.displayDate !== '') {
+    must.push({
+      match: {
+        'displayDate': args.displayDate
+      }
+    })
+  }
+
+  if ('beginDate' in args && args.beginDate !== '') {
+    must.push({
+      match: {
+        'beginDate': args.beginDate
+      }
+    })
+  }
+
+  if ('endDate' in args && args.endDate !== '') {
+    must.push({
+      match: {
+        'endDate': args.endDate
+      }
+    })
+  }
+
+  if (must.length > 0) {
     body.query = {
       bool: {
         must
       }
     }
   }
+
+  console.log(body.query.bool.must)
 
   //  Run the search
   const objects = await esclient.search({
