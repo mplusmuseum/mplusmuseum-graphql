@@ -246,8 +246,6 @@ exports.getObjects = async (args) => {
     }
   }
 
-  console.log(body.query.bool.must)
-
   //  Run the search
   const objects = await esclient.search({
     index,
