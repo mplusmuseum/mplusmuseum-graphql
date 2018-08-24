@@ -163,6 +163,9 @@ exports.getObjects = async (args) => {
 
     //  Special cases
     if (sortField === 'title') sortField = 'titles.text.keyword'
+    if (sortField === 'medium') sortField = `medium.${args.lang}.keyword`
+    if (sortField === 'classification.area') sortField = `classification.area.areacat.${args.lang}.keyword`
+    if (sortField === 'classification.category') sortField = `classification.category.areacat.${args.lang}.keyword`
 
     //  For objects we want to actually want to sort by the _id
     const sortObj = {}
@@ -190,7 +193,7 @@ exports.getObjects = async (args) => {
     })
   }
 
-  if ('area' in args && args.area !== '') {
+  if ('classification.area' in args && args.area !== '') {
     const pushThis = {
       match: {}
     }
@@ -198,7 +201,7 @@ exports.getObjects = async (args) => {
     must.push(pushThis)
   }
 
-  if ('category' in args && args.category !== '') {
+  if ('classification.category' in args && args.category !== '') {
     const pushThis = {
       match: {}
     }
