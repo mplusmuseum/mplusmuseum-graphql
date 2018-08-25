@@ -359,3 +359,154 @@ const getObject = async (args) => {
   return null
 }
 exports.getObject = getObject
+
+/*
+##########################################################
+##########################################################
+
+This is where we get all the constituents
+
+##########################################################
+##########################################################
+*/
+const getConstituents = async (args) => {
+  const config = new Config()
+  const index = 'constituents_mplus'
+
+  //  Grab the elastic search config details
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return []
+  }
+
+  //  Set up the client
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const page = getPage(args)
+  const perPage = getPerPage(args)
+  const body = {
+    from: page * perPage,
+    size: perPage
+  }
+
+  //  Check to see if we have been passed valid sort fields values, if we have
+  //  then use that for a sort. Otherwise use a default one
+  const keywordFields = ['gender', 'nationality']
+  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality']
+  const validSorts = ['asc', 'desc']
+  if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
+    //  To actually sort on a title we need to really sort on `title.keyword`
+    let sortField = args.sort_field
+    if (keywordFields.includes(sortField.toLowerCase())) sortField = `${sortField}.keyword`
+
+    //  Special cases
+    if (sortField === 'name') sortField = `name.${args.lang}.displayname.keyword`
+    if (sortField === 'alphaSortName') sortField = `name.${args.lang}.alphasort.keyword`
+
+    //  For objects we want to actually want to sort by the _id
+    const sortObj = {}
+    sortObj[sortField] = {
+      order: args.sort
+    }
+    body.sort = [sortObj]
+  } else {
+    body.sort = [{
+      id: {
+        order: 'asc'
+      }
+    }]
+  }
+
+  const must = []
+
+  //  Sigh, very bad way to add filters
+  //  NOTE: This doesn't combine filters
+  if ('ids' in args && Array.isArray(args.ids)) {
+    must.push({
+      terms: {
+        id: args.ids
+      }
+    })
+  }
+
+  if ('gender' in args && args.gender !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`gender.keyword`] = args.gender
+    must.push(pushThis)
+  }
+
+  if ('nationality' in args && args.nationality !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`nationality.keyword`] = args.nationality
+    must.push(pushThis)
+  }
+
+  if ('beginDate' in args && args.beginDate !== '') {
+    must.push({
+      match: {
+        'beginDate': parseInt(args.beginDate, 10)
+      }
+    })
+  }
+
+  if ('endDate' in args && args.endDate !== '') {
+    must.push({
+      match: {
+        'endDate': args.endDate
+      }
+    })
+  }
+
+  if (must.length > 0) {
+    body.query = {
+      bool: {
+        must
+      }
+    }
+  }
+
+  //  Run the search
+  const results = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+  })
+
+  let records = results.hits.hits.map((hit) => hit._source).map((record) => {
+    //  Grab the name
+    record.name = getSingleTextFromArrayByLang(record.name, args.lang)
+    if (record.name !== null) {
+      //  The order here is important, as the display name will
+      //  write over the record.name information
+      if ('alphasort' in record.name) {
+        record.alphaSortName = record.name.alphasort
+      } else {
+        record.alphaSortName = null
+      }
+      if ('displayname' in record.name) {
+        record.name = record.name.displayname
+      } else {
+        record.name = null
+      }
+    }
+
+    //  Grab the bio
+    record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
+    return record
+  })
+
+  // console.log(records)
+  return records
+}
+exports.getConstituents = getConstituents
+
+exports.getConstituent = async (args) => {
+  args.ids = [args.id]
+  const constituentArray = await getConstituents(args)
+  if (Array.isArray(constituentArray)) return constituentArray[0]
+  return null
+}

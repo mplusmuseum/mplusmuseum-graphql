@@ -19,6 +19,22 @@ type Query {
     id: Int!
     lang: String = "en"
   ): SingleObject
+  constituents(
+    page: Int
+    per_page: Int
+    ids: [Int]
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+    gender: String
+    beginDate: Int
+    endDate: Int
+    nationality: String
+  ): [Constituent]
+  constituent(
+    id: Int!
+    lang: String = "en"
+  ): SingleConstituent
   areas(
     per_page: Int
     lang: String = "en"
@@ -65,6 +81,28 @@ type SingleObject {
   creditLine: String
   medium: String
   classification: Classification
+}
+type Constituent {
+  id: Int
+  publicAccess: Boolean
+  name: String
+  alphaSortName: String
+  displayBio: String
+  gender: String
+  beginDate: Int
+  endDate: Int
+  nationality: String
+}
+type SingleConstituent {
+  id: Int
+  publicAccess: Boolean
+  name: String
+  alphaSortName: String
+  displayBio: String
+  gender: String
+  beginDate: Int
+  endDate: Int
+  nationality: String
 }
 type Classification {
   area: String
