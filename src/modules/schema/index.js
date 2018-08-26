@@ -14,6 +14,7 @@ type Query {
     displayDate: String
     beginDate: Int
     endDate: Int
+    constituent: Int
   ): [Object]
   object(
     id: Int!
@@ -67,6 +68,7 @@ type Object {
   creditLine: String
   medium: String
   classification: Classification
+  constituents: [ObjectConstituent]
 }
 type SingleObject {
   id: Int
@@ -81,6 +83,7 @@ type SingleObject {
   creditLine: String
   medium: String
   classification: Classification
+  constituents: [ObjectConstituent]
 }
 type Constituent {
   id: Int
@@ -103,6 +106,19 @@ type SingleConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
+}
+type ObjectConstituent {
+  id: Int
+  publicAccess: Boolean
+  name: String
+  alphaSortName: String
+  displayBio: String
+  gender: String
+  beginDate: Int
+  endDate: Int
+  nationality: String
+  rank: Int
+  role: String
 }
 type Classification {
   area: String

@@ -132,7 +132,7 @@ This is where we get all the objects
 ##########################################################
 ##########################################################
 */
-exports.getObjects = async (args) => {
+const getObjects = async (args, getDeep = false) => {
   const config = new Config()
   const index = 'objects_mplus'
 
@@ -241,6 +241,14 @@ exports.getObjects = async (args) => {
     })
   }
 
+  if ('constituent' in args && args.constituent !== '') {
+    must.push({
+      match: {
+        'consituents.ids': args.constituent
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {
@@ -301,61 +309,76 @@ exports.getObjects = async (args) => {
     return record
   })
 
-  return records
-}
-
-const getObject = async (args) => {
-  const config = new Config()
-
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
-  //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const id = args.id
-  const index = 'objects_mplus'
-  const type = 'objects'
-
-  const object = await esclient.get({
-    index,
-    type,
-    id
-  }).catch((err) => {
-    //  Dont log the error if this is a "good" error, i.e. we simple didn't find
-    //  a record, no need to spam the error logs
-    if (!('body' in err && 'found' in err.body && err.body.found === false)) {
-      console.error(err)
+  //  Now that we have all the objects, we want to get all the constituents connected to them
+  const constituentsIds = []
+  records = records.map((record) => {
+    if ('consituents' in record && 'ids' in record.consituents) {
+      let ids = record.consituents.ids
+      if (!Array.isArray(ids)) ids = [ids]
+      ids.forEach((id) => {
+        if (!constituentsIds.includes(id)) constituentsIds.push(id)
+      })
     }
+
+    //  unpack the consituents
+    if ('idsToRoleRank' in record) {
+      record.idsToRoleRank = JSON.parse(record.idsToRoleRank)
+    }
+    return record
   })
 
-  if (object !== undefined && object !== null && 'found' in object && object.found === true) {
-    const newObject = object._source
-    let match = null
-    //  Get the default value of title
-    match = getSingleTextFromArrayByLang(newObject.titles, args.lang)
-    delete newObject.titles
-    if (match !== null) newObject.title = match
-
-    //  Get the default value of dimensions
-    match = getSingleTextFromArrayByLang(newObject.dimensions, args.lang)
-    delete newObject.dimensions
-    if (match !== null) newObject.dimensions = match
-
-    //  Get the default value of credit lines
-    match = getSingleTextFromArrayByLang(newObject.creditLines, args.lang)
-    delete newObject.creditLines
-    if (match !== null) newObject.creditLine = match
-
-    //  Get the default value of medium
-    match = getSingleTextFromArrayByLang(newObject.mediums, args.lang)
-    delete newObject.mediums
-    if (match !== null) newObject.medium = match
-    return newObject
+  //  If we don't have any constituents just return the records
+  if (constituentsIds.length === 0) return records
+  const newArgs = {
+    lang: args.lang,
+    ids: constituentsIds
   }
+  const constituents = await getConstituents(newArgs, false)
 
+  //  Now we have the information we need to pop the info back
+  //  into the object. First we'll build an index
+  const constituentsMap = {}
+  constituents.forEach((constituent) => {
+    constituentsMap[constituent.id] = constituent
+  })
+
+  records = records.map((record) => {
+    const newConsituents = []
+    if ('consituents' in record && 'ids' in record.consituents && 'idsToRoleRank' in record.consituents) {
+      const idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
+      let ids = record.consituents.ids
+      if (!Array.isArray(ids)) ids = [ids]
+      ids.forEach((id) => {
+        if (id in constituentsMap) {
+          const newConsituent = JSON.parse(JSON.stringify(constituentsMap[id]))
+          if (id in idsToRoleRank && 'rank' in idsToRoleRank[id]) newConsituent.rank = idsToRoleRank[id].rank
+          if (id in idsToRoleRank && 'role' in idsToRoleRank[id]) {
+            const roles = idsToRoleRank[id].role
+            if (args.lang in roles) {
+              newConsituent.role = roles[args.lang]
+            } else {
+              if ('en' in roles) {
+                newConsituent.role = roles.en
+              }
+            }
+          }
+          newConsituents.push(newConsituent)
+        }
+      })
+    }
+    record.constituents = newConsituents
+    delete record.consituents
+    return record
+  })
+  console.log(records)
+  return records
+}
+exports.getObjects = getObjects
+
+const getObject = async (args) => {
+  args.ids = [args.id]
+  const objectArray = await getObjects(args, true)
+  if (Array.isArray(objectArray)) return objectArray[0]
   return null
 }
 exports.getObject = getObject
@@ -369,7 +392,7 @@ This is where we get all the constituents
 ##########################################################
 ##########################################################
 */
-const getConstituents = async (args) => {
+const getConstituents = async (args, getDeep = false) => {
   const config = new Config()
   const index = 'constituents_mplus'
 
@@ -506,7 +529,7 @@ exports.getConstituents = getConstituents
 
 exports.getConstituent = async (args) => {
   args.ids = [args.id]
-  const constituentArray = await getConstituents(args)
+  const constituentArray = await getConstituents(args, true)
   if (Array.isArray(constituentArray)) return constituentArray[0]
   return null
 }
