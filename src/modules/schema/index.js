@@ -14,11 +14,28 @@ type Query {
     displayDate: String
     beginDate: Int
     endDate: Int
-  ): [Object]
+    constituent: Int
+  ): [LevelTwoObject]
   object(
     id: Int!
     lang: String = "en"
-  ): SingleObject
+  ): LevelOneObject
+  constituents(
+    page: Int
+    per_page: Int
+    ids: [Int]
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+    gender: String
+    beginDate: Int
+    endDate: Int
+    nationality: String
+  ): [LevelThreeConstituent]
+  constituent(
+    id: Int!
+    lang: String = "en"
+  ): LevelOneConstituent
   areas(
     per_page: Int
     lang: String = "en"
@@ -38,7 +55,37 @@ type Query {
     sort_field: String = "id"
   ): [Mediums]
 }
-type Object {
+type LevelOneObject {
+  id: Int
+  publicAccess: Boolean
+  objectNumber: String
+  sortNumber: Float
+  title: String
+  displayDate: String
+  beginDate: Int
+  endDate: Int
+  dimension: String
+  creditLine: String
+  medium: String
+  classification: Classification
+  constituents: [LevelTwoConstituent]
+}
+type LevelTwoObject {
+  id: Int
+  publicAccess: Boolean
+  objectNumber: String
+  sortNumber: Float
+  title: String
+  displayDate: String
+  beginDate: Int
+  endDate: Int
+  dimension: String
+  creditLine: String
+  medium: String
+  classification: Classification
+  constituents: [LevelThreeConstituent]
+}
+type LevelThreeObject {
   id: Int
   publicAccess: Boolean
   objectNumber: String
@@ -52,20 +99,48 @@ type Object {
   medium: String
   classification: Classification
 }
-type SingleObject {
+
+
+type LevelOneConstituent {
   id: Int
   publicAccess: Boolean
-  objectNumber: String
-  sortNumber: Float
-  title: String
-  displayDate: String
+  name: String
+  alphaSortName: String
+  displayBio: String
+  gender: String
   beginDate: Int
   endDate: Int
-  dimension: String
-  creditLine: String
-  medium: String
-  classification: Classification
+  nationality: String
+  rank: Int
+  roles: [String]
+  objects: [LevelTwoObject]
 }
+type LevelTwoConstituent {
+  id: Int
+  publicAccess: Boolean
+  name: String
+  alphaSortName: String
+  displayBio: String
+  gender: String
+  beginDate: Int
+  endDate: Int
+  nationality: String
+  rank: Int
+  roles: [String]
+  objects: [LevelThreeObject]
+}
+type LevelThreeConstituent {
+  id: Int
+  publicAccess: Boolean
+  name: String
+  alphaSortName: String
+  displayBio: String
+  gender: String
+  beginDate: Int
+  endDate: Int
+  nationality: String
+}
+
 type Classification {
   area: String
   category: String

@@ -132,7 +132,7 @@ This is where we get all the objects
 ##########################################################
 ##########################################################
 */
-exports.getObjects = async (args) => {
+const getObjects = async (args, levelsDown = 2) => {
   const config = new Config()
   const index = 'objects_mplus'
 
@@ -241,6 +241,14 @@ exports.getObjects = async (args) => {
     })
   }
 
+  if ('constituent' in args && args.constituent !== '') {
+    must.push({
+      match: {
+        'consituents.ids': args.constituent
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {
@@ -301,11 +309,98 @@ exports.getObjects = async (args) => {
     return record
   })
 
+  //  If we are in here the 1st time, then we get more info about the constituents
+  //  but if we are any deeper levels down then we don't want to go and fetch any more
+  if (levelsDown <= 2) {
+    //  Now that we have all the objects, we want to get all the constituents connected to them
+    const constituentsIds = []
+    records = records.map((record) => {
+      if ('consituents' in record && 'ids' in record.consituents) {
+        let ids = record.consituents.ids
+        if (!Array.isArray(ids)) ids = [ids]
+        ids.forEach((id) => {
+          if (!constituentsIds.includes(id)) constituentsIds.push(id)
+        })
+      }
+
+      //  unpack the consituents
+      if ('idsToRoleRank' in record) {
+        record.idsToRoleRank = JSON.parse(record.idsToRoleRank)
+      }
+      return record
+    })
+
+    //  If we don't have any constituents just return the records
+    if (constituentsIds.length === 0) return records
+    const newArgs = {
+      lang: args.lang,
+      ids: constituentsIds,
+      per_page: 200
+    }
+    const constituents = await getConstituents(newArgs, levelsDown + 1)
+
+    //  Now we have the information we need to pop the info back
+    //  into the object. First we'll build an index
+    const constituentsMap = {}
+    constituents.forEach((constituent) => {
+      constituentsMap[constituent.id] = constituent
+    })
+
+    records = records.map((record) => {
+      const newConsituents = []
+      if ('consituents' in record && 'ids' in record.consituents && 'idsToRoleRank' in record.consituents) {
+        const idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
+        let ids = record.consituents.ids
+        if (!Array.isArray(ids)) ids = [ids]
+        ids.forEach((id) => {
+          if (id in constituentsMap) {
+            const newConsituent = JSON.parse(JSON.stringify(constituentsMap[id]))
+            if (id in idsToRoleRank && 'rank' in idsToRoleRank[id]) newConsituent.rank = idsToRoleRank[id].rank
+            if (id in idsToRoleRank && 'role' in idsToRoleRank[id]) {
+              const roles = idsToRoleRank[id].role
+              if (args.lang in roles) {
+                newConsituent.role = roles[args.lang]
+              } else {
+                if ('en' in roles) {
+                  newConsituent.role = roles.en
+                }
+              }
+            }
+            newConsituents.push(newConsituent)
+          }
+        })
+      }
+      record.constituents = newConsituents
+      delete record.consituents
+      return record
+    })
+  }
+
+  // console.log(records)
   return records
 }
+exports.getObjects = getObjects
 
 const getObject = async (args) => {
+  args.ids = [args.id]
+  const objectArray = await getObjects(args, 1)
+  if (Array.isArray(objectArray)) return objectArray[0]
+  return null
+}
+exports.getObject = getObject
+
+/*
+##########################################################
+##########################################################
+
+This is where we get all the constituents
+
+##########################################################
+##########################################################
+*/
+const getConstituents = async (args, levelsDown = 3) => {
   const config = new Config()
+  const index = 'constituents_mplus'
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')
@@ -315,47 +410,177 @@ const getObject = async (args) => {
 
   //  Set up the client
   const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const id = args.id
-  const index = 'objects_mplus'
-  const type = 'objects'
-
-  const object = await esclient.get({
-    index,
-    type,
-    id
-  }).catch((err) => {
-    //  Dont log the error if this is a "good" error, i.e. we simple didn't find
-    //  a record, no need to spam the error logs
-    if (!('body' in err && 'found' in err.body && err.body.found === false)) {
-      console.error(err)
-    }
-  })
-
-  if (object !== undefined && object !== null && 'found' in object && object.found === true) {
-    const newObject = object._source
-    let match = null
-    //  Get the default value of title
-    match = getSingleTextFromArrayByLang(newObject.titles, args.lang)
-    delete newObject.titles
-    if (match !== null) newObject.title = match
-
-    //  Get the default value of dimensions
-    match = getSingleTextFromArrayByLang(newObject.dimensions, args.lang)
-    delete newObject.dimensions
-    if (match !== null) newObject.dimensions = match
-
-    //  Get the default value of credit lines
-    match = getSingleTextFromArrayByLang(newObject.creditLines, args.lang)
-    delete newObject.creditLines
-    if (match !== null) newObject.creditLine = match
-
-    //  Get the default value of medium
-    match = getSingleTextFromArrayByLang(newObject.mediums, args.lang)
-    delete newObject.mediums
-    if (match !== null) newObject.medium = match
-    return newObject
+  const page = getPage(args)
+  const perPage = getPerPage(args)
+  const body = {
+    from: page * perPage,
+    size: perPage
   }
 
+  //  Check to see if we have been passed valid sort fields values, if we have
+  //  then use that for a sort. Otherwise use a default one
+  const keywordFields = ['gender', 'nationality']
+  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality']
+  const validSorts = ['asc', 'desc']
+  if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
+    //  To actually sort on a title we need to really sort on `title.keyword`
+    let sortField = args.sort_field
+    if (keywordFields.includes(sortField.toLowerCase())) sortField = `${sortField}.keyword`
+
+    //  Special cases
+    if (sortField === 'name') sortField = `name.${args.lang}.displayname.keyword`
+    if (sortField === 'alphaSortName') sortField = `name.${args.lang}.alphasort.keyword`
+
+    //  For objects we want to actually want to sort by the _id
+    const sortObj = {}
+    sortObj[sortField] = {
+      order: args.sort
+    }
+    body.sort = [sortObj]
+  } else {
+    body.sort = [{
+      id: {
+        order: 'asc'
+      }
+    }]
+  }
+
+  const must = []
+
+  //  Sigh, very bad way to add filters
+  //  NOTE: This doesn't combine filters
+  if ('ids' in args && Array.isArray(args.ids)) {
+    must.push({
+      terms: {
+        id: args.ids
+      }
+    })
+  }
+
+  if ('gender' in args && args.gender !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`gender.keyword`] = args.gender
+    must.push(pushThis)
+  }
+
+  if ('nationality' in args && args.nationality !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`nationality.keyword`] = args.nationality
+    must.push(pushThis)
+  }
+
+  if ('beginDate' in args && args.beginDate !== '') {
+    must.push({
+      match: {
+        'beginDate': parseInt(args.beginDate, 10)
+      }
+    })
+  }
+
+  if ('endDate' in args && args.endDate !== '') {
+    must.push({
+      match: {
+        'endDate': args.endDate
+      }
+    })
+  }
+
+  if (must.length > 0) {
+    body.query = {
+      bool: {
+        must
+      }
+    }
+  }
+
+  //  Run the search
+  const results = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+  })
+
+  let records = results.hits.hits.map((hit) => hit._source).map((record) => {
+    //  Grab the name
+    record.name = getSingleTextFromArrayByLang(record.name, args.lang)
+    if (record.name !== null) {
+      //  The order here is important, as the display name will
+      //  write over the record.name information
+      if ('alphasort' in record.name) {
+        record.alphaSortName = record.name.alphasort
+      } else {
+        record.alphaSortName = null
+      }
+      if ('displayname' in record.name) {
+        record.name = record.name.displayname
+      } else {
+        record.name = null
+      }
+    }
+
+    //  Grab the bio
+    record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
+    return record
+  })
+
+  //  If we are in here the 1st time, then we get more info about the objects
+  //  but if we are any deeper levels down then we don't want to go and fetch any more
+  async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  }
+
+  if (levelsDown <= 2) {
+    const newRecords = []
+    const start = async () => {
+      await asyncForEach(records, async (record) => {
+        const newArgs = {
+          lang: args.lang,
+          constituent: record.id,
+          per_page: 200
+        }
+        record.roles = []
+        record.objects = await getObjects(newArgs, levelsDown + 1)
+        record.objects.forEach((object) => {
+          if ('consituents' in object && 'idsToRoleRank' in object.consituents) {
+            const rankRoles = JSON.parse(object.consituents.idsToRoleRank)
+            if (record.id in rankRoles) {
+              const rankRole = rankRoles[record.id]
+              if ('role' in rankRole) {
+                let thisRole = null
+                if (args.lang in rankRole.role) {
+                  thisRole = rankRole.role[args.lang]
+                } else {
+                  thisRole = rankRole.role['en']
+                }
+                if (thisRole !== null && thisRole !== undefined && thisRole !== '') {
+                  if (!record.roles.includes(thisRole)) record.roles.push(thisRole)
+                }
+              }
+            }
+          }
+        })
+        newRecords.push(record)
+      })
+    }
+    await start()
+    records = newRecords
+  }
+
+  // console.log(records)
+  return records
+}
+exports.getConstituents = getConstituents
+
+exports.getConstituent = async (args) => {
+  args.ids = [args.id]
+  const constituentArray = await getConstituents(args, 1)
+  if (Array.isArray(constituentArray)) return constituentArray[0]
   return null
 }
-exports.getObject = getObject

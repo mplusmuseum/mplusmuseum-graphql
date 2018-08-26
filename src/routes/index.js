@@ -151,6 +151,12 @@ const root = {
   object: (args) => {
     return queries.getObject(args)
   },
+  constituents: (args) => {
+    return queries.getConstituents(args)
+  },
+  constituent: (args) => {
+    return queries.getConstituent(args)
+  },
   areas: (args) => {
     return queries.getAreas(args)
   },
