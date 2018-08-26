@@ -258,7 +258,6 @@ const getObjects = async (args, levelsDown = 2) => {
   }
 
   //  Run the search
-  console.log('In getObjects, calling a search')
   const objects = await esclient.search({
     index,
     body
@@ -499,7 +498,6 @@ const getConstituents = async (args, levelsDown = 3) => {
   }
 
   //  Run the search
-  console.log('In getConstituents, calling a search')
   const results = await esclient.search({
     index,
     body
@@ -532,7 +530,7 @@ const getConstituents = async (args, levelsDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
