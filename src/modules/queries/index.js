@@ -142,7 +142,8 @@ This is where we get all the objects
 ##########################################################
 ##########################################################
 */
-const getObjects = async (args, levelsDown = 2) => {
+const getObjects = async (args, levelDown = 2) => {
+  console.log('in getObjects, level: ', levelDown)
   const config = new Config()
   const index = 'objects_mplus'
 
@@ -319,74 +320,70 @@ const getObjects = async (args, levelsDown = 2) => {
     return record
   })
 
-  //  If we are in here the 1st time, then we get more info about the constituents
-  //  but if we are any deeper levels down then we don't want to go and fetch any more
-  if (levelsDown <= 2) {
-    //  Now that we have all the objects, we want to get all the constituents connected to them
-    const constituentsIds = []
-    records = records.map((record) => {
-      if ('consituents' in record && 'ids' in record.consituents) {
-        let ids = record.consituents.ids
-        if (!Array.isArray(ids)) ids = [ids]
-        ids.forEach((id) => {
-          if (!constituentsIds.includes(id)) constituentsIds.push(id)
-        })
-      }
-
-      //  unpack the consituents
-      if ('idsToRoleRank' in record) {
-        record.idsToRoleRank = JSON.parse(record.idsToRoleRank)
-      }
-      return record
-    })
-
-    //  If we don't have any constituents just return the records
-    if (constituentsIds.length === 0) return records
-    const newArgs = {
-      lang: args.lang,
-      ids: constituentsIds,
-      per_page: 200
+  //  Now we have all the objects we want to get the constituents for those objects
+  const constituentsIds = []
+  records = records.map((record) => {
+    if ('consituents' in record && 'ids' in record.consituents) {
+      let ids = record.consituents.ids
+      if (!Array.isArray(ids)) ids = [ids]
+      ids.forEach((id) => {
+        if (!constituentsIds.includes(id)) constituentsIds.push(id)
+      })
     }
-    const constituents = await getConstituents(newArgs, levelsDown + 1)
 
-    //  Now we have the information we need to pop the info back
-    //  into the object. First we'll build an index
-    const constituentsMap = {}
-    constituents.forEach((constituent) => {
-      constituentsMap[constituent.id] = constituent
-    })
+    //  unpack the consituents
+    if ('idsToRoleRank' in record) {
+      record.idsToRoleRank = JSON.parse(record.idsToRoleRank)
+    }
+    return record
+  })
 
-    records = records.map((record) => {
-      const newConsituents = []
-      if ('consituents' in record && 'ids' in record.consituents && 'idsToRoleRank' in record.consituents) {
-        const idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
-        let ids = record.consituents.ids
-        if (!Array.isArray(ids)) ids = [ids]
-        ids.forEach((id) => {
-          if (id in constituentsMap) {
-            const newConsituent = JSON.parse(JSON.stringify(constituentsMap[id]))
-            if (id in idsToRoleRank && 'rank' in idsToRoleRank[id]) newConsituent.rank = idsToRoleRank[id].rank
-            if (id in idsToRoleRank && 'role' in idsToRoleRank[id]) {
-              const roles = idsToRoleRank[id].role
-              if (args.lang in roles) {
-                newConsituent.role = roles[args.lang]
-              } else {
-                if ('en' in roles) {
-                  newConsituent.role = roles.en
-                }
-              }
-            }
-            newConsituents.push(newConsituent)
-          }
-        })
-      }
-      record.constituents = newConsituents
-      delete record.consituents
-      return record
-    })
+  //  If there are no constituens to get then we can just return the records
+  if (constituentsIds.length === 0) return records
+
+  //  If we are from a single record then we want to get the constituents, *and* all the
+  //  objects belonging to those constitues, including constituents.
+  const newArgs = {
+    lang: args.lang,
+    ids: constituentsIds,
+    per_page: 200
   }
+  const constituents = await getConstituents(newArgs, levelDown + 1)
 
-  // console.log(records)
+  //  Now I want to turn those constituents into a map so I can quickly look them up
+  const constituentsMap = {}
+  constituents.forEach((constituent) => {
+    constituentsMap[constituent.id] = constituent
+  })
+
+  records = records.map((record) => {
+    const newConstituents = []
+    //  Now we want to look through the idsToRoleRank so we can
+    //  *explode* or populate them with the full consituent information we have
+    let idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
+    //  Grab the correct language for the roles
+    idsToRoleRank = idsToRoleRank.map((roleRank) => {
+      let newRole = null
+      if (newRole === null && 'roles' in roleRank && args.lang in roleRank.roles) newRole = roleRank.roles[args.lang]
+      if (newRole === null && 'roles' in roleRank && 'en' in roleRank.roles) newRole = roleRank.roles['en']
+      roleRank.role = newRole
+      delete roleRank.roles
+      return roleRank
+    })
+
+    idsToRoleRank.forEach((roleRank) => {
+      if (roleRank.id in constituentsMap) {
+        const newConstituent = JSON.parse(JSON.stringify(constituentsMap[roleRank.id]))
+        newConstituent.rank = roleRank.rank
+        newConstituent.role = roleRank.role
+        newConstituents.push(newConstituent)
+      }
+    })
+    record.constituents = newConstituents
+    delete record.consituents
+    return record
+  })
+
   return records
 }
 exports.getObjects = getObjects
@@ -408,7 +405,8 @@ This is where we get all the constituents
 ##########################################################
 ##########################################################
 */
-const getConstituents = async (args, levelsDown = 3) => {
+const getConstituents = async (args, levelDown = 2) => {
+  console.log('in getConstituents, level: ', levelDown)
   const config = new Config()
   const index = 'constituents_mplus'
 
@@ -540,6 +538,7 @@ const getConstituents = async (args, levelsDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
+  /*
   async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
@@ -582,7 +581,7 @@ const getConstituents = async (args, levelsDown = 3) => {
     await start()
     records = newRecords
   }
-
+  */
   // console.log(records)
   return records
 }

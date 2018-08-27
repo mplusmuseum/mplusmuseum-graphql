@@ -143,7 +143,7 @@ type ConstituentRankAndRollSimpleObjects {
   endDate: Int
   nationality: String
   rank: Int
-  roles: [String]
+  role: String
   objects: [LevelTwoObject]
 }
 
