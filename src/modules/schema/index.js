@@ -15,7 +15,7 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
-  ): [LevelTwoObject]
+  ): [LevelOneObject]
   object(
     id: Int!
     lang: String = "en"
@@ -116,7 +116,7 @@ type LevelOneConstituent {
   nationality: String
   rank: Int
   roles: [String]
-  objects: [LevelTwoObject]
+  objects: [LevelOneObject]
 }
 
 type LevelTwoConstituent {

@@ -143,7 +143,6 @@ This is where we get all the objects
 ##########################################################
 */
 const getObjects = async (args, levelDown = 2) => {
-  console.log('in getObjects, level: ', levelDown)
   const config = new Config()
   const index = 'objects_mplus'
 
@@ -390,7 +389,7 @@ exports.getObjects = getObjects
 
 const getObject = async (args) => {
   args.ids = [args.id]
-  const objectArray = await getObjects(args, 1)
+  const objectArray = await getObjects(args, 2)
   if (Array.isArray(objectArray)) return objectArray[0]
   return null
 }
@@ -405,8 +404,7 @@ This is where we get all the constituents
 ##########################################################
 ##########################################################
 */
-const getConstituents = async (args, levelDown = 2) => {
-  console.log('in getConstituents, level: ', levelDown)
+const getConstituents = async (args, levelDown = 3) => {
   const config = new Config()
   const index = 'constituents_mplus'
 
@@ -538,24 +536,23 @@ const getConstituents = async (args, levelDown = 2) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  /*
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
   }
 
-  if (levelsDown <= 2) {
+  if (levelDown <= 2) {
     const newRecords = []
     const start = async () => {
       await asyncForEach(records, async (record) => {
         const newArgs = {
           lang: args.lang,
           constituent: record.id,
-          per_page: 200
+          per_page: 500
         }
         record.roles = []
-        record.objects = await getObjects(newArgs, levelsDown + 1)
+        record.objects = await getObjects(newArgs, levelDown + 1)
         record.objects.forEach((object) => {
           if ('consituents' in object && 'idsToRoleRank' in object.consituents) {
             const rankRoles = JSON.parse(object.consituents.idsToRoleRank)
@@ -581,8 +578,28 @@ const getConstituents = async (args, levelDown = 2) => {
     await start()
     records = newRecords
   }
-  */
-  // console.log(records)
+
+  //  Loop through the records to pop the roles into the constituents
+  records.forEach((record) => {
+    //  If we have a list of objects for this constituent then loop through them
+    if ('objects' in record) {
+      record.objects.forEach((object) => {
+        //  Now see all the constituents in each object
+        if ('constituents' in object) {
+          object.constituents.forEach((constituent) => {
+            //  If the constituent for this objects matches the one from out record
+            //  then we have another role for them
+            if ('role' in constituent && 'id' in constituent && constituent.id === record.id) {
+              //  But only if we don't already have it
+              if (!record.roles.includes(constituent.role)) {
+                record.roles.push(constituent.role)
+              }
+            }
+          })
+        }
+      })
+    }
+  })
   return records
 }
 exports.getConstituents = getConstituents
