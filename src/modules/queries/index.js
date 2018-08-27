@@ -203,7 +203,7 @@ const getObjects = async (args, levelsDown = 2) => {
     })
   }
 
-  if ('classification.area' in args && args.area !== '') {
+  if ('area' in args && args.area !== '') {
     const pushThis = {
       match: {}
     }
@@ -211,7 +211,7 @@ const getObjects = async (args, levelsDown = 2) => {
     must.push(pushThis)
   }
 
-  if ('classification.category' in args && args.category !== '') {
+  if ('category' in args && args.category !== '') {
     const pushThis = {
       match: {}
     }
