@@ -52,10 +52,20 @@ const getPerPage = (args) => {
 const getSingleTextFromArrayByLang = (thisObj, lang) => {
   //  If we can't find the language in the object then
   //  fall back to 'en' and try again
+
+  //  Return null if we don't have an obejct
   if (thisObj === null || thisObj === undefined) return null
-  if (!(lang in thisObj) && lang !== 'en') lang = 'en'
-  if (!(lang in thisObj)) return null
-  return thisObj[lang]
+  //  If we find the language the just go for it
+  if (lang in thisObj) return thisObj[lang]
+  //  Otherwise default to English
+  if ('en' in thisObj) return thisObj['en']
+  //  If that didn't work, then we don't have the language asked for
+  //  or english, lets see if we have anything at all, get the keys
+  const keys = Object.keys(thisObj)
+  //  If we have no keys return null
+  if (keys.length === 0) return null
+  //  Otherwise just return the first record we can find
+  return thisObj[keys[0]]
 }
 
 const getAggregates = async (args, field, index) => {
@@ -530,7 +540,7 @@ const getConstituents = async (args, levelsDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
