@@ -15,11 +15,11 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
-  ): [LevelTwoObject]
+  ): [LevelOneObject]
   object(
     id: Int!
     lang: String = "en"
-  ): LevelOneObject
+  ): SingleObject
   constituents(
     page: Int
     per_page: Int
@@ -55,6 +55,38 @@ type Query {
     sort_field: String = "id"
   ): [Mediums]
 }
+
+type SingleObject {
+  id: Int
+  publicAccess: Boolean
+  objectNumber: String
+  sortNumber: Float
+  title: String
+  displayDate: String
+  beginDate: Int
+  endDate: Int
+  dimension: String
+  creditLine: String
+  medium: String
+  classification: Classification
+  constituents: [ConstituentRankAndRollSimpleObjects]
+}
+
+type SimpleObject {
+  id: Int
+  publicAccess: Boolean
+  objectNumber: String
+  sortNumber: Float
+  title: String
+  displayDate: String
+  beginDate: Int
+  endDate: Int
+  dimension: String
+  creditLine: String
+  medium: String
+  classification: Classification
+}
+
 type LevelOneObject {
   id: Int
   publicAccess: Boolean
@@ -98,6 +130,21 @@ type LevelThreeObject {
   creditLine: String
   medium: String
   classification: Classification
+}
+
+type ConstituentRankAndRollSimpleObjects {
+  id: Int
+  publicAccess: Boolean
+  name: String
+  alphaSortName: String
+  displayBio: String
+  gender: String
+  beginDate: Int
+  endDate: Int
+  nationality: String
+  rank: Int
+  roles: [String]
+  objects: [LevelTwoObject]
 }
 
 
