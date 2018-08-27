@@ -15,11 +15,11 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
-  ): [LevelOneObject]
+  ): [LevelTwoObject]
   object(
     id: Int!
     lang: String = "en"
-  ): SingleObject
+  ): LevelOneObject
   constituents(
     page: Int
     per_page: Int
@@ -56,37 +56,6 @@ type Query {
   ): [Mediums]
 }
 
-type SingleObject {
-  id: Int
-  publicAccess: Boolean
-  objectNumber: String
-  sortNumber: Float
-  title: String
-  displayDate: String
-  beginDate: Int
-  endDate: Int
-  dimension: String
-  creditLine: String
-  medium: String
-  classification: Classification
-  constituents: [ConstituentRankAndRollSimpleObjects]
-}
-
-type SimpleObject {
-  id: Int
-  publicAccess: Boolean
-  objectNumber: String
-  sortNumber: Float
-  title: String
-  displayDate: String
-  beginDate: Int
-  endDate: Int
-  dimension: String
-  creditLine: String
-  medium: String
-  classification: Classification
-}
-
 type LevelOneObject {
   id: Int
   publicAccess: Boolean
@@ -102,6 +71,7 @@ type LevelOneObject {
   classification: Classification
   constituents: [LevelTwoConstituent]
 }
+
 type LevelTwoObject {
   id: Int
   publicAccess: Boolean
@@ -117,6 +87,7 @@ type LevelTwoObject {
   classification: Classification
   constituents: [LevelThreeConstituent]
 }
+
 type LevelThreeObject {
   id: Int
   publicAccess: Boolean
@@ -130,21 +101,6 @@ type LevelThreeObject {
   creditLine: String
   medium: String
   classification: Classification
-}
-
-type ConstituentRankAndRollSimpleObjects {
-  id: Int
-  publicAccess: Boolean
-  name: String
-  alphaSortName: String
-  displayBio: String
-  gender: String
-  beginDate: Int
-  endDate: Int
-  nationality: String
-  rank: Int
-  role: String
-  objects: [LevelTwoObject]
 }
 
 
@@ -162,6 +118,7 @@ type LevelOneConstituent {
   roles: [String]
   objects: [LevelTwoObject]
 }
+
 type LevelTwoConstituent {
   id: Int
   publicAccess: Boolean
@@ -173,9 +130,9 @@ type LevelTwoConstituent {
   endDate: Int
   nationality: String
   rank: Int
-  roles: [String]
-  objects: [LevelThreeObject]
+  role: String
 }
+
 type LevelThreeConstituent {
   id: Int
   publicAccess: Boolean
