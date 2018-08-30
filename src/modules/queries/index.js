@@ -192,6 +192,12 @@ const getObjects = async (args, levelDown = 2) => {
   }
 
   const must = []
+  //  Make sure the item is public access
+  must.push({
+    match: {
+      'publicAccess': true
+    }
+  })
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
@@ -452,6 +458,12 @@ const getConstituents = async (args, levelDown = 3) => {
   }
 
   const must = []
+  //  Only get those who are public access
+  must.push({
+    match: {
+      'publicAccess': true
+    }
+  })
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
