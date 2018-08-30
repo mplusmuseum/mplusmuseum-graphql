@@ -431,7 +431,7 @@ const getConstituents = async (args, levelDown = 3) => {
 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
-  const keywordFields = ['gender', 'nationality']
+  const keywordFields = ['nationality']
   const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
@@ -440,6 +440,7 @@ const getConstituents = async (args, levelDown = 3) => {
     if (keywordFields.includes(sortField.toLowerCase())) sortField = `${sortField}.keyword`
 
     //  Special cases
+    if (sortField === 'gender') sortField = `gender.${args.lang}.keyword`
     if (sortField === 'name') sortField = `name.${args.lang}.displayname.keyword`
     if (sortField === 'alphaSortName') sortField = `name.${args.lang}.alphasort.keyword`
 
@@ -479,7 +480,7 @@ const getConstituents = async (args, levelDown = 3) => {
     const pushThis = {
       match: {}
     }
-    pushThis.match[`gender.keyword`] = args.gender
+    pushThis.match[`gender.${args.lang}.keyword`] = args.gender
     must.push(pushThis)
   }
 
@@ -543,6 +544,8 @@ const getConstituents = async (args, levelDown = 3) => {
 
     //  Grab the bio
     record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
+    //  Grab the bio
+    record.gender = getSingleTextFromArrayByLang(record.gender, args.lang)
     return record
   })
 

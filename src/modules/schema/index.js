@@ -114,6 +114,7 @@ type LevelOneConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
+  type: String
   rank: Int
   roles: [String]
   objects: [LevelOneObject]
@@ -129,6 +130,7 @@ type LevelTwoConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
+  type: String
   rank: Int
   role: String
 }
@@ -143,6 +145,7 @@ type LevelThreeConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
+  type: String
 }
 
 type Classification {
