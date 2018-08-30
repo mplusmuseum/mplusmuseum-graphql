@@ -133,6 +133,7 @@ type LevelTwoConstituent {
   type: String
   rank: Int
   role: String
+  objects: [LevelTwoObject]
 }
 
 type LevelThreeConstituent {
