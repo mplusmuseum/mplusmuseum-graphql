@@ -1,10 +1,6 @@
 const decortation = require('../../modules/decoration')
 
 exports.index = (req, res) => {
-  if ('dashboard' in req.config) {
-    return res.redirect(req.config.dashboard.host)
-  }
-
   if (req.user === null) {
     const design = decortation.pickLoggedOutDesign()
     req.templateValues.design = design
