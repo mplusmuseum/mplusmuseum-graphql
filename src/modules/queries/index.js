@@ -466,11 +466,13 @@ const getConstituents = async (args, levelDown = 3) => {
 
   const must = []
   //  Only get those who are public access
+  /*
   must.push({
     match: {
       'publicAccess': true
     }
   })
+  */
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
@@ -532,32 +534,52 @@ const getConstituents = async (args, levelDown = 3) => {
 
   let records = results.hits.hits.map((hit) => hit._source).map((record) => {
     //  Grab the name
-    record.name = getSingleTextFromArrayByLang(record.name, args.lang)
-    if (record.name !== null) {
-      //  The order here is important, as the display name will
-      //  write over the record.name information
-      if ('alphasort' in record.name) {
-        record.alphaSortName = record.name.alphasort
-      } else {
-        record.alphaSortName = null
+    console.log(record)
+    let newName = null
+    let newAlphaName = null
+    if (record.name) {
+      let useLang = args.lang
+      if (!(useLang in record.name)) {
+        if ('en' in record.name) {
+          useLang = 'en'
+        } else {
+          if ('zh-hant' in record.name) {
+            useLang = 'zh-hant'
+          }
+        }
       }
-      if ('displayname' in record.name) {
-        record.name = record.name.displayname
-      } else {
-        record.name = null
+
+      if (args.lang in record.name) {
+        //  Grab the alpha sort name
+        if (record.name[useLang].alphasort) {
+          newAlphaName = record.name[useLang].alphasort
+        }
+        if (record.name[useLang].displayName) {
+          newName = record.name[useLang].displayName
+        } else {
+          newName = newAlphaName
+        }
       }
     }
+    record.name = newName
+    record.alphaSortName = newAlphaName
 
-    //  Grab the bio
-    record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
-    //  Grab the bio
+    //  Get the rest of the data by language
     record.gender = getSingleTextFromArrayByLang(record.gender, args.lang)
+    record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
+    record.nationality = getSingleTextFromArrayByLang(record.nationality, args.lang)
+    record.region = getSingleTextFromArrayByLang(record.region, args.lang)
+    record.activeCity = getSingleTextFromArrayByLang(record.activeCity, args.lang)
+    record.birthCity = getSingleTextFromArrayByLang(record.birthCity, args.lang)
+    record.deathCity = getSingleTextFromArrayByLang(record.deathCity, args.lang)
+    record.endDate = getSingleTextFromArrayByLang(record.deathyear, args.lang)
+
     return record
   })
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
