@@ -157,6 +157,12 @@ const root = {
   constituent: (args) => {
     return queries.getConstituent(args)
   },
+  exhibitions: (args) => {
+    return queries.getExhibitions(args)
+  },
+  exhibition: (args) => {
+    return queries.getExhibition(args)
+  },
   areas: (args) => {
     return queries.getAreas(args)
   },

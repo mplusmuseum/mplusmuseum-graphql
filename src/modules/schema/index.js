@@ -20,6 +20,7 @@ type Query {
     id: Int!
     lang: String = "en"
   ): LevelOneObject
+
   constituents(
     page: Int
     per_page: Int
@@ -36,18 +37,38 @@ type Query {
     id: Int!
     lang: String = "en"
   ): LevelOneConstituent
+
+  exhibitions(
+    page: Int
+    per_page: Int = 500
+    ids: [Int]
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+    type: String
+    beginDate: Int
+    endDate: Int
+  ): [LevelThreeExhibition]
+  exhibition(
+    id: Int!
+    lang: String = "en"
+  ): LevelOneExhibition
+
+  
   areas(
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
   ): [Area]
+  
   categories(
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
   ): [Categories]
+  
   mediums(
     per_page: Int
     lang: String = "en"
@@ -70,6 +91,7 @@ type LevelOneObject {
   medium: String
   classification: Classification
   constituents: [LevelTwoConstituent]
+  exhibitions: ExhibitionsShort
 }
 
 type LevelTwoObject {
@@ -149,6 +171,46 @@ type LevelThreeConstituent {
   type: String
 }
 
+type LevelOneExhibition {
+  id: Int
+  title: String
+  type: String
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+  objects: [LevelOneObject]
+}
+
+type LevelThreeExhibition {
+  id: Int
+  title: String
+  type: String
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+}
+
+type ExhibitionsShort {
+  exhibitions: [ExhibitionShort]
+  labels: [ExhibitionLabels]
+}
+
+type ExhibitionShort {
+  id: Int
+  title: String
+  type: String
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+  section: String
+}
+
+type ExhibitionLabels {
+  purpose: String
+  text: String
+}
+
+
 type Classification {
   area: String
   category: String
@@ -164,5 +226,10 @@ type Categories {
 type Mediums {
   title: String
   count: Int
+}
+type Venue {
+  title: String
+  beginDate: String
+  endDate: String
 }
 `
