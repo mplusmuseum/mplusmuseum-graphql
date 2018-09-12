@@ -193,11 +193,13 @@ const getObjects = async (args, levelDown = 2) => {
 
   const must = []
   //  Make sure the item is public access
+  /*
   must.push({
     match: {
       'publicAccess': true
     }
   })
+  */
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
@@ -265,6 +267,14 @@ const getObjects = async (args, levelDown = 2) => {
     })
   }
 
+  if ('exhibition' in args && args.exhibition !== '') {
+    must.push({
+      match: {
+        'exhibition.ids': args.exhibition
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {
@@ -292,22 +302,27 @@ const getObjects = async (args, levelDown = 2) => {
 
     //  Get the default value of title
     match = getSingleTextFromArrayByLang(record.title, args.lang)
-    delete record.titles
+    delete record.title
     if (match !== null) record.title = match
+
+    //  Get the default value of display date
+    match = getSingleTextFromArrayByLang(record.displayDate, args.lang)
+    delete record.displayDate
+    if (match !== null) record.displayDate = match
 
     //  Get the default value of dimensions
     match = getSingleTextFromArrayByLang(record.dimension, args.lang)
-    delete record.dimensions
+    delete record.dimension
     if (match !== null) record.dimension = match
 
     //  Get the default value of credit lines
     match = getSingleTextFromArrayByLang(record.creditLine, args.lang)
-    delete record.creditLines
+    delete record.creditLine
     if (match !== null) record.creditLine = match
 
     //  Get the default value of medium
     match = getSingleTextFromArrayByLang(record.medium, args.lang)
-    delete record.mediums
+    delete record.medium
     if (match !== null) record.medium = match
 
     //  Clean up the area and category
@@ -321,7 +336,6 @@ const getObjects = async (args, levelDown = 2) => {
       })
       record.classification = classification
     }
-
     return record
   })
 
@@ -343,49 +357,137 @@ const getObjects = async (args, levelDown = 2) => {
     return record
   })
 
+  // console.log(records)
+
   //  If there are no constituens to get then we can just return the records
-  if (constituentsIds.length === 0) return records
+  if (constituentsIds.length !== 0) {
+    //  If we are from a single record then we want to get the constituents, *and* all the
+    //  objects belonging to those constitues, including constituents.
+    const newArgs = {
+      lang: args.lang,
+      ids: constituentsIds,
+      per_page: 200
+    }
+    const constituents = await getConstituents(newArgs, levelDown + 1)
 
-  //  If we are from a single record then we want to get the constituents, *and* all the
-  //  objects belonging to those constitues, including constituents.
-  const newArgs = {
-    lang: args.lang,
-    ids: constituentsIds,
-    per_page: 200
+    //  Now I want to turn those constituents into a map so I can quickly look them up
+    const constituentsMap = {}
+    constituents.forEach((constituent) => {
+      constituentsMap[constituent.id] = constituent
+    })
+
+    records = records.map((record) => {
+      const newConstituents = []
+      //  Now we want to look through the idsToRoleRank so we can
+      //  *explode* or populate them with the full consituent information we have
+      let idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
+      //  Grab the correct language for the roles
+      idsToRoleRank = idsToRoleRank.map((roleRank) => {
+        let newRole = null
+        if (newRole === null && 'roles' in roleRank && args.lang in roleRank.roles) newRole = roleRank.roles[args.lang]
+        if (newRole === null && 'roles' in roleRank && 'en' in roleRank.roles) newRole = roleRank.roles['en']
+        roleRank.role = newRole
+        delete roleRank.roles
+        return roleRank
+      })
+
+      idsToRoleRank.forEach((roleRank) => {
+        if (roleRank.id in constituentsMap) {
+          const newConstituent = JSON.parse(JSON.stringify(constituentsMap[roleRank.id]))
+          newConstituent.rank = roleRank.rank
+          newConstituent.role = roleRank.role
+          newConstituents.push(newConstituent)
+        }
+      })
+      record.constituents = newConstituents
+      delete record.consituents
+      return record
+    })
   }
-  const constituents = await getConstituents(newArgs, levelDown + 1)
 
-  //  Now I want to turn those constituents into a map so I can quickly look them up
-  const constituentsMap = {}
-  constituents.forEach((constituent) => {
-    constituentsMap[constituent.id] = constituent
+  //  And we do the same all over again with exhibitions
+  const exhibitionsIds = []
+  records.forEach((record) => {
+    // console.log(record)
+    if (record.exhibition && record.exhibition.ids) {
+      let ids = record.exhibition.ids
+      if (!Array.isArray(ids)) ids = [ids]
+      ids.forEach((id) => {
+        if (!exhibitionsIds.includes(id)) exhibitionsIds.push(id)
+      })
+    }
   })
 
-  records = records.map((record) => {
-    const newConstituents = []
-    //  Now we want to look through the idsToRoleRank so we can
-    //  *explode* or populate them with the full consituent information we have
-    let idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
-    //  Grab the correct language for the roles
-    idsToRoleRank = idsToRoleRank.map((roleRank) => {
-      let newRole = null
-      if (newRole === null && 'roles' in roleRank && args.lang in roleRank.roles) newRole = roleRank.roles[args.lang]
-      if (newRole === null && 'roles' in roleRank && 'en' in roleRank.roles) newRole = roleRank.roles['en']
-      roleRank.role = newRole
-      delete roleRank.roles
-      return roleRank
-    })
+  //  If we have some exhibitions, lets try to put them back into the obejcts
+  const exhibitionsMap = {}
+  if (exhibitionsIds.length !== 0) {
+    //  If we are from a single record then we want to get the exhibitions, *and* all the
+    //  objects belonging to those exhibitions, including exhibitions.
+    const newArgs = {
+      lang: args.lang,
+      ids: exhibitionsIds,
+      per_page: 200
+    }
+    const exhibitions = await getExhibitions(newArgs, levelDown + 1)
 
-    idsToRoleRank.forEach((roleRank) => {
-      if (roleRank.id in constituentsMap) {
-        const newConstituent = JSON.parse(JSON.stringify(constituentsMap[roleRank.id]))
-        newConstituent.rank = roleRank.rank
-        newConstituent.role = roleRank.role
-        newConstituents.push(newConstituent)
-      }
+    //  Now I want to turn those exhibitions into a map so I can quickly look them up
+    exhibitions.forEach((exhibition) => {
+      exhibitionsMap[exhibition.id] = exhibition
     })
-    record.constituents = newConstituents
-    delete record.consituents
+  }
+
+  //  Now go put the exhibition data back into the objects
+  records = records.map((record) => {
+    // console.log(record)
+    const newExhibitions = []
+    //  Get a map of the sections
+    let exhibitionSections = []
+    const exhibitionSectionsMap = {}
+    if (record.exhibition && record.exhibition.sections) {
+      exhibitionSections = JSON.parse(record.exhibition.sections)
+    }
+    //  Turn the array into a map
+    exhibitionSections.forEach((section) => {
+      Object.entries(section).forEach((entry) => {
+        exhibitionSectionsMap[entry[0]] = entry[1]
+      })
+    })
+    if (record.exhibition && record.exhibition.ids) {
+      let ids = record.exhibition.ids
+      if (!Array.isArray(ids)) ids = [ids]
+      ids.forEach((id) => {
+        if (id in exhibitionsMap) {
+          const newExhibition = exhibitionsMap[id]
+          if (id in exhibitionSectionsMap) {
+            newExhibition.section = exhibitionSectionsMap[id]
+          }
+          newExhibitions.push(newExhibition)
+        }
+      })
+    }
+    record.exhibitions = {
+      exhibitions: newExhibitions
+    }
+
+    //  Now we've got to pick the right language of the labels
+    if (record.exhibition && record.exhibition.exhibitionLabelText) {
+      let useLang = args.lang
+      if (!(useLang in record.exhibition.exhibitionLabelText)) {
+        if ('en' in record.exhibition.exhibitionLabelText) {
+          useLang = 'en'
+        } else {
+          if ('zh-hant' in record.exhibition.exhibitionLabelText) {
+            useLang = 'zh-hant'
+          }
+        }
+      }
+      if (useLang in record.exhibition.exhibitionLabelText) {
+        if ('labels' in record.exhibition.exhibitionLabelText[useLang]) {
+          record.exhibitions.labels = record.exhibition.exhibitionLabelText[useLang].labels
+        }
+      }
+    }
+
     return record
   })
 
@@ -460,11 +562,13 @@ const getConstituents = async (args, levelDown = 3) => {
 
   const must = []
   //  Only get those who are public access
+  /*
   must.push({
     match: {
       'publicAccess': true
     }
   })
+  */
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
@@ -526,26 +630,45 @@ const getConstituents = async (args, levelDown = 3) => {
 
   let records = results.hits.hits.map((hit) => hit._source).map((record) => {
     //  Grab the name
-    record.name = getSingleTextFromArrayByLang(record.name, args.lang)
-    if (record.name !== null) {
-      //  The order here is important, as the display name will
-      //  write over the record.name information
-      if ('alphasort' in record.name) {
-        record.alphaSortName = record.name.alphasort
-      } else {
-        record.alphaSortName = null
+    let newName = null
+    let newAlphaName = null
+    if (record.name) {
+      let useLang = args.lang
+      if (!(useLang in record.name)) {
+        if ('en' in record.name) {
+          useLang = 'en'
+        } else {
+          if ('zh-hant' in record.name) {
+            useLang = 'zh-hant'
+          }
+        }
       }
-      if ('displayname' in record.name) {
-        record.name = record.name.displayname
-      } else {
-        record.name = null
+
+      if (useLang in record.name) {
+        //  Grab the alpha sort name
+        if (record.name[useLang].alphasort) {
+          newAlphaName = record.name[useLang].alphasort
+        }
+        if (record.name[useLang].displayName) {
+          newName = record.name[useLang].displayName
+        } else {
+          newName = newAlphaName
+        }
       }
     }
+    record.name = newName
+    record.alphaSortName = newAlphaName
 
-    //  Grab the bio
-    record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
-    //  Grab the bio
+    //  Get the rest of the data by language
     record.gender = getSingleTextFromArrayByLang(record.gender, args.lang)
+    record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
+    record.nationality = getSingleTextFromArrayByLang(record.nationality, args.lang)
+    record.region = getSingleTextFromArrayByLang(record.region, args.lang)
+    record.activeCity = getSingleTextFromArrayByLang(record.activeCity, args.lang)
+    record.birthCity = getSingleTextFromArrayByLang(record.birthCity, args.lang)
+    record.deathCity = getSingleTextFromArrayByLang(record.deathCity, args.lang)
+    record.endDate = getSingleTextFromArrayByLang(record.deathyear, args.lang)
+
     return record
   })
 
@@ -566,6 +689,13 @@ const getConstituents = async (args, levelDown = 3) => {
           constituent: record.id,
           per_page: 500
         }
+        //  Did we have any filters that needed to be passed on from the
+        //  single constituent to the objects query
+        if (args.object_per_page) newArgs.per_page = args.object_per_page
+        if (args.object_page) newArgs.page = args.object_page
+        if (args.object_category) newArgs.category = args.object_category
+        if (args.object_area) newArgs.area = args.object_area
+        if (args.object_medium) newArgs.medium = args.object_medium
         record.roles = []
         record.objects = await getObjects(newArgs, levelDown + 1)
         record.objects.forEach((object) => {
@@ -621,7 +751,204 @@ exports.getConstituents = getConstituents
 
 exports.getConstituent = async (args) => {
   args.ids = [args.id]
+  if (args.per_page) args.object_per_page = args.per_page
+  if (args.page) args.object_page = args.page
+  if (args.category) args.object_category = args.category
+  if (args.area) args.object_area = args.area
+  if (args.medium) args.object_medium = args.medium
+  delete args.per_page
+  delete args.page
+  delete args.category
+  delete args.area
+  delete args.medium
   const constituentArray = await getConstituents(args, 1)
   if (Array.isArray(constituentArray)) return constituentArray[0]
+  return null
+}
+
+/*
+##########################################################
+##########################################################
+
+This is where we get all the exhibitions
+
+##########################################################
+##########################################################
+*/
+const getExhibitions = async (args, levelDown = 3) => {
+  const config = new Config()
+  const index = 'exhibitions_mplus'
+
+  //  Grab the elastic search config details
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return []
+  }
+
+  //  Set up the client
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const page = getPage(args)
+  const perPage = getPerPage(args)
+  const body = {
+    from: page * perPage,
+    size: perPage
+  }
+
+  //  Check to see if we have been passed valid sort fields values, if we have
+  //  then use that for a sort. Otherwise use a default one
+  const keywordFields = ['type']
+  const validFields = ['id', 'title', 'type', 'begindate', 'enddate']
+  const validSorts = ['asc', 'desc']
+  if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
+    //  To actually sort on a title we need to really sort on `title.keyword`
+    let sortField = args.sort_field
+    if (keywordFields.includes(sortField.toLowerCase())) sortField = `${sortField}.keyword`
+
+    //  Special cases
+    if (sortField === 'title') sortField = `title.${args.lang}.keyword`
+
+    //  For objects we want to actually want to sort by the _id
+    const sortObj = {}
+    sortObj[sortField] = {
+      order: args.sort
+    }
+    body.sort = [sortObj]
+  } else {
+    body.sort = [{
+      id: {
+        order: 'asc'
+      }
+    }]
+  }
+
+  const must = []
+  //  Only get those who are public access
+  /*
+  must.push({
+    match: {
+      'publicAccess': true
+    }
+  })
+  */
+
+  //  Sigh, very bad way to add filters
+  //  NOTE: This doesn't combine filters
+  if ('ids' in args && Array.isArray(args.ids)) {
+    must.push({
+      terms: {
+        id: args.ids
+      }
+    })
+  }
+
+  if ('type' in args && args.type !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`type.keyword`] = args.type
+    must.push(pushThis)
+  }
+
+  if (must.length > 0) {
+    body.query = {
+      bool: {
+        must
+      }
+    }
+  }
+
+  //  Run the search
+  const results = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+  })
+
+  let records = results.hits.hits.map((hit) => hit._source).map((record) => {
+    //  Grab the name
+    //  Get the rest of the data by language
+    record.title = getSingleTextFromArrayByLang(record.title, args.lang)
+    record.beginDate = record.beginDateStr
+    record.endDate = record.endDateStr
+
+    //  Now go sort out all the venues filtering for language
+    let venues = []
+    if (record.venues && record.venues.venues) {
+      let useLang = args.lang
+      if (!(useLang in record.venues.venues)) {
+        if ('en' in record.venues.venues) {
+          useLang = 'en'
+        } else {
+          if ('zh-hant' in record.venues.venues && record.venues.venues['zh-hant'].length) {
+            useLang = 'zh-hant'
+          }
+        }
+      }
+      record.venues.venues[useLang].forEach((venue) => {
+        const venueObj = {}
+        if (venue.title) venueObj.title = venue.title
+        if (venue.beginDateStr) venueObj.beginDate = venue.beginDateStr
+        if (venue.endDateStr) venueObj.endDate = venue.endDateStr
+        venues.push(venueObj)
+      })
+    }
+    //  If there aren't any, return null
+    if (venues.length === 0) venues = null
+    record.venues = venues
+    return record
+  })
+
+  //  If we are in here the 1st time, then we get more info about the objects
+  //  but if we are any deeper levels down then we don't want to go and fetch any more
+  async function asyncForEach (array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  }
+
+  if (levelDown <= 2) {
+    const newRecords = []
+    const start = async () => {
+      await asyncForEach(records, async (record) => {
+        const newArgs = {
+          lang: args.lang,
+          exhibition: record.id,
+          per_page: 500
+        }
+        //  Did we have any filters that needed to be passed on from the
+        //  single constituent to the objects query
+        if (args.object_per_page) newArgs.per_page = args.object_per_page
+        if (args.object_page) newArgs.page = args.object_page
+        if (args.object_category) newArgs.category = args.object_category
+        if (args.object_area) newArgs.area = args.object_area
+        if (args.object_medium) newArgs.medium = args.object_medium
+        record.roles = []
+        record.objects = await getObjects(newArgs, levelDown + 1)
+        newRecords.push(record)
+      })
+    }
+    await start()
+    records = newRecords
+  }
+
+  return records
+}
+exports.getExhibitions = getExhibitions
+
+exports.getExhibition = async (args) => {
+  args.ids = [args.id]
+  if (args.per_page) args.object_per_page = args.per_page
+  if (args.page) args.object_page = args.page
+  if (args.category) args.object_category = args.category
+  if (args.area) args.object_area = args.area
+  if (args.medium) args.object_medium = args.medium
+  delete args.per_page
+  delete args.page
+  delete args.category
+  delete args.area
+  delete args.medium
+  const exhibitionsArray = await getExhibitions(args, 1)
+  if (Array.isArray(exhibitionsArray)) return exhibitionsArray[0]
   return null
 }
