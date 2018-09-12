@@ -60,7 +60,7 @@ type LevelOneObject {
   id: Int
   publicAccess: Boolean
   objectNumber: String
-  sortNumber: Float
+  sortNumber: String
   title: String
   displayDate: String
   beginDate: Int
@@ -76,7 +76,7 @@ type LevelTwoObject {
   id: Int
   publicAccess: Boolean
   objectNumber: String
-  sortNumber: Float
+  sortNumber: String
   title: String
   displayDate: String
   beginDate: Int
@@ -92,7 +92,7 @@ type LevelThreeObject {
   id: Int
   publicAccess: Boolean
   objectNumber: String
-  sortNumber: Float
+  sortNumber: String
   title: String
   displayDate: String
   beginDate: Int

@@ -193,11 +193,13 @@ const getObjects = async (args, levelDown = 2) => {
 
   const must = []
   //  Make sure the item is public access
+  /*
   must.push({
     match: {
       'publicAccess': true
     }
   })
+  */
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
@@ -292,22 +294,27 @@ const getObjects = async (args, levelDown = 2) => {
 
     //  Get the default value of title
     match = getSingleTextFromArrayByLang(record.title, args.lang)
-    delete record.titles
+    delete record.title
     if (match !== null) record.title = match
+
+    //  Get the default value of display date
+    match = getSingleTextFromArrayByLang(record.displayDate, args.lang)
+    delete record.displayDate
+    if (match !== null) record.displayDate = match
 
     //  Get the default value of dimensions
     match = getSingleTextFromArrayByLang(record.dimension, args.lang)
-    delete record.dimensions
+    delete record.dimension
     if (match !== null) record.dimension = match
 
     //  Get the default value of credit lines
     match = getSingleTextFromArrayByLang(record.creditLine, args.lang)
-    delete record.creditLines
+    delete record.creditLine
     if (match !== null) record.creditLine = match
 
     //  Get the default value of medium
     match = getSingleTextFromArrayByLang(record.medium, args.lang)
-    delete record.mediums
+    delete record.medium
     if (match !== null) record.medium = match
 
     //  Clean up the area and category
@@ -321,7 +328,6 @@ const getObjects = async (args, levelDown = 2) => {
       })
       record.classification = classification
     }
-
     return record
   })
 
