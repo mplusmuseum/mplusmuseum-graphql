@@ -267,6 +267,14 @@ const getObjects = async (args, levelDown = 2) => {
     })
   }
 
+  if ('exhibition' in args && args.exhibition !== '') {
+    must.push({
+      match: {
+        'exhibition.ids': args.exhibition
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {
@@ -666,7 +674,7 @@ const getConstituents = async (args, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -681,6 +689,13 @@ const getConstituents = async (args, levelDown = 3) => {
           constituent: record.id,
           per_page: 500
         }
+        //  Did we have any filters that needed to be passed on from the
+        //  single constituent to the objects query
+        if (args.object_per_page) newArgs.per_page = args.object_per_page
+        if (args.object_page) newArgs.page = args.object_page
+        if (args.object_category) newArgs.category = args.object_category
+        if (args.object_area) newArgs.area = args.object_area
+        if (args.object_medium) newArgs.medium = args.object_medium
         record.roles = []
         record.objects = await getObjects(newArgs, levelDown + 1)
         record.objects.forEach((object) => {
@@ -736,6 +751,16 @@ exports.getConstituents = getConstituents
 
 exports.getConstituent = async (args) => {
   args.ids = [args.id]
+  if (args.per_page) args.object_per_page = args.per_page
+  if (args.page) args.object_page = args.page
+  if (args.category) args.object_category = args.category
+  if (args.area) args.object_area = args.area
+  if (args.medium) args.object_medium = args.medium
+  delete args.per_page
+  delete args.page
+  delete args.category
+  delete args.area
+  delete args.medium
   const constituentArray = await getConstituents(args, 1)
   if (Array.isArray(constituentArray)) return constituentArray[0]
   return null
@@ -880,6 +905,16 @@ exports.getExhibitions = getExhibitions
 
 exports.getExhibition = async (args) => {
   args.ids = [args.id]
+  if (args.per_page) args.object_per_page = args.per_page
+  if (args.page) args.object_page = args.page
+  if (args.category) args.object_category = args.category
+  if (args.area) args.object_area = args.area
+  if (args.medium) args.object_medium = args.medium
+  delete args.per_page
+  delete args.page
+  delete args.category
+  delete args.area
+  delete args.medium
   const exhibitionsArray = await getExhibitions(args, 1)
   if (Array.isArray(exhibitionsArray)) return exhibitionsArray[0]
   return null

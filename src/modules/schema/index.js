@@ -15,6 +15,7 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
+    exhibition: Int
   ): [LevelOneObject]
   object(
     id: Int!
@@ -36,6 +37,11 @@ type Query {
   constituent(
     id: Int!
     lang: String = "en"
+    page: Int
+    per_page: Int
+    category: String
+    area: String
+    medium: String
   ): LevelOneConstituent
 
   exhibitions(
@@ -52,6 +58,11 @@ type Query {
   exhibition(
     id: Int!
     lang: String = "en"
+    page: Int
+    per_page: Int
+    category: String
+    area: String
+    medium: String
   ): LevelOneExhibition
 
   
