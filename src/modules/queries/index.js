@@ -899,6 +899,39 @@ const getExhibitions = async (args, levelDown = 3) => {
     return record
   })
 
+  //  If we are in here the 1st time, then we get more info about the objects
+  //  but if we are any deeper levels down then we don't want to go and fetch any more
+  async function asyncForEach (array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  }
+
+  if (levelDown <= 2) {
+    const newRecords = []
+    const start = async () => {
+      await asyncForEach(records, async (record) => {
+        const newArgs = {
+          lang: args.lang,
+          exhibition: record.id,
+          per_page: 500
+        }
+        //  Did we have any filters that needed to be passed on from the
+        //  single constituent to the objects query
+        if (args.object_per_page) newArgs.per_page = args.object_per_page
+        if (args.object_page) newArgs.page = args.object_page
+        if (args.object_category) newArgs.category = args.object_category
+        if (args.object_area) newArgs.area = args.object_area
+        if (args.object_medium) newArgs.medium = args.object_medium
+        record.roles = []
+        record.objects = await getObjects(newArgs, levelDown + 1)
+        newRecords.push(record)
+      })
+    }
+    await start()
+    records = newRecords
+  }
+
   return records
 }
 exports.getExhibitions = getExhibitions
