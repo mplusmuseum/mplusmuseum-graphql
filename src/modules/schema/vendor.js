@@ -16,11 +16,14 @@ type Query {
     endDate: Int
     constituent: Int
     exhibition: Int
+    concept: Int
   ): [LevelOneObject]
+  
   object(
     id: Int!
     lang: String = "en"
   ): LevelOneObject
+
 
   constituents(
     page: Int
@@ -34,6 +37,7 @@ type Query {
     endDate: Int
     nationality: String
   ): [LevelThreeConstituent]
+  
   constituent(
     id: Int!
     lang: String = "en"
@@ -44,6 +48,7 @@ type Query {
     medium: String
   ): LevelOneConstituent
 
+
   exhibitions(
     page: Int
     per_page: Int = 500
@@ -52,9 +57,8 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
     type: String
-    beginDate: Int
-    endDate: Int
   ): [LevelThreeExhibition]
+  
   exhibition(
     id: Int!
     lang: String = "en"
@@ -64,6 +68,28 @@ type Query {
     area: String
     medium: String
   ): LevelOneExhibition
+
+
+  concepts(
+    page: Int
+    per_page: Int = 500
+    ids: [Int]
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+    beginDate: Int
+    endDate: Int
+  ): [LevelThreeConcept]
+  
+  concept(
+    id: Int!
+    lang: String = "en"
+    page: Int
+    per_page: Int
+    category: String
+    area: String
+    medium: String
+  ): LevelOneConcept
 
   
   areas(
@@ -202,6 +228,30 @@ type LevelThreeExhibition {
   beginDate: String
   endDate: String
   venues: [Venue]
+}
+
+
+type LevelOneConcept {
+  id: Int
+  publicAccess: Boolean
+  timeline: String
+  title: String
+  description: String
+  displayDate: String
+  beginDate: Int
+  endDate: Int
+  objects: [LevelOneObject]
+}
+
+type LevelThreeConcept {
+  id: Int
+  publicAccess: Boolean
+  timeline: String
+  title: String
+  description: String
+  displayDate: String
+  beginDate: Int
+  endDate: Int
 }
 
 type ExhibitionsShort {
