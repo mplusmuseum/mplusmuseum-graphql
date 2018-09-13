@@ -348,7 +348,7 @@ const getObjects = async (args, context, levelDown = 2) => {
   })
 
   //  Now we have all the objects we want to get the constituents for those objects
-  const constituentsIds = []
+  let constituentsIds = []
   records = records.map((record) => {
     if ('consituents' in record && 'ids' in record.consituents) {
       let ids = record.consituents.ids
@@ -364,6 +364,7 @@ const getObjects = async (args, context, levelDown = 2) => {
     }
     return record
   })
+  constituentsIds = constituentsIds.filter(Boolean)
 
   //  If there are no constituens to get then we can just return the records
   if (constituentsIds.length !== 0) {
@@ -383,7 +384,7 @@ const getObjects = async (args, context, levelDown = 2) => {
     })
 
     records = records.map((record) => {
-      const newConstituents = []
+      let newConstituents = []
       //  Now we want to look through the idsToRoleRank so we can
       //  *explode* or populate them with the full consituent information we have
       let idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
@@ -405,6 +406,8 @@ const getObjects = async (args, context, levelDown = 2) => {
           newConstituents.push(newConstituent)
         }
       })
+      newConstituents = newConstituents.filter(Boolean)
+      if (newConstituents.length === 0) newConstituents = null
       record.constituents = newConstituents
       delete record.consituents
       return record
@@ -412,7 +415,7 @@ const getObjects = async (args, context, levelDown = 2) => {
   }
 
   //  And we do the same all over again with exhibitions
-  const exhibitionsIds = []
+  let exhibitionsIds = []
   records.forEach((record) => {
     // console.log(record)
     if (record.exhibition && record.exhibition.ids) {
@@ -423,6 +426,7 @@ const getObjects = async (args, context, levelDown = 2) => {
       })
     }
   })
+  exhibitionsIds = exhibitionsIds.filter(Boolean)
 
   //  If we have some exhibitions, lets try to put them back into the obejcts
   const exhibitionsMap = {}
@@ -498,7 +502,7 @@ const getObjects = async (args, context, levelDown = 2) => {
   })
 
   // Grab the concepts for those objects
-  const conceptsIds = []
+  let conceptsIds = []
   records = records.map((record) => {
     if ('relatedConceptIds' in record) {
       let ids = record.relatedConceptIds
@@ -509,6 +513,7 @@ const getObjects = async (args, context, levelDown = 2) => {
     }
     return record
   })
+  conceptsIds = conceptsIds.filter(Boolean)
 
   //  If there are no constituens to get then we can just return the records
   if (conceptsIds.length !== 0) {
@@ -528,7 +533,7 @@ const getObjects = async (args, context, levelDown = 2) => {
     })
 
     records = records.map((record) => {
-      const newConcepts = []
+      let newConcepts = []
       if ('relatedConceptIds' in record) {
         let ids = record.relatedConceptIds
         if (!Array.isArray(ids)) ids = [ids]
@@ -536,6 +541,8 @@ const getObjects = async (args, context, levelDown = 2) => {
           newConcepts.push(conceptsMap[id])
         })
       }
+      newConcepts = newConcepts.filter(Boolean)
+      if (newConcepts.length === 0) newConcepts = null
       record.concepts = newConcepts
       return record
     })
@@ -742,7 +749,7 @@ const getConstituents = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -962,7 +969,7 @@ const getExhibitions = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1160,7 +1167,7 @@ const getConcepts = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1172,7 +1179,7 @@ const getConcepts = async (args, context, levelDown = 3) => {
       await asyncForEach(records, async (record) => {
         const newArgs = {
           lang: args.lang,
-          exhibition: record.id,
+          concept: record.id,
           per_page: 500
         }
         //  Did we have any filters that needed to be passed on from the
