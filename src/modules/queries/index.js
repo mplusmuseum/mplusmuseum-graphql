@@ -658,6 +658,24 @@ const getConstituents = async (args, context, levelDown = 3) => {
     record.name = newName
     record.alphaSortName = newAlphaName
 
+    //  Get the exhibition Bios
+    if (record.exhibitions && record.exhibitions.biographies) {
+      let useLang = args.lang
+      if (!(useLang in record.exhibitions.biographies)) {
+        if ('en' in record.exhibitions.biographies) {
+          useLang = 'en'
+        } else {
+          if ('zh-hant' in record.exhibitions.biographies) {
+            useLang = 'zh-hant'
+          }
+        }
+      }
+
+      if (useLang in record.exhibitions.biographies) {
+        record.exhibitionBios = record.exhibitions.biographies[useLang]
+      }
+    }
+
     //  Get the rest of the data by language
     record.gender = getSingleTextFromArrayByLang(record.gender, args.lang)
     record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)

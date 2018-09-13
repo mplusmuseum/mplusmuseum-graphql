@@ -150,6 +150,7 @@ type LevelOneConstituent {
   type: String
   rank: Int
   roles: [String]
+  exhibitionBios: [ExhibitionLabels]
   objects: [LevelOneObject]
 }
 
@@ -166,6 +167,7 @@ type LevelTwoConstituent {
   type: String
   rank: Int
   role: String
+  exhibitionBios: [ExhibitionLabels]
   objects: [LevelTwoObject]
 }
 
@@ -180,6 +182,7 @@ type LevelThreeConstituent {
   endDate: Int
   nationality: String
   type: String
+  exhibitionBios: [ExhibitionLabels]
 }
 
 type LevelOneExhibition {
@@ -220,7 +223,6 @@ type ExhibitionLabels {
   purpose: String
   text: String
 }
-
 
 type Classification {
   area: String
