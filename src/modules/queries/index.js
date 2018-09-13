@@ -417,7 +417,6 @@ const getObjects = async (args, context, levelDown = 2) => {
   //  And we do the same all over again with exhibitions
   let exhibitionsIds = []
   records.forEach((record) => {
-    // console.log(record)
     if (record.exhibition && record.exhibition.ids) {
       let ids = record.exhibition.ids
       if (!Array.isArray(ids)) ids = [ids]
@@ -448,7 +447,6 @@ const getObjects = async (args, context, levelDown = 2) => {
 
   //  Now go put the exhibition data back into the objects
   records = records.map((record) => {
-    // console.log(record)
     const newExhibitions = []
     //  Get a map of the sections
     let exhibitionSections = []
@@ -851,7 +849,6 @@ This is where we get all the exhibitions
 ##########################################################
 */
 const getExhibitions = async (args, context, levelDown = 3) => {
-  console.log(context.isVendor)
   const config = new Config()
   const index = 'exhibitions_mplus'
 
@@ -1031,7 +1028,6 @@ This is where we get all the concepts
 ##########################################################
 */
 const getConcepts = async (args, context, levelDown = 3) => {
-  console.log(context.isVendor)
   const config = new Config()
   const index = 'concepts_mplus'
 

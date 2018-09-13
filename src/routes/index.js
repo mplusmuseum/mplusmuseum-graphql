@@ -13,6 +13,7 @@ const {
 const schemaPublic = require('../modules/schema/public.js')
 const schemaVendor = require('../modules/schema/vendor.js')
 const queries = require('../modules/queries')
+const request = require('request-promise')
 
 // Break out all the seperate parts of the site
 /* eslint-disable import/no-unresolved */
@@ -201,23 +202,84 @@ const getGrpObj = (isPlayground, isVendor) => {
   return grpObj
 }
 
-const getIsVendor = (token) => {
-  if (token === '123') {
-    return true
-  } else {
+const getIsVendor = async (token) => {
+  let isVendor = false
+
+  const configObj = new Config()
+  if (!configObj.dashboard || !configObj.dashboard.host || !configObj.dashboard.handshake) return false
+  //  If we have called the api with the dashboards handshake, then we are a vendor
+  if (configObj.dashboard.handshake === token) return true
+
+  //  Now check in the gloabls to see if we have it
+  if (token in global.tokens) {
+    //  If the check is still in the expires limit the just use it
+    if (new Date().getTime() < global.tokens[token].expires) {
+      return global.tokens[token].isVendor
+    }
+  }
+
+  const payload = {
+    token
+  }
+  const options = {
+    method: 'POST',
+    url: `${configObj.dashboard.host}api/checkToken`,
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `bearer ${configObj.dashboard.handshake}`
+    },
+    json: payload
+  }
+  const rtnObj = await request(options)
+    .then(response => {
+      return response
+    })
+    .catch(error => {
+      return [error]
+    })
+
+  // If we've been given an array back, then an error happened, so lets say this isn't a vendor
+  if (Array.isArray(rtnObj)) {
+    //  TODO: put the token in the globals saying it's not a vendor
+    global.tokens[token] = {
+      valid: false,
+      isVendor: false,
+      expires: (new Date().getTime()) + (86400 * 1000)
+    }
     return false
   }
+
+  if (rtnObj.status && rtnObj.status === 'ok' && rtnObj.roles && 'isVendor' in rtnObj.roles && rtnObj.expires_in) {
+    //  TODO: put the toke and result into globals
+    isVendor = rtnObj.roles.isVendor
+    global.tokens[token] = {
+      valid: true,
+      isVendor,
+      expires: (new Date().getTime()) + (parseInt(rtnObj.expires_in, 10) * 1000)
+    }
+    return isVendor
+  }
+
+  global.tokens[token] = {
+    valid: false,
+    isVendor: false,
+    expires: (new Date().getTime) + (86400 * 1000)
+  }
+  return isVendor
 }
 
-router.use('/graphql', bodyParser.json(), expressGraphql(req => {
-  console.log('using /graphql')
-  const isVendor = getIsVendor(666)
+router.use('/graphql', bodyParser.json(), expressGraphql(async (req) => {
+  let token = null
+  if (req && req.headers && req.headers.authorization) {
+    const tokenSplit = req.headers.authorization.split(' ')
+    if (tokenSplit[1]) token = tokenSplit[1]
+  }
+  const isVendor = await getIsVendor(token)
   return (getGrpObj(false, isVendor))
 }))
 
-router.use('/:token/playground', bodyParser.json(), expressGraphql(req => {
-  console.log('using /:token/playground')
-  const isVendor = getIsVendor(req.params.token)
+router.use('/:token/playground', bodyParser.json(), expressGraphql(async (req) => {
+  const isVendor = await getIsVendor(req.params.token)
   return (getGrpObj(true, isVendor))
 }))
 
