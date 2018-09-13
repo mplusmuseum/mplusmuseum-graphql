@@ -365,8 +365,6 @@ const getObjects = async (args, context, levelDown = 2) => {
     return record
   })
 
-  // console.log(records)
-
   //  If there are no constituens to get then we can just return the records
   if (constituentsIds.length !== 0) {
     //  If we are from a single record then we want to get the constituents, *and* all the
@@ -498,6 +496,50 @@ const getObjects = async (args, context, levelDown = 2) => {
 
     return record
   })
+
+  // Grab the concepts for those objects
+  const conceptsIds = []
+  records = records.map((record) => {
+    if ('relatedConceptIds' in record) {
+      let ids = record.relatedConceptIds
+      if (!Array.isArray(ids)) ids = [ids]
+      ids.forEach((id) => {
+        if (!conceptsIds.includes(id)) conceptsIds.push(id)
+      })
+    }
+    return record
+  })
+
+  //  If there are no constituens to get then we can just return the records
+  if (conceptsIds.length !== 0) {
+    //  If we are from a single record then we want to get the constituents, *and* all the
+    //  objects belonging to those constitues, including constituents.
+    const newArgs = {
+      lang: args.lang,
+      ids: conceptsIds,
+      per_page: 200
+    }
+    const concepts = await getConcepts(newArgs, context, levelDown + 1)
+
+    //  Now I want to turn those constituents into a map so I can quickly look them up
+    const conceptsMap = {}
+    concepts.forEach((concept) => {
+      conceptsMap[concept.id] = concept
+    })
+
+    records = records.map((record) => {
+      const newConcepts = []
+      if ('relatedConceptIds' in record) {
+        let ids = record.relatedConceptIds
+        if (!Array.isArray(ids)) ids = [ids]
+        ids.forEach((id) => {
+          newConcepts.push(conceptsMap[id])
+        })
+      }
+      record.concepts = newConcepts
+      return record
+    })
+  }
 
   return records
 }
@@ -700,7 +742,7 @@ const getConstituents = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -920,7 +962,7 @@ const getExhibitions = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1118,7 +1160,7 @@ const getConcepts = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }

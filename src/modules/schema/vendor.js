@@ -129,6 +129,7 @@ type LevelOneObject {
   classification: Classification
   constituents: [LevelTwoConstituent]
   exhibitions: ExhibitionsShort
+  concepts: [LevelThreeConcept]
 }
 
 type LevelTwoObject {
@@ -145,6 +146,8 @@ type LevelTwoObject {
   medium: String
   classification: Classification
   constituents: [LevelThreeConstituent]
+  exhibitions: [LevelThreeExhibition]
+  concepts: [LevelThreeConcept]
 }
 
 type LevelThreeObject {
@@ -230,7 +233,6 @@ type LevelThreeExhibition {
   venues: [Venue]
 }
 
-
 type LevelOneConcept {
   id: Int
   publicAccess: Boolean
@@ -241,6 +243,18 @@ type LevelOneConcept {
   beginDate: Int
   endDate: Int
   objects: [LevelOneObject]
+}
+
+type LevelTwoConcept {
+  id: Int
+  publicAccess: Boolean
+  timeline: String
+  title: String
+  description: String
+  displayDate: String
+  beginDate: Int
+  endDate: Int
+  objects: [LevelTwoObject]
 }
 
 type LevelThreeConcept {
