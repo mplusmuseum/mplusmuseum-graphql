@@ -5,11 +5,13 @@ const User = require('../classes/user')
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 const Config = require('../classes/config')
 const expressGraphql = require('express-graphql')
+const bodyParser = require('body-parser')
 const cors = require('cors')
 const {
   buildSchema
 } = require('graphql')
-const schema = require('../modules/schema')
+const schemaPublic = require('../modules/schema/public.js')
+const schemaVendor = require('../modules/schema/vendor.js')
 const queries = require('../modules/queries')
 
 // Break out all the seperate parts of the site
@@ -145,45 +147,72 @@ const root = {
   hello: () => {
     return `world`
   },
-  objects: (args) => {
-    return queries.getObjects(args)
+  objects: (args, context) => {
+    return queries.getObjects(args, context)
   },
-  object: (args) => {
-    return queries.getObject(args)
+  object: (args, context) => {
+    return queries.getObject(args, context)
   },
-  constituents: (args) => {
-    return queries.getConstituents(args)
+  constituents: (args, context) => {
+    return queries.getConstituents(args, context)
   },
-  constituent: (args) => {
-    return queries.getConstituent(args)
+  constituent: (args, context) => {
+    return queries.getConstituent(args, context)
   },
-  exhibitions: (args) => {
-    return queries.getExhibitions(args)
+  exhibitions: (args, context) => {
+    return queries.getExhibitions(args, context)
   },
-  exhibition: (args) => {
-    return queries.getExhibition(args)
+  exhibition: (args, context) => {
+    return queries.getExhibition(args, context)
   },
-  areas: (args) => {
-    return queries.getAreas(args)
+  areas: (args, context) => {
+    return queries.getAreas(args, context)
   },
-  categories: (args) => {
-    return queries.getCategories(args)
+  categories: (args, context) => {
+    return queries.getCategories(args, context)
   },
-  mediums: (args) => {
-    return queries.getMediums(args)
+  mediums: (args, context) => {
+    return queries.getMediums(args, context)
   }
 }
 
-router.use('/graphql', expressGraphql({
-  schema: buildSchema(schema.schema),
-  rootValue: root,
-  graphiql: false
+const getGrpObj = (isPlayground, isVendor) => {
+  const grpObj = {
+    schema: buildSchema(schemaPublic.schema),
+    rootValue: root,
+    context: {},
+    graphiql: isPlayground
+  }
+  if (isVendor) {
+    grpObj.schema = buildSchema(schemaVendor.schema)
+    grpObj.context.isPublic = true
+    grpObj.context.isVendor = true
+  } else {
+    grpObj.schema = buildSchema(schemaPublic.schema)
+    grpObj.context.isPublic = true
+    grpObj.context.isVendor = false
+  }
+  return grpObj
+}
+
+const getIsVendor = (token) => {
+  if (token === '123') {
+    return true
+  } else {
+    return false
+  }
+}
+
+router.use('/graphql', bodyParser.json(), expressGraphql(req => {
+  console.log('using /graphql')
+  const isVendor = getIsVendor(666)
+  return (getGrpObj(false, isVendor))
 }))
 
-router.use('/playground', expressGraphql({
-  schema: buildSchema(schema.schema),
-  rootValue: root,
-  graphiql: true
+router.use('/:token/playground', bodyParser.json(), expressGraphql(req => {
+  console.log('using /:token/playground')
+  const isVendor = getIsVendor(req.params.token)
+  return (getGrpObj(true, isVendor))
 }))
 
 // ############################################################################

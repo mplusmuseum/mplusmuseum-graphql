@@ -142,7 +142,7 @@ This is where we get all the objects
 ##########################################################
 ##########################################################
 */
-const getObjects = async (args, levelDown = 2) => {
+const getObjects = async (args, context, levelDown = 2) => {
   const config = new Config()
   const index = 'objects_mplus'
 
@@ -193,13 +193,13 @@ const getObjects = async (args, levelDown = 2) => {
 
   const must = []
   //  Make sure the item is public access
-  /*
-  must.push({
-    match: {
-      'publicAccess': true
-    }
-  })
-  */
+  if (context.isVendor !== true) {
+    must.push({
+      match: {
+        'publicAccess': true
+      }
+    })
+  }
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
@@ -368,7 +368,7 @@ const getObjects = async (args, levelDown = 2) => {
       ids: constituentsIds,
       per_page: 200
     }
-    const constituents = await getConstituents(newArgs, levelDown + 1)
+    const constituents = await getConstituents(newArgs, context, levelDown + 1)
 
     //  Now I want to turn those constituents into a map so I can quickly look them up
     const constituentsMap = {}
@@ -428,7 +428,7 @@ const getObjects = async (args, levelDown = 2) => {
       ids: exhibitionsIds,
       per_page: 200
     }
-    const exhibitions = await getExhibitions(newArgs, levelDown + 1)
+    const exhibitions = await getExhibitions(newArgs, context, levelDown + 1)
 
     //  Now I want to turn those exhibitions into a map so I can quickly look them up
     exhibitions.forEach((exhibition) => {
@@ -495,9 +495,9 @@ const getObjects = async (args, levelDown = 2) => {
 }
 exports.getObjects = getObjects
 
-const getObject = async (args) => {
+const getObject = async (args, context) => {
   args.ids = [args.id]
-  const objectArray = await getObjects(args, 2)
+  const objectArray = await getObjects(args, context, 2)
   if (Array.isArray(objectArray)) return objectArray[0]
   return null
 }
@@ -512,7 +512,7 @@ This is where we get all the constituents
 ##########################################################
 ##########################################################
 */
-const getConstituents = async (args, levelDown = 3) => {
+const getConstituents = async (args, context, levelDown = 3) => {
   const config = new Config()
   const index = 'constituents_mplus'
 
@@ -562,14 +562,13 @@ const getConstituents = async (args, levelDown = 3) => {
 
   const must = []
   //  Only get those who are public access
-  /*
-  must.push({
-    match: {
-      'publicAccess': true
-    }
-  })
-  */
-
+  if (context.isVendor !== true) {
+    must.push({
+      match: {
+        'publicAccess': true
+      }
+    })
+  }
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
   if ('ids' in args && Array.isArray(args.ids)) {
@@ -659,6 +658,24 @@ const getConstituents = async (args, levelDown = 3) => {
     record.name = newName
     record.alphaSortName = newAlphaName
 
+    //  Get the exhibition Bios
+    if (record.exhibitions && record.exhibitions.biographies) {
+      let useLang = args.lang
+      if (!(useLang in record.exhibitions.biographies)) {
+        if ('en' in record.exhibitions.biographies) {
+          useLang = 'en'
+        } else {
+          if ('zh-hant' in record.exhibitions.biographies) {
+            useLang = 'zh-hant'
+          }
+        }
+      }
+
+      if (useLang in record.exhibitions.biographies) {
+        record.exhibitionBios = record.exhibitions.biographies[useLang]
+      }
+    }
+
     //  Get the rest of the data by language
     record.gender = getSingleTextFromArrayByLang(record.gender, args.lang)
     record.displayBio = getSingleTextFromArrayByLang(record.displayBio, args.lang)
@@ -697,7 +714,7 @@ const getConstituents = async (args, levelDown = 3) => {
         if (args.object_area) newArgs.area = args.object_area
         if (args.object_medium) newArgs.medium = args.object_medium
         record.roles = []
-        record.objects = await getObjects(newArgs, levelDown + 1)
+        record.objects = await getObjects(newArgs, context, levelDown + 1)
         record.objects.forEach((object) => {
           if ('consituents' in object && 'idsToRoleRank' in object.consituents) {
             const rankRoles = JSON.parse(object.consituents.idsToRoleRank)
@@ -749,7 +766,7 @@ const getConstituents = async (args, levelDown = 3) => {
 }
 exports.getConstituents = getConstituents
 
-exports.getConstituent = async (args) => {
+exports.getConstituent = async (args, context) => {
   args.ids = [args.id]
   if (args.per_page) args.object_per_page = args.per_page
   if (args.page) args.object_page = args.page
@@ -761,7 +778,7 @@ exports.getConstituent = async (args) => {
   delete args.category
   delete args.area
   delete args.medium
-  const constituentArray = await getConstituents(args, 1)
+  const constituentArray = await getConstituents(args, context, 1)
   if (Array.isArray(constituentArray)) return constituentArray[0]
   return null
 }
@@ -775,7 +792,8 @@ This is where we get all the exhibitions
 ##########################################################
 ##########################################################
 */
-const getExhibitions = async (args, levelDown = 3) => {
+const getExhibitions = async (args, context, levelDown = 3) => {
+  console.log(context.isVendor)
   const config = new Config()
   const index = 'exhibitions_mplus'
 
@@ -822,14 +840,6 @@ const getExhibitions = async (args, levelDown = 3) => {
   }
 
   const must = []
-  //  Only get those who are public access
-  /*
-  must.push({
-    match: {
-      'publicAccess': true
-    }
-  })
-  */
 
   //  Sigh, very bad way to add filters
   //  NOTE: This doesn't combine filters
@@ -924,7 +934,7 @@ const getExhibitions = async (args, levelDown = 3) => {
         if (args.object_area) newArgs.area = args.object_area
         if (args.object_medium) newArgs.medium = args.object_medium
         record.roles = []
-        record.objects = await getObjects(newArgs, levelDown + 1)
+        record.objects = await getObjects(newArgs, context, levelDown + 1)
         newRecords.push(record)
       })
     }
@@ -936,7 +946,7 @@ const getExhibitions = async (args, levelDown = 3) => {
 }
 exports.getExhibitions = getExhibitions
 
-exports.getExhibition = async (args) => {
+exports.getExhibition = async (args, context) => {
   args.ids = [args.id]
   if (args.per_page) args.object_per_page = args.per_page
   if (args.page) args.object_page = args.page
@@ -948,7 +958,7 @@ exports.getExhibition = async (args) => {
   delete args.category
   delete args.area
   delete args.medium
-  const exhibitionsArray = await getExhibitions(args, 1)
+  const exhibitionsArray = await getExhibitions(args, context, 1)
   if (Array.isArray(exhibitionsArray)) return exhibitionsArray[0]
   return null
 }
