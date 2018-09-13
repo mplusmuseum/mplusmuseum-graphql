@@ -163,7 +163,7 @@ const getObjects = async (args, context, levelDown = 2) => {
 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
-  const keywordFields = ['objectnumber', 'displaydate']
+  const keywordFields = ['objectnumber', 'displaydate', 'sortnumber']
   const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'classification.area', 'classification.category']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
@@ -172,7 +172,7 @@ const getObjects = async (args, context, levelDown = 2) => {
     if (keywordFields.includes(sortField.toLowerCase())) sortField = `${sortField}.keyword`
 
     //  Special cases
-    if (sortField === 'title') sortField = 'titles.text.keyword'
+    if (sortField === 'title') sortField = `title.${args.lang}.keyword`
     if (sortField === 'medium') sortField = `medium.${args.lang}.keyword`
     if (sortField === 'classification.area') sortField = `classification.area.areacat.${args.lang}.keyword`
     if (sortField === 'classification.category') sortField = `classification.category.areacat.${args.lang}.keyword`
