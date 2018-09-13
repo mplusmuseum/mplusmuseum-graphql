@@ -165,6 +165,12 @@ const root = {
   exhibition: (args, context) => {
     return queries.getExhibition(args, context)
   },
+  concepts: (args, context) => {
+    return queries.getConcepts(args, context)
+  },
+  concept: (args, context) => {
+    return queries.getConcept(args, context)
+  },
   areas: (args, context) => {
     return queries.getAreas(args, context)
   },
