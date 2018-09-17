@@ -1,5 +1,8 @@
 const elasticsearch = require('elasticsearch')
 const Config = require('../../classes/config')
+const csv = require('csvtojson')
+const fs = require('fs')
+const path = require('path')
 
 const getPage = (args) => {
   const defaultPage = 0
@@ -131,6 +134,40 @@ exports.getCategories = async (args) => {
 
 exports.getMediums = async (args) => {
   return getAggregates(args, `medium.${args.lang}.keyword`, 'objects_mplus')
+}
+
+/*
+##########################################################
+##########################################################
+
+Do the timeline
+
+##########################################################
+##########################################################
+*/
+exports.getTimeline = async (args, context) => {
+  let timeline = []
+  if (context.isVendor !== true) return timeline
+  // Try and load the file
+  const filename = path.join(__dirname, '..', '..', '..', 'data', 'SiggOnlineTimeline.csv')
+  console.log(filename)
+  if (fs.existsSync(filename)) {
+    const timelineJSON = await csv().fromFile(filename)
+    timeline = timelineJSON.map((entry) => {
+      let useLang = args.lang
+      if (useLang === 'en') {
+        useLang = 'EN'
+      } else {
+        useLang = 'TC'
+      }
+      entry.title = entry[`title${useLang}`]
+      entry.paragraph = entry[`paragraph${useLang}`]
+      entry.imageTitle = entry[`imageTitle${useLang}`]
+      return entry
+    })
+  }
+
+  return timeline
 }
 
 /*
@@ -747,7 +784,7 @@ const getConstituents = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -966,7 +1003,7 @@ const getExhibitions = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1163,7 +1200,7 @@ const getConcepts = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }

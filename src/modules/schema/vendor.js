@@ -91,7 +91,10 @@ type Query {
     medium: String
   ): LevelOneConcept
 
-  
+  timeline(
+    lang: String = "en"
+  ): [Timeline]
+
   areas(
     per_page: Int
     lang: String = "en"
@@ -308,5 +311,16 @@ type Venue {
   title: String
   beginDate: String
   endDate: String
+}
+type Timeline {
+  id: String
+  displayDate: String
+  yearDisplayDate: String
+  startDate: String
+  contexts: String
+  title: String
+  paragraph: String
+  imagesObjectId: Int
+  imagesTitle: String
 }
 `
