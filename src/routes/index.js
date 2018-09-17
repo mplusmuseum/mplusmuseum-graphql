@@ -180,6 +180,9 @@ const root = {
   },
   mediums: (args, context) => {
     return queries.getMediums(args, context)
+  },
+  timeline: (args, context) => {
+    return queries.getTimeline(args, context)
   }
 }
 
