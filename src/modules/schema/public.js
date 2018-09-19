@@ -79,6 +79,7 @@ type LevelOneObject {
   medium: String
   classification: Classification
   constituents: [LevelTwoConstituent]
+  images: [Image]
 }
 
 type LevelTwoObject {
@@ -95,6 +96,7 @@ type LevelTwoObject {
   medium: String
   classification: Classification
   constituents: [LevelThreeConstituent]
+  images: [Image]
 }
 
 type LevelThreeObject {
@@ -110,6 +112,7 @@ type LevelThreeObject {
   creditLine: String
   medium: String
   classification: Classification
+  images: [Image]
 }
 
 
@@ -178,5 +181,20 @@ type Venue {
   title: String
   beginDate: String
   endDate: String
+}
+
+type Image {
+  rank: Int
+  primaryDisplay: Boolean
+  publicAccess: Boolean
+  status: String
+  public_id: String
+  version: Int
+  signature: String
+  width: Int
+  height: Int
+  format: String
+  altText: String
+  mediaUse: String
 }
 `
