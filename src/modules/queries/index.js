@@ -583,6 +583,50 @@ const getObjects = async (args, context, levelDown = 2) => {
     })
   }
 
+  //  Now sort out all the images stuff
+  records = records.map((record) => {
+    if (record.images) delete record.images
+    if (record.remote) {
+      const imagesObj = JSON.parse(record.remote.images)
+      const newImages = []
+      Object.entries(imagesObj).forEach((imageObj) => {
+        const image = imageObj[1]
+        newImages.push(image)
+      })
+      record.images = newImages.map((image) => {
+        //  If we aren't a vendor and the publicAccess is false, return false now
+        if (context.isVendor !== true && image.publicAccess && image.publicAccess !== true) {
+          return false
+        }
+        //  Grab the language part
+        let altText = null
+        if (args.lang === 'en' && image.AltText) {
+          altText = image.AltText
+        } else {
+          if (image.AltTextTC) {
+            altText = image.AltTextTC
+          } else {
+            if (image.AltText) altText = image.AltText
+          }
+        }
+        image.altText = altText
+
+        //  Clean up all the unwanted fields
+        image.mediaUse = image.MediaUse
+        image.rank = parseInt(image.rank, 10)
+        delete image.MediaUse
+        delete image.AltText
+        delete image.AltTextTC
+        delete image.original_image_src
+        delete image.src
+
+        return image
+      }).filter(Boolean) // get rid of all the false records
+      delete record.remote
+    }
+    return record
+  })
+
   return records
 }
 exports.getObjects = getObjects
@@ -784,7 +828,7 @@ const getConstituents = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1003,7 +1047,7 @@ const getExhibitions = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1200,7 +1244,7 @@ const getConcepts = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
