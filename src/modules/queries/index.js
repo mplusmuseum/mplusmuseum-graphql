@@ -491,12 +491,14 @@ const getObjects = async (args, context, levelDown = 2) => {
     if (record.exhibition && record.exhibition.sections) {
       exhibitionSections = JSON.parse(record.exhibition.sections)
     }
+
     //  Turn the array into a map
     exhibitionSections.forEach((section) => {
       Object.entries(section).forEach((entry) => {
         exhibitionSectionsMap[entry[0]] = entry[1]
       })
     })
+
     if (record.exhibition && record.exhibition.ids) {
       let ids = record.exhibition.ids
       if (!Array.isArray(ids)) ids = [ids]
@@ -511,7 +513,7 @@ const getObjects = async (args, context, levelDown = 2) => {
       })
     }
     record.exhibitions = {
-      exhibitions: newExhibitions
+      exhibitions: JSON.parse(JSON.stringify(newExhibitions))
     }
 
     //  Now we've got to pick the right language of the labels
@@ -532,7 +534,7 @@ const getObjects = async (args, context, levelDown = 2) => {
         }
       }
     }
-
+    delete record.exhibition
     return record
   })
 
