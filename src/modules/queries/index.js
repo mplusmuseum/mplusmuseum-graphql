@@ -830,7 +830,7 @@ const getConstituents = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1049,7 +1049,7 @@ const getExhibitions = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -1174,6 +1174,14 @@ const getConcepts = async (args, context, levelDown = 3) => {
     })
   }
 
+  if ('conceptUse' in args && args.conceptUse !== '') {
+    must.push({
+      match: {
+        'conceptUse.keyword': args.conceptUse
+      }
+    })
+  }
+
   if ('beginDate' in args && args.beginDate !== '') {
     must.push({
       match: {
@@ -1246,7 +1254,7 @@ const getConcepts = async (args, context, levelDown = 3) => {
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }

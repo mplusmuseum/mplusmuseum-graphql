@@ -77,6 +77,7 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    conceptUse: String
     beginDate: Int
     endDate: Int
   ): [LevelThreeConcept]
@@ -248,6 +249,7 @@ type LevelOneConcept {
   displayDate: String
   beginDate: Int
   endDate: Int
+  conceptUse: String
   objects: [LevelOneObject]
 }
 
@@ -260,6 +262,7 @@ type LevelTwoConcept {
   displayDate: String
   beginDate: Int
   endDate: Int
+  conceptUse: String
   objects: [LevelTwoObject]
 }
 
@@ -272,6 +275,7 @@ type LevelThreeConcept {
   displayDate: String
   beginDate: Int
   endDate: Int
+  conceptUse: String
 }
 
 type ExhibitionsShort {
