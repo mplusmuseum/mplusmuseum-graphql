@@ -17,6 +17,9 @@ type Query {
     constituent: Int
     exhibition: Int
     concept: Int
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): [LevelOneObject]
   
   object(
@@ -46,6 +49,9 @@ type Query {
     category: String
     area: String
     medium: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): LevelOneConstituent
 
 
@@ -67,6 +73,9 @@ type Query {
     category: String
     area: String
     medium: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): LevelOneExhibition
 
 
@@ -90,6 +99,9 @@ type Query {
     category: String
     area: String
     medium: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): LevelOneConcept
 
   timeline(
@@ -135,6 +147,7 @@ type LevelOneObject {
   exhibitions: ExhibitionsShort
   concepts: [LevelThreeConcept]
   images: [Image]
+  color: ColorInfo
 }
 
 type LevelTwoObject {
@@ -154,6 +167,7 @@ type LevelTwoObject {
   exhibitions: [LevelThreeExhibition]
   concepts: [LevelThreeConcept]
   images: [Image]
+  color: ColorInfo
 }
 
 type LevelThreeObject {
@@ -170,6 +184,7 @@ type LevelThreeObject {
   medium: String
   classification: Classification
   images: [Image]
+  color: ColorInfo
 }
 
 
@@ -345,4 +360,20 @@ type Image {
   altText: String
   mediaUse: String
 }
+
+type ColorInfo {
+  predominant: [ColorValue]
+  search: Search
+}
+
+type Search {
+  google: [ColorValue]
+  cloudinary: [ColorValue]
+}
+
+type ColorValue {
+  color: String
+  value: Float
+}
+
 `

@@ -15,6 +15,9 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): [LevelOneObject]
   object(
     id: Int!
@@ -41,7 +44,10 @@ type Query {
     category: String
     area: String
     medium: String
-  ): LevelOneConstituent
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
+): LevelOneConstituent
   
   areas(
     per_page: Int
@@ -80,6 +86,7 @@ type LevelOneObject {
   classification: Classification
   constituents: [LevelTwoConstituent]
   images: [Image]
+  color: ColorInfo
 }
 
 type LevelTwoObject {
@@ -97,6 +104,7 @@ type LevelTwoObject {
   classification: Classification
   constituents: [LevelThreeConstituent]
   images: [Image]
+  color: ColorInfo
 }
 
 type LevelThreeObject {
@@ -113,6 +121,7 @@ type LevelThreeObject {
   medium: String
   classification: Classification
   images: [Image]
+  color: ColorInfo
 }
 
 
@@ -196,5 +205,20 @@ type Image {
   format: String
   altText: String
   mediaUse: String
+}
+
+type ColorInfo {
+  predominant: [ColorValue]
+  search: Search
+}
+
+type Search {
+  google: [ColorValue]
+  cloudinary: [ColorValue]
+}
+
+type ColorValue {
+  color: String
+  value: Float
 }
 `
