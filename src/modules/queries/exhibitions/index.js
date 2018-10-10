@@ -77,6 +77,28 @@ const getExhibitions = async (args, context, levelDown = 3) => {
     must.push(pushThis)
   }
 
+  if ('title' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.title,
+        type: 'best_fields',
+        fields: ['title.en'],
+        operator: 'or'
+      }
+    })
+  }
+
+  if ('keyword' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.keyword,
+        type: 'best_fields',
+        fields: ['title.en', 'type', 'venues.titles.en', 'venues.venues.en.title'],
+        operator: 'or'
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {

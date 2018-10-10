@@ -121,7 +121,6 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
-    title: String
   ): [Area]
   
   categories(
@@ -129,7 +128,6 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
-    title: String
   ): [Categories]
   
   mediums(
@@ -137,7 +135,6 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
-    title: String
   ): [Mediums]
 }
 
