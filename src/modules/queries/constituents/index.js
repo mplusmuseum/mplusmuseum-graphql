@@ -111,6 +111,28 @@ const getConstituents = async (args, context, levelDown = 3) => {
     })
   }
 
+  if ('name' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.name,
+        type: 'best_fields',
+        fields: ['name.en.displayName', 'name.zh-hant.displayName'],
+        operator: 'or'
+      }
+    })
+  }
+
+  if ('keyword' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.keyword,
+        type: 'best_fields',
+        fields: ['name.en.displayName', 'name.zh-hant.displayName', 'activeCity.en', 'activeCity.zh-hant', 'birthCity.en', 'birthCity.zh-hant', 'deathCity.en', 'deathCity.zh-hant', 'displayBio.en', 'displayBio.zh-hant', 'exhibitions.biographies.en.text', 'exhibitions.biographies.zh-hant.text', 'nationality.en', 'nationality.zh-hant', 'region.en', 'region.zh-hant', 'type'],
+        operator: 'or'
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {

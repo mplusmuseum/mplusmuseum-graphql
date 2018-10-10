@@ -17,6 +17,8 @@ type Query {
     constituent: Int
     exhibition: Int
     concept: Int
+    title: String
+    keyword: String
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
@@ -35,6 +37,8 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    name: String
+    keyword: String
     gender: String
     beginDate: Int
     endDate: Int
@@ -63,6 +67,8 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
     type: String
+    title: String
+    keyword: String
   ): [LevelThreeExhibition]
   
   exhibition(
@@ -89,6 +95,8 @@ type Query {
     conceptUse: String
     beginDate: Int
     endDate: Int
+    title: String
+    keyword: String
   ): [LevelThreeConcept]
   
   concept(

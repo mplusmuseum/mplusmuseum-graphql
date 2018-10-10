@@ -15,6 +15,8 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
+    title: String
+    keyword: String
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
@@ -31,6 +33,8 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    name: String
+    keyword: String
     gender: String
     beginDate: Int
     endDate: Int

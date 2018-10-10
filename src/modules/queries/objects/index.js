@@ -195,6 +195,28 @@ const getObjects = async (args, context, levelDown = 2) => {
     })
   }
 
+  if ('title' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.title,
+        type: 'best_fields',
+        fields: ['title.en', 'title.zh-hant'],
+        operator: 'or'
+      }
+    })
+  }
+
+  if ('keyword' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.keyword,
+        type: 'best_fields',
+        fields: ['title.en', 'title.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant'],
+        operator: 'or'
+      }
+    })
+  }
+
   if ('color' in args && args.color !== '') {
     const googleColors = ['gray',
       'black',

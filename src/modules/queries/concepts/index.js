@@ -99,6 +99,28 @@ const getConcepts = async (args, context, levelDown = 3) => {
     })
   }
 
+  if ('title' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.title,
+        type: 'best_fields',
+        fields: ['title.en', 'title.zh-hant'],
+        operator: 'or'
+      }
+    })
+  }
+
+  if ('keyword' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.keyword,
+        type: 'best_fields',
+        fields: ['title.en', 'title.zh-hant', 'conceptUse', 'description.en', 'description.zh-hant', 'displayDate', 'timeline'],
+        operator: 'or'
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {
