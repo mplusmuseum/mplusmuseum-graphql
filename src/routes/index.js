@@ -149,40 +149,40 @@ const root = {
     return `world`
   },
   objects: (args, context) => {
-    return queries.getObjects(args, context)
+    return queries.objects.getObjects(args, context)
   },
   object: (args, context) => {
-    return queries.getObject(args, context)
+    return queries.objects.getObject(args, context)
   },
   constituents: (args, context) => {
-    return queries.getConstituents(args, context)
+    return queries.constituents.getConstituents(args, context)
   },
   constituent: (args, context) => {
-    return queries.getConstituent(args, context)
+    return queries.constituents.getConstituent(args, context)
   },
   exhibitions: (args, context) => {
-    return queries.getExhibitions(args, context)
+    return queries.exhibitions.getExhibitions(args, context)
   },
   exhibition: (args, context) => {
-    return queries.getExhibition(args, context)
+    return queries.exhibitions.getExhibition(args, context)
   },
   concepts: (args, context) => {
-    return queries.getConcepts(args, context)
+    return queries.concepts.getConcepts(args, context)
   },
   concept: (args, context) => {
-    return queries.getConcept(args, context)
+    return queries.concepts.getConcept(args, context)
   },
   areas: (args, context) => {
-    return queries.getAreas(args, context)
+    return queries.common.getAreas(args, context)
   },
   categories: (args, context) => {
-    return queries.getCategories(args, context)
+    return queries.gcommon.etCategories(args, context)
   },
   mediums: (args, context) => {
-    return queries.getMediums(args, context)
+    return queries.common.getMediums(args, context)
   },
   timeline: (args, context) => {
-    return queries.getTimeline(args, context)
+    return queries.timeline.getTimeline(args, context)
   }
 }
 
