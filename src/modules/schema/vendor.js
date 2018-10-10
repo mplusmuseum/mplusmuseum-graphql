@@ -17,6 +17,9 @@ type Query {
     constituent: Int
     exhibition: Int
     concept: Int
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): [LevelOneObject]
   
   object(
@@ -46,6 +49,9 @@ type Query {
     category: String
     area: String
     medium: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): LevelOneConstituent
 
 
@@ -67,6 +73,9 @@ type Query {
     category: String
     area: String
     medium: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): LevelOneExhibition
 
 
@@ -90,6 +99,9 @@ type Query {
     category: String
     area: String
     medium: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): LevelOneConcept
 
   timeline(

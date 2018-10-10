@@ -15,6 +15,9 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
   ): [LevelOneObject]
   object(
     id: Int!
@@ -41,7 +44,10 @@ type Query {
     category: String
     area: String
     medium: String
-  ): LevelOneConstituent
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
+): LevelOneConstituent
   
   areas(
     per_page: Int

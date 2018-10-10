@@ -195,6 +195,63 @@ const getObjects = async (args, context, levelDown = 2) => {
     })
   }
 
+  if ('color' in args && args.color !== '') {
+    const googleColors = ['gray',
+      'black',
+      'orange',
+      'brown',
+      'white',
+      'yellow',
+      'teal',
+      'blue',
+      'green',
+      'red',
+      'pink',
+      'purple'
+    ]
+    const cloudinaryColors = ['white',
+      'gray',
+      'black',
+      'orange',
+      'brown',
+      'yellow',
+      'teal',
+      'lightblue',
+      'green',
+      'olive',
+      'red',
+      'blue',
+      'pink',
+      'purple',
+      'lime',
+      'cyan'
+    ]
+
+    let newThreshold = 75.0
+    if (Number(args.color_threshold) && args.color_threshold >= 0.0 && args.color_threshold <= 100) {
+      newThreshold = args.color_threshold
+    }
+
+    if (args.color_source === 'google' && googleColors.includes(args.color)) {
+      const colorFilter = {}
+      colorFilter[`color.search.google.${args.color}`] = {
+        gte: newThreshold
+      }
+      must.push({
+        range: colorFilter
+      })
+    }
+    if (args.color_source === 'cloudinary' && cloudinaryColors.includes(args.color)) {
+      const colorFilter = {}
+      colorFilter[`color.search.cloudinary.${args.color}`] = {
+        gte: newThreshold
+      }
+      must.push({
+        range: colorFilter
+      })
+    }
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {
