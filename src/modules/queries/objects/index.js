@@ -2,6 +2,49 @@ const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 
+const cleanObjectColor = (object) => {
+  const newObject = object
+
+  //  Set up the defaults
+  if (!('color' in newObject)) newObject.color = {}
+  if (!('predominant' in newObject.color)) newObject.color.predominant = '{}'
+  if (!('search' in newObject.color)) newObject.color.search = {}
+  if (!('google' in newObject.color.search)) newObject.color.search.google = []
+  if (!('cloudinary' in newObject.color.search)) newObject.color.search.cloudinary = []
+
+  //  convert to the format we want
+  const newPredominant = []
+  Object.entries(JSON.parse(newObject.color.predominant)).forEach((entry) => {
+    newPredominant.push({
+      color: entry[0],
+      value: entry[1]
+    })
+  })
+  newObject.color.predominant = newPredominant
+
+  const newGoogle = []
+  Object.entries(newObject.color.search.google).forEach((entry) => {
+    newGoogle.push({
+      color: entry[0],
+      value: entry[1]
+    })
+  })
+  newObject.color.search.google = newGoogle
+
+  const newCloudinary = []
+  Object.entries(newObject.color.search.cloudinary).forEach((entry) => {
+    newCloudinary.push({
+      color: entry[0],
+      value: entry[1]
+    })
+  })
+  newObject.color.search.cloudinary = newCloudinary
+  if (newObject.color.predominant.length === 0) newObject.color.predominant = null
+  if (newObject.color.search.google.length === 0) newObject.color.search.google = null
+  if (newObject.color.search.cloudinary.length === 0) newObject.color.search.cloudinary = null
+  return newObject
+}
+
 /*
 ##########################################################
 ##########################################################
@@ -458,6 +501,8 @@ const getObjects = async (args, context, levelDown = 2) => {
       }).filter(Boolean) // get rid of all the false records
       delete record.remote
     }
+
+    record = cleanObjectColor(record)
     return record
   })
 

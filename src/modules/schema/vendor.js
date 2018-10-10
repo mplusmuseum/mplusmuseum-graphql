@@ -135,6 +135,7 @@ type LevelOneObject {
   exhibitions: ExhibitionsShort
   concepts: [LevelThreeConcept]
   images: [Image]
+  color: ColorInfo
 }
 
 type LevelTwoObject {
@@ -154,6 +155,7 @@ type LevelTwoObject {
   exhibitions: [LevelThreeExhibition]
   concepts: [LevelThreeConcept]
   images: [Image]
+  color: ColorInfo
 }
 
 type LevelThreeObject {
@@ -170,6 +172,7 @@ type LevelThreeObject {
   medium: String
   classification: Classification
   images: [Image]
+  color: ColorInfo
 }
 
 
@@ -345,4 +348,20 @@ type Image {
   altText: String
   mediaUse: String
 }
+
+type ColorInfo {
+  predominant: [ColorValue]
+  search: Search
+}
+
+type Search {
+  google: [ColorValue]
+  cloudinary: [ColorValue]
+}
+
+type ColorValue {
+  color: String
+  value: Float
+}
+
 `
