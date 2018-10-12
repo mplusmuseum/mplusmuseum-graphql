@@ -156,6 +156,7 @@ type LevelOneObject {
   concepts: [LevelThreeConcept]
   images: [Image]
   color: ColorInfo
+  objectRights: ObjectRights
 }
 
 type LevelTwoObject {
@@ -176,6 +177,7 @@ type LevelTwoObject {
   concepts: [LevelThreeConcept]
   images: [Image]
   color: ColorInfo
+  objectRights: ObjectRights
 }
 
 type LevelThreeObject {
@@ -193,6 +195,7 @@ type LevelThreeObject {
   classification: Classification
   images: [Image]
   color: ColorInfo
+  objectRights: ObjectRights
 }
 
 
@@ -386,4 +389,17 @@ type ColorValue {
   value: Float
 }
 
+type ObjectRights {
+  type: String
+  copyright: String
+  concatRights: String
+  concatRemark: String
+  currentStatus: String
+  rights: [Right]
+}
+
+type Right {
+  title: String
+  group: String
+}
 `
