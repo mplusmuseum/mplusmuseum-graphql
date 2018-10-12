@@ -352,6 +352,8 @@ type Timeline {
   paragraph: String
   imagesObjectId: Int
   imagesTitle: String
+  images: [Image]
+  color: ColorInfo
 }
 
 type Image {
