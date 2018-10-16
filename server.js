@@ -336,9 +336,9 @@ const config = new Config()
 if (config.elasticsearch && config.elasticsearch.host) {
   const sessionObj = {
     type: 'elasticsearch',
+    index: 'session_mplus',
     host: config.elasticsearch.host
   }
-  console.log(sessionObj)
   app.use(
     session({
       secret: config.get('handshake'),
