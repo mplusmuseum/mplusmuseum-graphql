@@ -1,6 +1,7 @@
 const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
+const logging = require('../../logging')
 
 /*
 ##########################################################
@@ -11,7 +12,8 @@ This is where we get all the constituents
 ##########################################################
 ##########################################################
 */
-const getConstituents = async (args, context, levelDown = 3) => {
+const getConstituents = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
   const config = new Config()
   const index = 'constituents_mplus'
 
@@ -284,11 +286,25 @@ const getConstituents = async (args, context, levelDown = 3) => {
       })
     }
   })
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Constituents query`, {
+    method: 'getConstituents',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: records.length,
+    ms: new Date().getTime() - startTime
+  })
+
   return records
 }
 exports.getConstituents = getConstituents
 
-exports.getConstituent = async (args, context) => {
+exports.getConstituent = async (args, context, initialCall = false) => {
+  const startTime = new Date().getTime()
   args.ids = [args.id]
   if (args.per_page) args.object_per_page = args.per_page
   if (args.page) args.object_page = args.page
@@ -301,6 +317,17 @@ exports.getConstituent = async (args, context) => {
   delete args.area
   delete args.medium
   const constituentArray = await getConstituents(args, context, 1)
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Constituent query`, {
+    method: 'getConstituent',
+    args,
+    context,
+    initialCall,
+    subCall: !initialCall,
+    ms: new Date().getTime() - startTime
+  })
+
   if (Array.isArray(constituentArray)) return constituentArray[0]
   return null
 }

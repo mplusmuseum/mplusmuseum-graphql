@@ -1,5 +1,6 @@
 const Config = require('../../classes/config')
 const elasticsearch = require('elasticsearch')
+const logging = require('../logging')
 
 exports.getPage = (args) => {
   const defaultPage = 0
@@ -121,14 +122,53 @@ const getAggregates = async (args, field, index) => {
   })
 }
 
-exports.getAreas = async (args) => {
-  return getAggregates(args, `classification.area.areacat.${args.lang}.keyword`, 'objects_mplus')
+exports.getAreas = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `classification.area.areacat.${args.lang}.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Areas query`, {
+    method: 'getAreas',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
 }
 
-exports.getCategories = async (args) => {
-  return getAggregates(args, `classification.category.areacat.${args.lang}.keyword`, 'objects_mplus')
+exports.getCategories = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `classification.category.areacat.${args.lang}.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Categories query`, {
+    method: 'getCategories',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
 }
 
-exports.getMediums = async (args) => {
-  return getAggregates(args, `medium.${args.lang}.keyword`, 'objects_mplus')
+exports.getMediums = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `medium.${args.lang}.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Mediums query`, {
+    method: 'getMediums',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
 }

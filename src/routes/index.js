@@ -149,40 +149,41 @@ const root = {
     return `world`
   },
   objects: (args, context) => {
-    return queries.objects.getObjects(args, context)
+    /* eslint-disable import/no-unresolved */
+    return queries.objects.getObjects(args, context, undefined, true)
   },
   object: (args, context) => {
-    return queries.objects.getObject(args, context)
+    return queries.objects.getObject(args, context, true)
   },
   constituents: (args, context) => {
-    return queries.constituents.getConstituents(args, context)
+    return queries.constituents.getConstituents(args, context, undefined, true)
   },
   constituent: (args, context) => {
-    return queries.constituents.getConstituent(args, context)
+    return queries.constituents.getConstituent(args, context, true)
   },
   exhibitions: (args, context) => {
-    return queries.exhibitions.getExhibitions(args, context)
+    return queries.exhibitions.getExhibitions(args, context, undefined, true)
   },
   exhibition: (args, context) => {
-    return queries.exhibitions.getExhibition(args, context)
+    return queries.exhibitions.getExhibition(args, context, true)
   },
   concepts: (args, context) => {
-    return queries.concepts.getConcepts(args, context)
+    return queries.concepts.getConcepts(args, context, undefined, true)
   },
   concept: (args, context) => {
-    return queries.concepts.getConcept(args, context)
+    return queries.concepts.getConcept(args, context, true)
   },
   areas: (args, context) => {
-    return queries.common.getAreas(args, context)
+    return queries.common.getAreas(args, context, undefined, true)
   },
   categories: (args, context) => {
-    return queries.gcommon.etCategories(args, context)
+    return queries.common.getCategories(args, context, undefined, true)
   },
   mediums: (args, context) => {
-    return queries.common.getMediums(args, context)
+    return queries.common.getMediums(args, context, undefined, true)
   },
   timeline: (args, context) => {
-    return queries.timeline.getTimeline(args, context)
+    return queries.timeline.getTimeline(args, context, undefined, true)
   }
 }
 
