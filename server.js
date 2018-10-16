@@ -43,35 +43,35 @@ console.log(`server.js exists in this directory: ${rootDir}`.help)
  * the port, host, environment and if we want to skip any build steps
  */
 const argOptionDefinitions = [{
-  name: 'port',
-  alias: 'p',
-  type: Number
-},
-{
-  name: 'host',
-  alias: 'h',
-  type: String
-},
-{
-  name: 'env',
-  alias: 'e',
-  type: String
-},
-{
-  name: 'skipBuild',
-  alias: 's',
-  type: Boolean,
-  defaultOption: false
-},
-{
-  name: 'buildOnly',
-  alias: 'b',
-  type: Boolean
-},
-{
-  name: 'skipOpen',
-  type: Boolean
-}
+    name: 'port',
+    alias: 'p',
+    type: Number
+  },
+  {
+    name: 'host',
+    alias: 'h',
+    type: String
+  },
+  {
+    name: 'env',
+    alias: 'e',
+    type: String
+  },
+  {
+    name: 'skipBuild',
+    alias: 's',
+    type: Boolean,
+    defaultOption: false
+  },
+  {
+    name: 'buildOnly',
+    alias: 'b',
+    type: Boolean
+  },
+  {
+    name: 'skipOpen',
+    type: Boolean
+  }
 ]
 const commandLineArgs = require('command-line-args')
 const argOptions = commandLineArgs(argOptionDefinitions)
@@ -306,9 +306,24 @@ const helpers = require('./app/helpers')
 const passport = require('passport')
 const Auth0Strategy = require('passport-auth0')
 const Config = require('./app/classes/config')
+const sessionstore = require('sessionstore')
 
 //  Read in the config file
 const config = new Config()
+let sessionStoreType = new FileStore({
+  ttl: 60 * 60 * 24 * 7
+})
+const DBsessionObj = {
+  type: 'elasticsearch',
+  index: 'mplus_session',
+  typeName: 'session',
+  pingInterval: 1000,
+  timeout: 10000
+}
+if (config.elasticsearch) {
+  DBsessionObj.host = config.elasticsearch
+  sessionStoreType = sessionstore.createSessionStore(DBsessionObj.host)
+}
 
 const app = express()
 const hbs = exphbs.create({
@@ -332,29 +347,28 @@ app.use(
   })
 )
 app.use(cookieParser())
+console.log(sessionStoreType)
 app.use(
   session({
     // Here we are creating a unique session identifier
     secret: config.get('handshake'),
     resave: true,
     saveUninitialized: true,
-    store: new FileStore({
-      ttl: 60 * 60 * 24 * 7
-    })
+    store: sessionStoreType
   })
 )
 const auth0 = config.get('auth0')
 if (auth0 !== null) {
   // Configure Passport to use Auth0
   const strategy = new Auth0Strategy({
-    domain: auth0.AUTH0_DOMAIN,
-    clientID: auth0.AUTH0_CLIENT_ID,
-    clientSecret: auth0.AUTH0_SECRET,
-    callbackURL: auth0.AUTH0_CALLBACK_URL
-  },
-  (accessToken, refreshToken, extraParams, profile, done) => {
-    return done(null, profile)
-  }
+      domain: auth0.AUTH0_DOMAIN,
+      clientID: auth0.AUTH0_CLIENT_ID,
+      clientSecret: auth0.AUTH0_SECRET,
+      callbackURL: auth0.AUTH0_CALLBACK_URL
+    },
+    (accessToken, refreshToken, extraParams, profile, done) => {
+      return done(null, profile)
+    }
   )
 
   passport.use(strategy)
@@ -426,7 +440,7 @@ if (process.env.NODE_ENV === 'development') {
   console.log(
     `
 >> Welcome to the Dashboard, please visit the site however you have your host and ports setup to see it from the outside world`
-      .info
+    .info
   )
   if (config.get('auth0') === null) {
     console.log(
