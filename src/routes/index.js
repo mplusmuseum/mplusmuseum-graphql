@@ -81,10 +81,6 @@ router.use(function (req, res, next) {
   req.templateValues.config = req.config
   req.templateValues.NODE_ENV = process.env.NODE_ENV
 
-  console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
-  console.log('In router.use')
-  console.log(req.user)
-
   if (req.user === undefined) {
     req.user = null
   } else {
@@ -342,18 +338,8 @@ if (configObj.get('auth0') !== null) {
       failureRedirect: '/'
     }),
     async function (req, res) {
-      console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
-      console.log('in callback')
-      const configObj = new Config()
-      if (configObj && configObj.whoAmI) {
-        console.log('whoAmI: ', configObj.whoAmI)
-      }
-      console.log('-=-=-=-=-=-=-=-=-=-=-')
-      console.log(req.user)
       //  Update the user with extra information
       req.session.passport.user = await new User().get(req.user)
-      console.log('-=-=-=-=-=-=-=-=-=-=-')
-      console.log(req.session.passport.user)
       res.redirect(req.session.returnTo || '/')
     }
   )
