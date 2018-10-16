@@ -334,17 +334,16 @@ app.use(cookieParser())
 //  Read in the config file
 const config = new Config()
 if (config.elasticsearch && config.elasticsearch.host) {
-  const sessionObj = {
-    type: 'elasticsearch',
-    index: 'session_mplus',
-    host: config.elasticsearch.host
-  }
   app.use(
     session({
       secret: config.get('handshake'),
       resave: true,
       saveUninitialized: true,
-      store: sessionstore.createSessionStore(sessionObj)
+      store: sessionstore.createSessionStore({
+        type: 'elasticsearch',
+        index: 'session_mplus',
+        host: config.elasticsearch.host
+      })
     })
   )
 } else {
