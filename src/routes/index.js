@@ -80,6 +80,11 @@ router.use(function (req, res, next) {
   req.config = configObj
   req.templateValues.config = req.config
   req.templateValues.NODE_ENV = process.env.NODE_ENV
+
+  console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
+  console.log('In router.use')
+  console.log(req.user)
+
   if (req.user === undefined) {
     req.user = null
   } else {
