@@ -1,6 +1,7 @@
 const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
+const logging = require('../../logging')
 
 const cleanObjectColor = (object) => {
   const newObject = object
@@ -54,7 +55,8 @@ This is where we get all the objects
 ##########################################################
 ##########################################################
 */
-const getObjects = async (args, context, levelDown = 2) => {
+const getObjects = async (args, context, levelDown = 2, initialCall = false) => {
+  const startTime = new Date().getTime()
   const config = new Config()
   const index = 'objects_mplus'
 
@@ -585,13 +587,37 @@ const getObjects = async (args, context, levelDown = 2) => {
     return record
   })
 
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Objects query`, {
+    method: 'getObjects',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: records.length,
+    ms: new Date().getTime() - startTime
+  })
+
   return records
 }
 exports.getObjects = getObjects
 
-const getObject = async (args, context) => {
+const getObject = async (args, context, initialCall = false) => {
+  const startTime = new Date().getTime()
   args.ids = [args.id]
   const objectArray = await getObjects(args, context, 2)
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Object query`, {
+    method: 'getObject',
+    args,
+    context,
+    initialCall,
+    subCall: !initialCall,
+    ms: new Date().getTime() - startTime
+  })
+
   if (Array.isArray(objectArray)) return objectArray[0]
   return null
 }

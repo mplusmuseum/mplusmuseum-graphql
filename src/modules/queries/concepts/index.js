@@ -1,6 +1,7 @@
 const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
+const logging = require('../../logging')
 
 /*
 ##########################################################
@@ -11,7 +12,8 @@ This is where we get all the concepts
 ##########################################################
 ##########################################################
 */
-const getConcepts = async (args, context, levelDown = 3) => {
+const getConcepts = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
   const config = new Config()
   const index = 'concepts_mplus'
 
@@ -207,11 +209,24 @@ const getConcepts = async (args, context, levelDown = 3) => {
     records = newRecords
   }
 
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Concepts query`, {
+    method: 'getConcepts',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: records.length,
+    ms: new Date().getTime() - startTime
+  })
+
   return records
 }
 exports.getConcepts = getConcepts
 
-exports.getConcept = async (args, context) => {
+exports.getConcept = async (args, context, initialCall = false) => {
+  const startTime = new Date().getTime()
   args.ids = [args.id]
   if (args.per_page) args.object_per_page = args.per_page
   if (args.page) args.object_page = args.page
@@ -224,6 +239,17 @@ exports.getConcept = async (args, context) => {
   delete args.area
   delete args.medium
   const conceptsArray = await getConcepts(args, context, 1)
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Concept query`, {
+    method: 'getConcept',
+    args,
+    context,
+    initialCall,
+    subCall: !initialCall,
+    ms: new Date().getTime() - startTime
+  })
+
   if (Array.isArray(conceptsArray)) return conceptsArray[0]
   return null
 }

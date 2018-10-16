@@ -1,6 +1,7 @@
 const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
+const logging = require('../../logging')
 
 /*
 ##########################################################
@@ -11,7 +12,8 @@ This is where we get all the exhibitions
 ##########################################################
 ##########################################################
 */
-const getExhibitions = async (args, context, levelDown = 3) => {
+const getExhibitions = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
   const config = new Config()
   const index = 'exhibitions_mplus'
 
@@ -182,11 +184,24 @@ const getExhibitions = async (args, context, levelDown = 3) => {
     records = newRecords
   }
 
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Exhibitions query`, {
+    method: 'getExhibitions',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: records.length,
+    ms: new Date().getTime() - startTime
+  })
+
   return records
 }
 exports.getExhibitions = getExhibitions
 
-exports.getExhibition = async (args, context) => {
+exports.getExhibition = async (args, context, initialCall = false) => {
+  const startTime = new Date().getTime()
   args.ids = [args.id]
   if (args.per_page) args.object_per_page = args.per_page
   if (args.page) args.object_page = args.page
@@ -199,6 +214,17 @@ exports.getExhibition = async (args, context) => {
   delete args.area
   delete args.medium
   const exhibitionsArray = await getExhibitions(args, context, 1)
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Exhibition query`, {
+    method: 'getExhibition',
+    args,
+    context,
+    initialCall,
+    subCall: !initialCall,
+    ms: new Date().getTime() - startTime
+  })
+
   if (Array.isArray(exhibitionsArray)) return exhibitionsArray[0]
   return null
 }

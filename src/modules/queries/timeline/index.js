@@ -1,6 +1,7 @@
 const csv = require('csvtojson')
 const fs = require('fs')
 const path = require('path')
+const logging = require('../../logging')
 
 /*
 ##########################################################
@@ -11,7 +12,8 @@ Do the timeline
 ##########################################################
 ##########################################################
 */
-exports.getTimeline = async (args, context) => {
+exports.getTimeline = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
   let timeline = []
   if (context.isVendor !== true) return timeline
   // Try and load the file
@@ -58,6 +60,19 @@ exports.getTimeline = async (args, context) => {
     }
     return time
   })
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Timeline query`, {
+    method: 'getTimeline',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: timeline.length,
+    ms: new Date().getTime() - startTime
+  })
+
   return timeline
 }
 
