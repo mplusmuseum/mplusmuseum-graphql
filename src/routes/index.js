@@ -337,6 +337,7 @@ if (configObj.get('auth0') !== null) {
       failureRedirect: '/'
     }),
     async function (req, res) {
+      console.log('in callback')
       //  Update the user with extra information
       req.session.passport.user = await new User().get(req.user)
       res.redirect(req.session.returnTo || '/')
