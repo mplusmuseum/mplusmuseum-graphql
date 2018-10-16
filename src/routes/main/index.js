@@ -1,14 +1,9 @@
 const decortation = require('../../modules/decoration')
 
 exports.index = (req, res) => {
-  //  TODO: redirect to dashboard if we know the URL
-  if ('dashboard' in req.config) {
-    return res.redirect(req.config.dashboard.host)
-  }
+  req.templateValues.design = decortation.pickLoggedOutDesign()
 
   if (req.user === null) {
-    const design = decortation.pickLoggedOutDesign()
-    req.templateValues.design = design
     return res.render('main/pleaselogin', req.templateValues)
   }
 
@@ -17,7 +12,10 @@ exports.index = (req, res) => {
     return res.redirect('/config')
   }
 
-  return res.render('main/pleaselogin', req.templateValues)
+  if (req.config.dashboard && req.config.dashboard.host) {
+    req.templateValues.developerURL = req.config.dashboard.host
+  }
+  return res.render('main/developer', req.templateValues)
 }
 
 exports.wait = (req, res) => {

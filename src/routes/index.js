@@ -337,9 +337,18 @@ if (configObj.get('auth0') !== null) {
       failureRedirect: '/'
     }),
     async function (req, res) {
+      console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
       console.log('in callback')
+      const configObj = new Config()
+      if (configObj && configObj.whoAmI) {
+        console.log('whoAmI: ', configObj.whoAmI)
+      }
+      console.log('-=-=-=-=-=-=-=-=-=-=-')
+      console.log(req.user)
       //  Update the user with extra information
       req.session.passport.user = await new User().get(req.user)
+      console.log('-=-=-=-=-=-=-=-=-=-=-')
+      console.log(req.session.passport.user)
       res.redirect(req.session.returnTo || '/')
     }
   )
