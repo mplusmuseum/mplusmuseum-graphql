@@ -306,9 +306,7 @@ const helpers = require('./app/helpers')
 const passport = require('passport')
 const Auth0Strategy = require('passport-auth0')
 const Config = require('./app/classes/config')
-
-//  Read in the config file
-const config = new Config()
+const sessionstore = require('sessionstore')
 
 const app = express()
 const hbs = exphbs.create({
@@ -332,17 +330,38 @@ app.use(
   })
 )
 app.use(cookieParser())
-app.use(
-  session({
-    // Here we are creating a unique session identifier
-    secret: config.get('handshake'),
-    resave: true,
-    saveUninitialized: true,
-    store: new FileStore({
-      ttl: 60 * 60 * 24 * 7
+
+//  Read in the config file
+const config = new Config()
+if (config.elasticsearch && config.elasticsearch.host) {
+  app.use(
+    session({
+      secret: config.get('handshake'),
+      resave: true,
+      saveUninitialized: true,
+      store: sessionstore.createSessionStore({
+        type: 'elasticsearch',
+        index: 'session_mplus',
+        host: config.elasticsearch.host,
+        pingInterval: 11000,
+        timeout: 10000
+      })
     })
-  })
-)
+  )
+} else {
+  app.use(
+    session({
+      // Here we are creating a unique session identifier
+      secret: config.get('handshake'),
+      resave: true,
+      saveUninitialized: true,
+      store: new FileStore({
+        ttl: 60 * 60 * 24 * 7
+      })
+    })
+  )
+}
+
 const auth0 = config.get('auth0')
 if (auth0 !== null) {
   // Configure Passport to use Auth0
