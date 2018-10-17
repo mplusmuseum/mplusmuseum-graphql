@@ -192,11 +192,13 @@ const root = {
   }
 }
 
-const getGrpObj = (isPlayground, isVendor) => {
+const getGrpObj = (isPlayground, isVendor, token) => {
   const grpObj = {
     schema: buildSchema(schemaPublic.schema),
     rootValue: root,
-    context: {},
+    context: {
+      token
+    },
     graphiql: isPlayground
   }
   if (isVendor) {
@@ -284,12 +286,12 @@ router.use('/graphql', bodyParser.json(), expressGraphql(async (req) => {
     if (tokenSplit[1]) token = tokenSplit[1]
   }
   const isVendor = await getIsVendor(token)
-  return (getGrpObj(false, isVendor))
+  return (getGrpObj(false, isVendor, token))
 }))
 
 router.use('/:token/playground', bodyParser.json(), expressGraphql(async (req) => {
   const isVendor = await getIsVendor(req.params.token)
-  return (getGrpObj(true, isVendor))
+  return (getGrpObj(true, isVendor, req.params.token))
 }))
 
 // ############################################################################
