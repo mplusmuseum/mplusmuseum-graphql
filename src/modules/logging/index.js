@@ -2,7 +2,9 @@
  * This module sets up all the config for the various logging we have and allows
  * us to create an instance of whichever one we need, currently just a tmsLogger
  */
+const Config = require('../../classes/config')
 const path = require('path')
+const elasticsearch = require('elasticsearch')
 
 const rootDir = __dirname
 
@@ -26,7 +28,7 @@ const myFormat = printf(info => {
   return `${timestamp} [${info.level}]: ${JSON.stringify(info)}`
 })
 
-const apiLogger = winston.createLogger({
+const apiLoggerFile = winston.createLogger({
   levels: {
     fail: 0,
     object: 1,
@@ -54,6 +56,35 @@ const apiLogger = winston.createLogger({
   ]
 })
 
+// const config = new Config()
+// const elasticsearchConfig = config.get('elasticsearch')
+class ESLogger {
+  object (name, data) {
+    const config = new Config()
+    const elasticsearchConfig = config.get('elasticsearch')
+    if (elasticsearchConfig === null) {
+      return
+    }
+    const esclient = new elasticsearch.Client(elasticsearchConfig)
+    const index = 'logs_mplus_graphql'
+
+    data.name = name
+    data.datetime = new Date()
+    data.timestamp = data.datetime.getTime()
+    console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=')
+
+    esclient.update({
+      index,
+      type: 'log',
+      id: data.timestamp,
+      body: {
+        doc: data,
+        doc_as_upsert: true
+      }
+    })
+  }
+}
+
 /**
  * Gets us access to the TMS logger, which has 4 levels of logging;
  * page, pre, post and fail
@@ -64,5 +95,41 @@ const apiLogger = winston.createLogger({
  * tmsLogger.object('fetched', {id: 1234, ms: 24})
  */
 exports.getAPILogger = () => {
-  return apiLogger
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return apiLoggerFile
+  }
+  return new ESLogger()
+}
+
+exports.createIndex = async () => {
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return
+  }
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const index = 'logs_mplus_graphql'
+  const exists = await esclient.indices.exists({
+    index
+  })
+  if (exists === false) {
+    await esclient.indices.create({
+      index
+    })
+  }
+}
+
+const cullLogs = () => {
+  console.log('culling logs')
+}
+
+exports.startCulling = () => {
+  //  Remove the old interval timer
+  clearInterval(global.cullLogs)
+  global.elasticsearchTmr = setInterval(() => {
+    cullLogs()
+  }, 1000 * 60 * 60 * 24) // Once a day, cull the old logs
+  cullLogs()
 }
