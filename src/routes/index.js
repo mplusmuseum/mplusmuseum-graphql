@@ -110,6 +110,7 @@ router.use(function (req, res, next) {
         'AUTH0_CLIENT_ID' in req.body &&
         'AUTH0_SECRET' in req.body &&
         'AUTH0_CALLBACK_URL' in req.body &&
+        'elasticsearch' in req.body &&
         'handshake' in req.body &&
         req.body.action === 'save' &&
         req.body.handshake === configObj.get('handshake')
@@ -121,6 +122,9 @@ router.use(function (req, res, next) {
           AUTH0_CALLBACK_URL: req.body.AUTH0_CALLBACK_URL
         }
         configObj.set('auth0', auth0)
+        configObj.set('elasticsearch', {
+          host: req.body.elasticsearch
+        })
         setTimeout(() => {
           global.doRestart = true
           process.exit()

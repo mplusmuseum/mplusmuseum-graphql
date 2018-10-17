@@ -342,7 +342,9 @@ if (config.elasticsearch && config.elasticsearch.host) {
       store: sessionstore.createSessionStore({
         type: 'elasticsearch',
         index: 'session_mplus',
-        host: config.elasticsearch.host
+        host: config.elasticsearch.host,
+        pingInterval: 11000,
+        timeout: 10000
       })
     })
   )
