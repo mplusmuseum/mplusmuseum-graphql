@@ -71,7 +71,6 @@ class ESLogger {
     data.name = name
     data.datetime = new Date()
     data.timestamp = data.datetime.getTime()
-    console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=')
 
     esclient.update({
       index,
