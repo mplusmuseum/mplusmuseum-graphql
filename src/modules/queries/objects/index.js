@@ -274,6 +274,11 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         range: colorFilter
       })
     }
+  } else {
+    //  If we haven't been sent a color to search for, remove
+    //  these from the args
+    delete args.color_threshold
+    delete args.color_source
   }
 
   if (must.length > 0) {
