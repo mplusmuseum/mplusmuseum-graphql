@@ -54,6 +54,7 @@ type Query {
 ): LevelOneConstituent
   
   areas(
+    page: Int
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
@@ -61,6 +62,7 @@ type Query {
   ): [Area]
   
   categories(
+    page: Int
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
@@ -68,11 +70,14 @@ type Query {
   ): [Categories]
   
   mediums(
+    page: Int
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
   ): [Mediums]
+
+  makertypes: [MakerTypes]
 }
 
 type LevelOneObject {
@@ -190,6 +195,10 @@ type Mediums {
   title: String
   count: Int
 }
+type MakerTypes {
+  title: String
+}
+
 type Venue {
   title: String
   beginDate: String
