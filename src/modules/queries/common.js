@@ -176,8 +176,6 @@ exports.getMediums = async (args, context, levelDown = 3, initialCall = false) =
 }
 
 exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false) => {
-  const startTime = new Date().getTime()
-
   const config = new Config()
   const index = 'config_ismakers_mplus'
 
