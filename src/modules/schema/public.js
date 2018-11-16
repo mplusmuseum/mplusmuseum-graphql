@@ -39,7 +39,10 @@ type Query {
     beginDate: Int
     endDate: Int
     nationality: String
+    isMaker: Boolean
+    role: String
   ): [LevelThreeConstituent]
+  
   constituent(
     id: Int!
     lang: String = "en"
@@ -146,7 +149,9 @@ type LevelOneConstituent {
   nationality: String
   type: String
   rank: Int
+  isMaker: Boolean
   roles: [String]
+  objectCount: Int
   objects: [LevelOneObject]
 }
 
@@ -162,7 +167,10 @@ type LevelTwoConstituent {
   nationality: String
   type: String
   rank: Int
+  isMaker: Boolean
+  roles: [String]
   role: String
+  objectCount: Int
   objects: [LevelTwoObject]
 }
 
@@ -177,6 +185,9 @@ type LevelThreeConstituent {
   endDate: Int
   nationality: String
   type: String
+  isMaker: Boolean
+  roles: [String]
+  objectCount: Int
 }
 
 type Classification {
