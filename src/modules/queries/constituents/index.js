@@ -35,7 +35,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
   const keywordFields = ['nationality']
-  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality']
+  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality', 'objectcount']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
@@ -81,11 +81,27 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     })
   }
 
+  if ('isMaker' in args) {
+    must.push({
+      match: {
+        isMaker: args.isMaker
+      }
+    })
+  }
+
   if ('gender' in args && args.gender !== '') {
     const pushThis = {
       match: {}
     }
     pushThis.match[`gender.${args.lang}.keyword`] = args.gender
+    must.push(pushThis)
+  }
+
+  if ('role' in args && args.role !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`roles.keyword`] = args.role
     must.push(pushThis)
   }
 
@@ -215,7 +231,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }

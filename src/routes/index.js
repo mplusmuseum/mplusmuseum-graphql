@@ -187,6 +187,9 @@ const root = {
   mediums: (args, context) => {
     return queries.common.getMediums(args, context, undefined, true)
   },
+  makertypes: (args, context) => {
+    return queries.common.getMakerTypes(args, context, undefined, true)
+  },
   timeline: (args, context) => {
     return queries.timeline.getTimeline(args, context, undefined, true)
   }

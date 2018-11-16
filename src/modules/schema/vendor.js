@@ -43,6 +43,8 @@ type Query {
     beginDate: Int
     endDate: Int
     nationality: String
+    isMaker: Boolean
+    role: String
   ): [LevelThreeConstituent]
   
   constituent(
@@ -117,6 +119,7 @@ type Query {
   ): [Timeline]
 
   areas(
+    page: Int
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
@@ -124,6 +127,7 @@ type Query {
   ): [Area]
   
   categories(
+    page: Int
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
@@ -131,11 +135,14 @@ type Query {
   ): [Categories]
   
   mediums(
+    page: Int
     per_page: Int
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
   ): [Mediums]
+
+  makertypes: [MakerTypes]
 }
 
 type LevelOneObject {
@@ -211,7 +218,9 @@ type LevelOneConstituent {
   nationality: String
   type: String
   rank: Int
+  isMaker: Boolean
   roles: [String]
+  objectCount: Int
   exhibitionBios: [ExhibitionLabels]
   objects: [LevelOneObject]
 }
@@ -228,7 +237,10 @@ type LevelTwoConstituent {
   nationality: String
   type: String
   rank: Int
+  isMaker: Boolean
+  roles: [String]
   role: String
+  objectCount: Int
   exhibitionBios: [ExhibitionLabels]
   objects: [LevelTwoObject]
 }
@@ -244,6 +256,9 @@ type LevelThreeConstituent {
   endDate: Int
   nationality: String
   type: String
+  isMaker: Boolean
+  roles: [String]
+  objectCount: Int
   exhibitionBios: [ExhibitionLabels]
 }
 
@@ -340,6 +355,10 @@ type Mediums {
   title: String
   count: Int
 }
+type MakerTypes {
+  title: String
+}
+
 type Venue {
   title: String
   beginDate: String

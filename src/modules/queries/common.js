@@ -2,7 +2,7 @@ const Config = require('../../classes/config')
 const elasticsearch = require('elasticsearch')
 const logging = require('../logging')
 
-exports.getPage = (args) => {
+const getPage = (args) => {
   const defaultPage = 0
   if ('page' in args) {
     try {
@@ -17,8 +17,9 @@ exports.getPage = (args) => {
   }
   return defaultPage
 }
+exports.getPage = getPage
 
-exports.getPerPage = (args) => {
+const getPerPage = (args) => {
   const defaultPerPage = 50
   if ('per_page' in args) {
     try {
@@ -33,6 +34,7 @@ exports.getPerPage = (args) => {
   }
   return defaultPerPage
 }
+exports.getPerPage = getPerPage
 
 const getAggPerPage = (args) => {
   const defaultPerPage = 10000
@@ -171,4 +173,34 @@ exports.getMediums = async (args, context, levelDown = 3, initialCall = false) =
     ms: new Date().getTime() - startTime
   })
   return aggs
+}
+
+exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false) => {
+  const config = new Config()
+  const index = 'config_ismakers_mplus'
+
+  //  Grab the elastic search config details
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return []
+  }
+
+  //  Set up the client
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const body = {
+    from: 0,
+    size: 1000
+  }
+  const objects = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+  })
+  let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
+    record.title = record.id
+    return record
+  })
+
+  return records
 }
