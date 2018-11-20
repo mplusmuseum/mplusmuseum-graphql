@@ -23,7 +23,9 @@ type Query {
     color_threshold: Float = 50.0
     color_source: String = "google"
   ): [LevelOneObject]
-  
+
+  randomobjects: [LevelOneObject]
+
   object(
     id: Int!
     lang: String = "en"

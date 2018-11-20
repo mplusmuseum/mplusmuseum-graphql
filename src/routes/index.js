@@ -157,6 +157,10 @@ const root = {
     /* eslint-disable import/no-unresolved */
     return queries.objects.getObjects(args, context, undefined, true)
   },
+  randomobjects: (args, context) => {
+    /* eslint-disable import/no-unresolved */
+    return queries.objects.getRandomObjects(args, context, undefined, true)
+  },
   object: (args, context) => {
     return queries.objects.getObject(args, context, true)
   },

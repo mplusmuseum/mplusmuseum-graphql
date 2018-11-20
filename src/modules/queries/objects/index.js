@@ -628,6 +628,55 @@ const getObject = async (args, context, initialCall = false) => {
 }
 exports.getObject = getObject
 
+const getRandomObjects = async (args, context, initialCall = false) => {
+  const startTime = new Date().getTime()
+
+  const config = new Config()
+  const index = 'randomobjects_mplus'
+
+  //  Grab the elastic search config details
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return []
+  }
+
+  //  Set up the client
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const page = common.getPage(args)
+  const perPage = common.getPerPage(args)
+  const body = {
+    from: page * perPage,
+    size: perPage
+  }
+
+  const results = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+  })
+  args.ids = []
+  if (results && results.hits && results.hits.hits) {
+    const randomIds = results.hits.hits.map((hit) => hit._source)[0]
+    if (randomIds.ids) args.ids = randomIds.ids
+  }
+  const objectArray = await getObjects(args, context, 2)
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Object query`, {
+    method: 'getRandomObject',
+    args,
+    context,
+    initialCall,
+    subCall: !initialCall,
+    ms: new Date().getTime() - startTime
+  })
+
+  if (Array.isArray(objectArray)) return objectArray
+  return null
+}
+exports.getRandomObjects = getRandomObjects
+
 const queryConcepts = require('../concepts')
 const queryConstituents = require('../constituents')
 const queryExhibitions = require('../exhibitions')
