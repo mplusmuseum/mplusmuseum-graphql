@@ -277,6 +277,7 @@ type LevelOneExhibition {
   endDate: String
   venues: [Venue]
   objects: [LevelOneObject]
+  artInt: Int
 }
 
 type LevelThreeExhibition {
@@ -286,6 +287,7 @@ type LevelThreeExhibition {
   beginDate: String
   endDate: String
   venues: [Venue]
+  artInt: Int
 }
 
 type LevelOneConcept {
