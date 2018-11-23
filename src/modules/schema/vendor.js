@@ -250,6 +250,11 @@ type LevelTwoConstituent {
   objectCount: Int
   exhibitionBios: [ExhibitionLabels]
   objects: [LevelTwoObject]
+  activeCity: String
+  birthCity: String
+  deathCity: String
+  artInt: Int
+  region: String
 }
 
 type LevelThreeConstituent {
