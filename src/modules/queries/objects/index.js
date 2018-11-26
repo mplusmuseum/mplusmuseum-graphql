@@ -282,14 +282,13 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('hue' in args && args.hue !== '') {
-    const h = args.hue / 360
-    let hMin = h - (30 / 360)
-    let hMax = h + (30 / 360)
+    let hMin = args.hue - 30
+    let hMax = args.hue + 30
     //  If we have gone off the bottom of the scale then
     //  we need to switch things around
     must.push({
       range: {
-        'colorHSL.h': {
+        'colorHSLInt.h': {
           gte: hMin,
           lte: hMax
         }
@@ -297,8 +296,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
     must.push({
       range: {
-        'colorHSL.s': {
-          gte: 0.5
+        'colorHSLInt.s': {
+          gte: 50
         }
       }
     })
