@@ -22,6 +22,9 @@ type Query {
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
+    hue: Int
+    luminosity: Int
+    hsl_range: Int = 30
   ): [LevelOneObject]
 
   randomobjects: [LevelOneObject]

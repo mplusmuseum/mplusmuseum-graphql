@@ -281,6 +281,33 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete args.color_source
   }
 
+  if ('hue' in args && args.hue !== '') {
+    const h = args.hue / 360
+    let hMin = h - (30 / 360)
+    let hMax = h + (30 / 360)
+    //  If we have gone off the bottom of the scale then
+    //  we need to switch things around
+    must.push({
+      range: {
+        'colorHSL.h': {
+          gte: hMin,
+          lte: hMax
+        }
+      }
+    })
+    must.push({
+      range: {
+        'colorHSL.s': {
+          gte: 0.5
+        }
+      }
+    })
+  } else {
+    //  If we haven't been sent a hue to search for, remove
+    //  these from the args
+    delete args.hsl_range
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {
