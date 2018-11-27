@@ -169,6 +169,7 @@ type LevelOneObject {
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
+  popularCount: Int
 }
 
 type LevelTwoObject {
@@ -190,6 +191,7 @@ type LevelTwoObject {
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
+  popularCount: Int
 }
 
 type LevelThreeObject {
@@ -208,6 +210,7 @@ type LevelThreeObject {
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
+  popularCount: Int
 }
 
 
