@@ -78,7 +78,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
   const keywordFields = ['objectnumber', 'displaydate', 'sortnumber']
-  const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'classification.area', 'classification.category']
+  const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'classification.area', 'classification.category']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
@@ -305,6 +305,16 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     //  If we haven't been sent a hue to search for, remove
     //  these from the args
     delete args.hsl_range
+  }
+
+  //  If we are searching based on popularCount we want to reject all the ones
+  //  that aren't null
+  if (args.sort_field && args.sort_field === 'popularCount') {
+    must.push({
+      exists: {
+        field: 'popularCount'
+      }
+    })
   }
 
   if (must.length > 0) {
@@ -634,26 +644,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 }
 exports.getObjects = getObjects
 
-const getObject = async (args, context, initialCall = false) => {
-  const startTime = new Date().getTime()
-  args.ids = [args.id]
-  const objectArray = await getObjects(args, context, 2)
-
-  const apiLogger = logging.getAPILogger()
-  apiLogger.object(`Object query`, {
-    method: 'getObject',
-    args,
-    context,
-    initialCall,
-    subCall: !initialCall,
-    ms: new Date().getTime() - startTime
-  })
-
-  if (Array.isArray(objectArray)) return objectArray[0]
-  return null
-}
-exports.getObject = getObject
-
 const getRandomObjects = async (args, context, initialCall = false) => {
   const startTime = new Date().getTime()
 
@@ -702,6 +692,66 @@ const getRandomObjects = async (args, context, initialCall = false) => {
   return null
 }
 exports.getRandomObjects = getRandomObjects
+
+const getObject = async (args, context, initialCall = false) => {
+  const startTime = new Date().getTime()
+  args.ids = [args.id]
+  const objectArray = await getObjects(args, context, 2)
+
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Object query`, {
+    method: 'getObject',
+    args,
+    context,
+    initialCall,
+    subCall: !initialCall,
+    ms: new Date().getTime() - startTime
+  })
+
+  //  If we didn't get an array back then we return nothing
+  if (!Array.isArray(objectArray)) return null
+
+  //  Grab the object
+  const thisObject = objectArray[0]
+
+  //  Update the popularCount
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const index = 'objects_mplus'
+  const type = 'object'
+
+  //  If there isn't a "popularCount" field then we need to add one
+  if (!thisObject.popularCount) {
+    esclient.update({
+      index,
+      type,
+      id: thisObject.id,
+      body: {
+        doc: {
+          id: thisObject.id,
+          popularCount: 1
+        },
+        doc_as_upsert: true
+      }
+    })
+  } else {
+    esclient.update({
+      index,
+      type,
+      id: thisObject.id,
+      body: {
+        doc: {
+          id: thisObject.id,
+          popularCount: (thisObject.popularCount + 1)
+        },
+        doc_as_upsert: true
+      }
+    })
+  }
+  return thisObject
+}
+exports.getObject = getObject
 
 const queryConcepts = require('../concepts')
 const queryConstituents = require('../constituents')
