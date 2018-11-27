@@ -333,6 +333,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     console.error(err)
   })
 
+  let total = null
+  if (objects.hits.total) total = objects.hits.total
+
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
     return record
   })
@@ -628,6 +631,21 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     return record
   })
 
+  //  Finally, add the pagination information
+  const sys = {
+    pagination: {
+      page,
+      perPage,
+      total
+    }
+  }
+  if (total !== null) {
+    sys.pagination.maxPage = Math.ceil(total / perPage) - 1
+  }
+  if (records.length > 0) {
+    records[0]._sys = sys
+  }
+
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Objects query`, {
     method: 'getObjects',
@@ -639,7 +657,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     records: records.length,
     ms: new Date().getTime() - startTime
   })
-
   return records
 }
 exports.getObjects = getObjects

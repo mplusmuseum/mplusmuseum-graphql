@@ -139,6 +139,9 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
     console.error(err)
   })
 
+  let total = null
+  if (results.hits.total) total = results.hits.total
+
   let records = results.hits.hits.map((hit) => hit._source).map((record) => {
     //  Now get the title
     if (record.title) {
@@ -179,7 +182,7 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach (array, callback) {
+  async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
@@ -207,6 +210,21 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
     }
     await start()
     records = newRecords
+  }
+
+  //  Finally, add the pagination information
+  const sys = {
+    pagination: {
+      page,
+      perPage,
+      total
+    }
+  }
+  if (total !== null) {
+    sys.pagination.maxPage = Math.ceil(total / perPage) - 1
+  }
+  if (records.length > 0) {
+    records[0]._sys = sys
   }
 
   const apiLogger = logging.getAPILogger()
