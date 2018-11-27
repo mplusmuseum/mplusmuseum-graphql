@@ -167,6 +167,9 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     console.error(err)
   })
 
+  let total = null
+  if (results.hits.total) total = results.hits.total
+
   let records = results.hits.hits.map((hit) => hit._source).map((record) => {
     //  Grab the name
     let newName = null
@@ -302,6 +305,21 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
       })
     }
   })
+
+  //  Finally, add the pagination information
+  const sys = {
+    pagination: {
+      page,
+      perPage,
+      total
+    }
+  }
+  if (total !== null) {
+    sys.pagination.maxPage = Math.ceil(total / perPage) - 1
+  }
+  if (records.length > 0) {
+    records[0]._sys = sys
+  }
 
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Constituents query`, {

@@ -106,6 +106,7 @@ type LevelOneObject {
   constituents: [LevelTwoConstituent]
   images: [Image]
   color: ColorInfo
+  _sys: Sys
 }
 
 type LevelTwoObject {
@@ -124,6 +125,7 @@ type LevelTwoObject {
   constituents: [LevelThreeConstituent]
   images: [Image]
   color: ColorInfo
+  _sys: Sys
 }
 
 type LevelThreeObject {
@@ -141,6 +143,7 @@ type LevelThreeObject {
   classification: Classification
   images: [Image]
   color: ColorInfo
+  _sys: Sys
 }
 
 
@@ -160,6 +163,7 @@ type LevelOneConstituent {
   roles: [String]
   objectCount: Int
   objects: [LevelOneObject]
+  _sys: Sys
 }
 
 type LevelTwoConstituent {
@@ -179,6 +183,7 @@ type LevelTwoConstituent {
   role: String
   objectCount: Int
   objects: [LevelTwoObject]
+  _sys: Sys
 }
 
 type LevelThreeConstituent {
@@ -195,24 +200,29 @@ type LevelThreeConstituent {
   isMaker: Boolean
   roles: [String]
   objectCount: Int
+  _sys: Sys
 }
 
 type Classification {
   area: String
   category: String
 }
+
 type Area {
   title: String
   count: Int
 }
+
 type Categories {
   title: String
   count: Int
 }
+
 type Mediums {
   title: String
   count: Int
 }
+
 type MakerTypes {
   title: String
 }
@@ -251,5 +261,16 @@ type Search {
 type ColorValue {
   color: String
   value: Float
+}
+
+type Sys {
+  pagination: Pagination
+}
+
+type Pagination {
+  page: Int
+  perPage: Int
+  total: Int
+  maxPage: Int
 }
 `

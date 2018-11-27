@@ -170,6 +170,7 @@ type LevelOneObject {
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
+  _sys: Sys
 }
 
 type LevelTwoObject {
@@ -192,6 +193,7 @@ type LevelTwoObject {
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
+  _sys: Sys
 }
 
 type LevelThreeObject {
@@ -211,8 +213,8 @@ type LevelThreeObject {
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
+  _sys: Sys
 }
-
 
 type LevelOneConstituent {
   id: Int
@@ -236,6 +238,7 @@ type LevelOneConstituent {
   deathCity: String
   artInt: Int
   region: String
+  _sys: Sys
 }
 
 type LevelTwoConstituent {
@@ -261,6 +264,7 @@ type LevelTwoConstituent {
   deathCity: String
   artInt: Int
   region: String
+  _sys: Sys
 }
 
 type LevelThreeConstituent {
@@ -278,6 +282,7 @@ type LevelThreeConstituent {
   roles: [String]
   objectCount: Int
   exhibitionBios: [ExhibitionLabels]
+  _sys: Sys
 }
 
 type LevelOneExhibition {
@@ -289,6 +294,7 @@ type LevelOneExhibition {
   venues: [Venue]
   objects: [LevelOneObject]
   artInt: Int
+  _sys: Sys
 }
 
 type LevelThreeExhibition {
@@ -299,6 +305,7 @@ type LevelThreeExhibition {
   endDate: String
   venues: [Venue]
   artInt: Int
+  _sys: Sys
 }
 
 type LevelOneConcept {
@@ -312,6 +319,7 @@ type LevelOneConcept {
   endDate: Int
   conceptUse: String
   objects: [LevelOneObject]
+  _sys: Sys
 }
 
 type LevelTwoConcept {
@@ -325,6 +333,7 @@ type LevelTwoConcept {
   endDate: Int
   conceptUse: String
   objects: [LevelTwoObject]
+  _sys: Sys
 }
 
 type LevelThreeConcept {
@@ -337,11 +346,13 @@ type LevelThreeConcept {
   beginDate: Int
   endDate: Int
   conceptUse: String
+  _sys: Sys
 }
 
 type ExhibitionsShort {
   exhibitions: [ExhibitionShort]
   labels: [ExhibitionLabels]
+  _sys: Sys
 }
 
 type ExhibitionShort {
@@ -352,6 +363,7 @@ type ExhibitionShort {
   endDate: String
   venues: [Venue]
   section: String
+  _sys: Sys
 }
 
 type ExhibitionLabels {
@@ -363,18 +375,22 @@ type Classification {
   area: String
   category: String
 }
+
 type Area {
   title: String
   count: Int
 }
+
 type Categories {
   title: String
   count: Int
 }
+
 type Mediums {
   title: String
   count: Int
 }
+
 type MakerTypes {
   title: String
 }
@@ -384,6 +400,7 @@ type Venue {
   beginDate: String
   endDate: String
 }
+
 type Timeline {
   id: String
   displayDate: String
@@ -440,5 +457,16 @@ type ObjectRights {
 type Right {
   title: String
   group: String
+}
+
+type Sys {
+  pagination: Pagination
+}
+
+type Pagination {
+  page: Int
+  perPage: Int
+  total: Int
+  maxPage: Int
 }
 `

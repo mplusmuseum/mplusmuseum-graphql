@@ -116,7 +116,10 @@ const getAggregates = async (args, field, index) => {
   }).catch((err) => {
     console.error(err)
   })
-  return results.aggregations.results.buckets.map((record) => {
+  console.log(results)
+  const records = results.aggregations.results.buckets
+
+  return records.map((record) => {
     return {
       title: record.key,
       count: record.doc_count
