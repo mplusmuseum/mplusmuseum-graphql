@@ -741,11 +741,7 @@ const getObject = async (args, context, initialCall = false) => {
       type,
       id: thisObject.id,
       body: {
-        doc: {
-          id: thisObject.id,
-          popularCount: (thisObject.popularCount + 1)
-        },
-        doc_as_upsert: true
+        script: 'ctx._source.popularCount += 1'
       }
     })
   }
