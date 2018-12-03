@@ -166,6 +166,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     must.push(pushThis)
   }
 
+  if ('objectStatus' in args && args.objectStatus !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`objectStatus.${args.lang}.keyword`] = args.objectStatus
+    must.push(pushThis)
+  }
+
   if ('displayDate' in args && args.displayDate !== '') {
     must.push({
       match: {
@@ -406,6 +414,11 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     match = common.getSingleTextFromArrayByLang(record.objectName, args.lang)
     delete record.objectName
     if (match !== null) record.objectName = match
+
+    //  Get the default value of objectStatus
+    match = common.getSingleTextFromArrayByLang(record.objectStatus, args.lang)
+    delete record.objectStatus
+    if (match !== null) record.objectStatus = match
 
     //  Get the default value of archiveDescription
     match = common.getSingleTextFromArrayByLang(record.archiveDescription, args.lang)
