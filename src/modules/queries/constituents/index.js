@@ -234,7 +234,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }
