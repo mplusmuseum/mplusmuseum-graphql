@@ -10,6 +10,9 @@ type Query {
     sort_field: String = "id"
     category: String
     area: String
+    archivalLevel: String
+    collectionType: String
+    collectionCode: String
     medium: String
     displayDate: String
     beginDate: Int
@@ -138,7 +141,15 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
   ): [Categories]
-  
+
+  archivalLevels(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ArchivalLevels]
+
   mediums(
     page: Int
     per_page: Int
@@ -171,6 +182,16 @@ type LevelOneObject {
   objectRights: ObjectRights
   popularCount: Int
   _sys: Sys
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
 }
 
 type LevelTwoObject {
@@ -194,6 +215,16 @@ type LevelTwoObject {
   objectRights: ObjectRights
   popularCount: Int
   _sys: Sys
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
 }
 
 type LevelThreeObject {
@@ -214,6 +245,16 @@ type LevelThreeObject {
   objectRights: ObjectRights
   popularCount: Int
   _sys: Sys
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
 }
 
 type LevelOneConstituent {
@@ -374,6 +415,7 @@ type ExhibitionLabels {
 type Classification {
   area: String
   category: String
+  archivalLevel: String
 }
 
 type Area {
@@ -382,6 +424,11 @@ type Area {
 }
 
 type Categories {
+  title: String
+  count: Int
+}
+
+type ArchivalLevels {
   title: String
   count: Int
 }

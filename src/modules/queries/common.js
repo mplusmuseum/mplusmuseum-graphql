@@ -116,7 +116,6 @@ const getAggregates = async (args, field, index) => {
   }).catch((err) => {
     console.error(err)
   })
-  console.log(results)
   const records = results.aggregations.results.buckets
 
   return records.map((record) => {
@@ -150,6 +149,23 @@ exports.getCategories = async (args, context, levelDown = 3, initialCall = false
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Categories query`, {
     method: 'getCategories',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getArchivalLevels = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `classification.archivalLevel.areacat.${args.lang}.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`ArchivalLevels query`, {
+    method: 'getArchivalLevels',
     args,
     context,
     levelDown,

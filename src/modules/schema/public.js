@@ -10,6 +10,7 @@ type Query {
     sort_field: String = "id"
     category: String
     area: String
+    archivalLevel: String
     medium: String
     displayDate: String
     beginDate: Int
@@ -79,6 +80,14 @@ type Query {
     sort_field: String = "id"
   ): [Categories]
   
+  archivalLevels(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ArchivalLevels]
+  
   mediums(
     page: Int
     per_page: Int
@@ -102,6 +111,7 @@ type LevelOneObject {
   dimension: String
   creditLine: String
   medium: String
+  archiveDescription: String
   classification: Classification
   constituents: [LevelTwoConstituent]
   images: [Image]
@@ -206,6 +216,7 @@ type LevelThreeConstituent {
 type Classification {
   area: String
   category: String
+  archivalLevel: String
 }
 
 type Area {
@@ -214,6 +225,11 @@ type Area {
 }
 
 type Categories {
+  title: String
+  count: Int
+}
+
+type ArchivalLevels {
   title: String
   count: Int
 }

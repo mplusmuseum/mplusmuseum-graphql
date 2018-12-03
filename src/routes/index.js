@@ -188,6 +188,9 @@ const root = {
   categories: (args, context) => {
     return queries.common.getCategories(args, context, undefined, true)
   },
+  archivalLevels: (args, context) => {
+    return queries.common.getArchivalLevels(args, context, undefined, true)
+  },
   mediums: (args, context) => {
     return queries.common.getMediums(args, context, undefined, true)
   },

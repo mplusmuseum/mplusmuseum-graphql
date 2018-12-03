@@ -78,7 +78,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
   const keywordFields = ['objectnumber', 'displaydate', 'sortnumber']
-  const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'classification.area', 'classification.category']
+  const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'classification.area', 'classification.category', 'classification.archivalLevel']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
@@ -90,6 +90,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     if (sortField === 'medium') sortField = `medium.${args.lang}.keyword`
     if (sortField === 'classification.area') sortField = `classification.area.areacat.${args.lang}.keyword`
     if (sortField === 'classification.category') sortField = `classification.category.areacat.${args.lang}.keyword`
+    if (sortField === 'classification.archivalLevel') sortField = `classification.archivalLevel.areacat.${args.lang}.keyword`
 
     //  For objects we want to actually want to sort by the _id
     const sortObj = {}
@@ -141,11 +142,27 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     must.push(pushThis)
   }
 
+  if ('archivalLevel' in args && args.archivalLevel !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`classification.archivalLevel.areacat.${args.lang}.keyword`] = args.archivalLevel
+    must.push(pushThis)
+  }
+
   if ('medium' in args && args.medium !== '') {
     const pushThis = {
       match: {}
     }
     pushThis.match[`medium.${args.lang}.keyword`] = args.medium
+    must.push(pushThis)
+  }
+
+  if ('objectName' in args && args.objectName !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`objectName.${args.lang}.keyword`] = args.objectName
     must.push(pushThis)
   }
 
@@ -169,6 +186,22 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     must.push({
       match: {
         'endDate': args.endDate
+      }
+    })
+  }
+
+  if ('collectionType' in args && args.collectionType !== '') {
+    must.push({
+      match: {
+        'collectionType': args.collectionType
+      }
+    })
+  }
+
+  if ('collectionCode' in args && args.collectionCode !== '') {
+    must.push({
+      match: {
+        'collectionCode': args.collectionCode
       }
     })
   }
@@ -213,7 +246,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.keyword,
         type: 'best_fields',
-        fields: ['title.en', 'title.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant'],
+        fields: ['title.en', 'title.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'classification.archivalLevel.areacat.en', 'classification.archivalLevel.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant'],
         operator: 'or'
       }
     })
@@ -335,7 +368,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   let total = null
   if (objects.hits.total) total = objects.hits.total
-
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
     return record
   })
@@ -370,9 +402,34 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete record.medium
     if (match !== null) record.medium = match
 
+    //  Get the default value of objectName
+    match = common.getSingleTextFromArrayByLang(record.objectName, args.lang)
+    delete record.objectName
+    if (match !== null) record.objectName = match
+
+    //  Get the default value of archiveDescription
+    match = common.getSingleTextFromArrayByLang(record.archiveDescription, args.lang)
+    delete record.archiveDescription
+    if (match !== null) record.archiveDescription = match
+
+    //  Get the default value of scopeNContent
+    match = common.getSingleTextFromArrayByLang(record.scopeNContent, args.lang)
+    delete record.scopeNContent
+    if (match !== null) record.scopeNContent = match
+
+    //  Get the default value of baselineDescription
+    match = common.getSingleTextFromArrayByLang(record.baselineDescription, args.lang)
+    delete record.baselineDescription
+    if (match !== null) record.baselineDescription = match
+
+    //  Get the default value of inscription
+    match = common.getSingleTextFromArrayByLang(record.inscription, args.lang)
+    delete record.inscription
+    if (match !== null) record.inscription = match
+
     //  Clean up the area and category
-    if ('classification' in record) {
-      const classFields = ['area', 'category']
+    if (record.classification) {
+      const classFields = ['area', 'category', 'archivalLevel']
       const classification = {}
       classFields.forEach((field) => {
         if (field in record.classification) {
@@ -387,7 +444,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Now we have all the objects we want to get the constituents for those objects
   let constituentsIds = []
   records = records.map((record) => {
-    if ('consituents' in record && 'ids' in record.consituents) {
+    if (record.consituents && record.consituents.ids) {
       let ids = record.consituents.ids
       if (!Array.isArray(ids)) ids = [ids]
       ids.forEach((id) => {
@@ -396,7 +453,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     }
 
     //  unpack the consituents
-    if ('idsToRoleRank' in record) {
+    if (record.idsToRoleRank) {
       record.idsToRoleRank = JSON.parse(record.idsToRoleRank)
     }
     return record
@@ -424,25 +481,27 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       let newConstituents = []
       //  Now we want to look through the idsToRoleRank so we can
       //  *explode* or populate them with the full consituent information we have
-      let idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
-      //  Grab the correct language for the roles
-      idsToRoleRank = idsToRoleRank.map((roleRank) => {
-        let newRole = null
-        if (newRole === null && 'roles' in roleRank && args.lang in roleRank.roles) newRole = roleRank.roles[args.lang]
-        if (newRole === null && 'roles' in roleRank && 'en' in roleRank.roles) newRole = roleRank.roles['en']
-        roleRank.role = newRole
-        delete roleRank.roles
-        return roleRank
-      })
+      if (record.consituents && record.consituents.idsToRoleRank) {
+        let idsToRoleRank = JSON.parse(record.consituents.idsToRoleRank)
+        //  Grab the correct language for the roles
+        idsToRoleRank = idsToRoleRank.map((roleRank) => {
+          let newRole = null
+          if (newRole === null && 'roles' in roleRank && args.lang in roleRank.roles) newRole = roleRank.roles[args.lang]
+          if (newRole === null && 'roles' in roleRank && 'en' in roleRank.roles) newRole = roleRank.roles['en']
+          roleRank.role = newRole
+          delete roleRank.roles
+          return roleRank
+        })
 
-      idsToRoleRank.forEach((roleRank) => {
-        if (roleRank.id in constituentsMap) {
-          const newConstituent = JSON.parse(JSON.stringify(constituentsMap[roleRank.id]))
-          newConstituent.rank = roleRank.rank
-          newConstituent.role = roleRank.role
-          newConstituents.push(newConstituent)
-        }
-      })
+        idsToRoleRank.forEach((roleRank) => {
+          if (roleRank.id in constituentsMap) {
+            const newConstituent = JSON.parse(JSON.stringify(constituentsMap[roleRank.id]))
+            newConstituent.rank = roleRank.rank
+            newConstituent.role = roleRank.role
+            newConstituents.push(newConstituent)
+          }
+        })
+      }
       newConstituents = newConstituents.filter(Boolean)
       if (newConstituents.length === 0) newConstituents = null
       record.constituents = newConstituents
