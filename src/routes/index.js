@@ -191,6 +191,18 @@ const root = {
   archivalLevels: (args, context) => {
     return queries.common.getArchivalLevels(args, context, undefined, true)
   },
+  statuses: (args, context) => {
+    return queries.common.getStatuses(args, context, undefined, true)
+  },
+  names: (args, context) => {
+    return queries.common.getNames(args, context, undefined, true)
+  },
+  collectionTypes: (args, context) => {
+    return queries.common.getCollectionTypes(args, context, undefined, true)
+  },
+  collectionCodes: (args, context) => {
+    return queries.common.getCollectionCodes(args, context, undefined, true)
+  },
   mediums: (args, context) => {
     return queries.common.getMediums(args, context, undefined, true)
   },
