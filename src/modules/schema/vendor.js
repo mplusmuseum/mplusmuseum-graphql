@@ -13,6 +13,8 @@ type Query {
     archivalLevel: String
     collectionType: String
     collectionCode: String
+    objectName: String
+    objectStatus: String
     medium: String
     displayDate: String
     beginDate: Int
@@ -149,6 +151,38 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
   ): [ArchivalLevels]
+
+  statuses(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Statuses]
+
+  names(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Names]
+
+  collectionTypes(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionTypes]
+
+  collectionCodes(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionCodes]
 
   mediums(
     page: Int
@@ -434,6 +468,26 @@ type ArchivalLevels {
 }
 
 type Mediums {
+  title: String
+  count: Int
+}
+
+type Statuses {
+  title: String
+  count: Int
+}
+
+type Names {
+  title: String
+  count: Int
+}
+
+type CollectionTypes {
+  title: String
+  count: Int
+}
+
+type CollectionCodes {
   title: String
   count: Int
 }

@@ -194,6 +194,74 @@ exports.getMediums = async (args, context, levelDown = 3, initialCall = false) =
   return aggs
 }
 
+exports.getStatuses = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `objectStatus.${args.lang}.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`objectStatus query`, {
+    method: 'getStatuses',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getNames = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `objectName.${args.lang}.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`objectNames query`, {
+    method: 'getNames',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getCollectionCodes = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `collectionCode.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`collectionCode query`, {
+    method: 'getCollectionCodes',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getCollectionTypes = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const aggs = getAggregates(args, `collectionType.keyword`, 'objects_mplus')
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`collectionType query`, {
+    method: 'getCollectionTypes',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
 exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false) => {
   const config = new Config()
   const index = 'config_ismakers_mplus'

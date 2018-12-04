@@ -350,6 +350,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   //  If we are searching based on popularCount we want to reject all the ones
   //  that aren't null
+  /*
   if (args.sort_field && args.sort_field === 'popularCount') {
     must.push({
       exists: {
@@ -357,6 +358,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       }
     })
   }
+  */
 
   if (must.length > 0) {
     body.query = {
