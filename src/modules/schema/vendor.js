@@ -13,6 +13,8 @@ type Query {
     archivalLevel: String
     collectionType: String
     collectionCode: String
+    objectName: String
+    objectStatus: String
     medium: String
     displayDate: String
     beginDate: Int
