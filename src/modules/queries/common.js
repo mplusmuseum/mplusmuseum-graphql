@@ -76,6 +76,8 @@ exports.getSingleTextFromArrayByLang = getSingleTextFromArrayByLang
 exports.getSingleTextFromArrayByNotLang = (thisObj, lang) => {
   //  If we can't find the language in the object then
   //  fall back to 'en' and try again
+  if (!thisObj) return null
+
   const matchingText = getSingleTextFromArrayByLang(thisObj, lang)
   let otherTitle = null
   Object.entries(thisObj).forEach((entry) => {
