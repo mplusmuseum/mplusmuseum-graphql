@@ -203,7 +203,9 @@ type LevelOneObject {
   objectNumber: String
   sortNumber: String
   title: String
+  titleOther: String
   displayDate: String
+  displayDateOther: String
   beginDate: Int
   endDate: Int
   dimension: String
@@ -236,7 +238,9 @@ type LevelTwoObject {
   objectNumber: String
   sortNumber: String
   title: String
+  titleOther: String
   displayDate: String
+  displayDateOther: String
   beginDate: Int
   endDate: Int
   dimension: String
@@ -269,7 +273,9 @@ type LevelThreeObject {
   objectNumber: String
   sortNumber: String
   title: String
+  titleOther: String
   displayDate: String
+  displayDateOther: String
   beginDate: Int
   endDate: Int
   dimension: String
@@ -297,6 +303,7 @@ type LevelOneConstituent {
   id: Int
   publicAccess: Boolean
   name: String
+  nameOther: String
   alphaSortName: String
   displayBio: String
   gender: String
@@ -322,6 +329,7 @@ type LevelTwoConstituent {
   id: Int
   publicAccess: Boolean
   name: String
+  nameOther: String
   alphaSortName: String
   displayBio: String
   gender: String
@@ -348,6 +356,7 @@ type LevelThreeConstituent {
   id: Int
   publicAccess: Boolean
   name: String
+  nameOther: String
   alphaSortName: String
   displayBio: String
   gender: String

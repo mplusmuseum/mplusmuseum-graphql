@@ -52,7 +52,7 @@ const getAggPerPage = (args) => {
   return defaultPerPage
 }
 
-exports.getSingleTextFromArrayByLang = (thisObj, lang) => {
+const getSingleTextFromArrayByLang = (thisObj, lang) => {
   //  If we can't find the language in the object then
   //  fall back to 'en' and try again
 
@@ -69,6 +69,22 @@ exports.getSingleTextFromArrayByLang = (thisObj, lang) => {
   if (keys.length === 0) return null
   //  Otherwise just return the first record we can find
   return thisObj[keys[0]]
+}
+exports.getSingleTextFromArrayByLang = getSingleTextFromArrayByLang
+
+//  Notice this only works with 2 languages!!!
+exports.getSingleTextFromArrayByNotLang = (thisObj, lang) => {
+  //  If we can't find the language in the object then
+  //  fall back to 'en' and try again
+  const matchingText = getSingleTextFromArrayByLang(thisObj, lang)
+  let otherTitle = null
+  Object.entries(thisObj).forEach((entry) => {
+    const value = entry[1]
+    if (value !== matchingText) otherTitle = value
+  })
+  //  Make sure it's actually null if it's nothing at all
+  if (otherTitle === '') otherTitle = null
+  return otherTitle
 }
 
 const getAggregates = async (args, field, index) => {

@@ -174,7 +174,15 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     //  Grab the name
     let newName = null
     let newAlphaName = null
+    const displayNameObj = {}
+
     if (record.name) {
+      Object.entries(record.name).forEach((entry) => {
+        if (entry[1].displayName) {
+          displayNameObj[entry[0]] = entry[1].displayName
+        }
+      })
+
       let useLang = args.lang
       if (!(useLang in record.name)) {
         if ('en' in record.name) {
@@ -200,6 +208,10 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     }
     record.name = newName
     record.alphaSortName = newAlphaName
+
+    //  Get the other name
+    const nameOther = common.getSingleTextFromArrayByNotLang(displayNameObj, args.lang)
+    if (nameOther) record.nameOther = nameOther
 
     //  Get the exhibition Bios
     if (record.exhibitions && record.exhibitions.biographies) {

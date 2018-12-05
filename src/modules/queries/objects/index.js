@@ -386,16 +386,22 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   records = records.map((record) => {
     //  Titles
     let match = null
+    let otherMatch = null
 
     //  Get the default value of title
     match = common.getSingleTextFromArrayByLang(record.title, args.lang)
+    otherMatch = common.getSingleTextFromArrayByNotLang(record.title, args.lang)
+
     delete record.title
     if (match !== null) record.title = match
+    if (otherMatch !== null) record.titleOther = otherMatch
 
     //  Get the default value of display date
     match = common.getSingleTextFromArrayByLang(record.displayDate, args.lang)
+    otherMatch = common.getSingleTextFromArrayByNotLang(record.displayDate, args.lang)
     delete record.displayDate
     if (match !== null) record.displayDate = match
+    if (otherMatch !== null) record.displayDateOther = otherMatch
 
     //  Get the default value of dimensions
     match = common.getSingleTextFromArrayByLang(record.dimension, args.lang)
