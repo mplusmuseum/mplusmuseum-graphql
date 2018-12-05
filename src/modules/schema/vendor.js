@@ -32,7 +32,9 @@ type Query {
     hsl_range: Int = 30
   ): [LevelOneObject]
 
-  randomobjects: [LevelOneObject]
+  randomobjects(
+    lang: String = "en"
+  ): [LevelOneObject]
 
   object(
     id: Int!
