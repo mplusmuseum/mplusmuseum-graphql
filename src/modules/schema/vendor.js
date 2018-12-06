@@ -30,6 +30,7 @@ type Query {
     hue: Int
     luminosity: Int
     hsl_range: Int = 30
+    isRecommended: Boolean
   ): [LevelOneObject]
 
   randomobjects(
@@ -219,7 +220,6 @@ type LevelOneObject {
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
-  _sys: Sys
   onView: Boolean
   allORC: String
   archiveDescription: String
@@ -230,6 +230,9 @@ type LevelOneObject {
   collectionCode: String
   scopeNContent: String
   baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
+  _sys: Sys
 }
 
 type LevelTwoObject {
@@ -254,7 +257,6 @@ type LevelTwoObject {
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
-  _sys: Sys
   onView: Boolean
   allORC: String
   archiveDescription: String
@@ -265,6 +267,9 @@ type LevelTwoObject {
   collectionCode: String
   scopeNContent: String
   baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
+  _sys: Sys
 }
 
 type LevelThreeObject {
@@ -286,7 +291,6 @@ type LevelThreeObject {
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
-  _sys: Sys
   onView: Boolean
   allORC: String
   archiveDescription: String
@@ -297,6 +301,9 @@ type LevelThreeObject {
   collectionCode: String
   scopeNContent: String
   baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
+  _sys: Sys
 }
 
 type LevelOneConstituent {

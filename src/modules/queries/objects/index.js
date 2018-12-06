@@ -348,6 +348,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete args.hsl_range
   }
 
+  if (args.isRecommended) {
+    must.push({
+      match: {
+        'isRecommended': args.isRecommended
+      }
+    })
+  }
+
   //  If we are searching based on popularCount we want to reject all the ones
   //  that aren't null
   /*
@@ -447,6 +455,11 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     match = common.getSingleTextFromArrayByLang(record.inscription, args.lang)
     delete record.inscription
     if (match !== null) record.inscription = match
+
+    //  Get the default value of ecommendedBlurb
+    match = common.getSingleTextFromArrayByLang(record.recommendedBlurb, args.lang)
+    delete record.recommendedBlurb
+    if (match !== null) record.recommendedBlurb = match
 
     //  Clean up the area and category
     if (record.classification) {

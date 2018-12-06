@@ -11,6 +11,10 @@ type Query {
     category: String
     area: String
     archivalLevel: String
+    collectionType: String
+    collectionCode: String
+    objectName: String
+    objectStatus: String
     medium: String
     displayDate: String
     beginDate: Int
@@ -24,6 +28,7 @@ type Query {
     hue: Int
     luminosity: Int
     hsl_range: Int = 30
+    isRecommended: Boolean
   ): [LevelOneObject]
 
   randomobjects: [LevelOneObject]
@@ -113,11 +118,24 @@ type LevelOneObject {
   dimension: String
   creditLine: String
   medium: String
-  archiveDescription: String
   classification: Classification
   constituents: [LevelTwoConstituent]
   images: [Image]
   color: ColorInfo
+  objectRights: ObjectRights
+  popularCount: Int
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
   _sys: Sys
 }
 
@@ -139,6 +157,20 @@ type LevelTwoObject {
   constituents: [LevelThreeConstituent]
   images: [Image]
   color: ColorInfo
+  objectRights: ObjectRights
+  popularCount: Int
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
   _sys: Sys
 }
 
@@ -159,6 +191,20 @@ type LevelThreeObject {
   classification: Classification
   images: [Image]
   color: ColorInfo
+  objectRights: ObjectRights
+  popularCount: Int
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
   _sys: Sys
 }
 
@@ -286,6 +332,20 @@ type Search {
 type ColorValue {
   color: String
   value: Float
+}
+
+type ObjectRights {
+  type: String
+  copyright: String
+  concatRights: String
+  concatRemark: String
+  currentStatus: String
+  rights: [Right]
+}
+
+type Right {
+  title: String
+  group: String
 }
 
 type Sys {
