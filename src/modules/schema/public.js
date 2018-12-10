@@ -101,7 +101,9 @@ type Query {
     sort_field: String = "id"
   ): [Mediums]
 
-  makertypes: [MakerTypes]
+  makertypes(
+    lang: String = "en"
+  ): [MakerTypes]
 }
 
 type LevelOneObject {
