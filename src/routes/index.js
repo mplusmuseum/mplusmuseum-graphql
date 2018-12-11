@@ -211,6 +211,9 @@ const root = {
   },
   timeline: (args, context) => {
     return queries.timeline.getTimeline(args, context, undefined, true)
+  },
+  factoids: (args, context) => {
+    return queries.factoids.getFactoids(args, context, undefined, true)
   }
 }
 

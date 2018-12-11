@@ -198,6 +198,12 @@ type Query {
   makertypes(
     lang: String = "en"
   ): [MakerTypes]
+
+  factoids(
+    page: Int
+    per_page: Int
+  ): [Factoids]
+
 }
 
 type LevelOneObject {
@@ -578,6 +584,12 @@ type ObjectRights {
 type Right {
   title: String
   group: String
+}
+
+type Factoids {
+  id: String
+  text: String
+  textTC: String
 }
 
 type Sys {
