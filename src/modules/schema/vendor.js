@@ -202,6 +202,14 @@ type Query {
   factoids(
     page: Int
     per_page: Int
+    isConstituent: Boolean
+    isArea: Boolean
+    isCategory: Boolean
+    isMedium: Boolean
+    isArchive: Boolean
+    isColour: Boolean
+    isRecommended: Boolean
+    isPopular: Boolean
   ): [Factoids]
 
 }
@@ -590,6 +598,14 @@ type Factoids {
   id: String
   text: String
   textTC: String
+  isConstituent: Boolean
+  isArea: Boolean
+  isCategory: Boolean
+  isMedium: Boolean
+  isArchive: Boolean
+  isColour: Boolean
+  isRecommended: Boolean
+  isPopular: Boolean
 }
 
 type Sys {
