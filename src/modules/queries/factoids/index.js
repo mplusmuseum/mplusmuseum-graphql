@@ -32,6 +32,73 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
     size: perPage
   }
 
+  const must = []
+  //  Now the section filters
+  if ('isConstituent' in args) {
+    must.push({
+      match: {
+        isConstituent: args.isConstituent
+      }
+    })
+  }
+  if ('isArea' in args) {
+    must.push({
+      match: {
+        isArea: args.isArea
+      }
+    })
+  }
+  if ('isCategory' in args) {
+    must.push({
+      match: {
+        isCategory: args.isCategory
+      }
+    })
+  }
+  if ('isMedium' in args) {
+    must.push({
+      match: {
+        isMedium: args.isMedium
+      }
+    })
+  }
+  if ('isArchive' in args) {
+    must.push({
+      match: {
+        isArchive: args.isArchive
+      }
+    })
+  }
+  if ('isColour' in args) {
+    must.push({
+      match: {
+        isColour: args.isColour
+      }
+    })
+  }
+  if ('isRecommended' in args) {
+    must.push({
+      match: {
+        isRecommended: args.isRecommended
+      }
+    })
+  }
+  if ('isPopular' in args) {
+    must.push({
+      match: {
+        isPopular: args.isPopular
+      }
+    })
+  }
+
+  if (must.length > 0) {
+    body.query = {
+      bool: {
+        must
+      }
+    }
+  }
+
   //  Run the search
   const results = await esclient.search({
     index,
@@ -53,6 +120,14 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
       if (record.fact.en) newRecord.text = record.fact.en
       if (record.fact['zh-hant']) newRecord.textTC = record.fact['zh-hant']
     }
+    newRecord.isConstituent = (record.isConstituent)
+    newRecord.isArea = (record.isArea)
+    newRecord.isCategory = (record.isCategory)
+    newRecord.isMedium = (record.isMedium)
+    newRecord.isArchive = (record.isArchive)
+    newRecord.isColour = (record.isColour)
+    newRecord.isRecommended = (record.isRecommended)
+    newRecord.isPopular = (record.isPopular)
     return newRecord
   })
 
