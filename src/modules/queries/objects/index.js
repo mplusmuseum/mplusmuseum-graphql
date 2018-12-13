@@ -824,6 +824,30 @@ const getObject = async (args, context, initialCall = false) => {
   //  Grab the object
   const thisObject = objectArray[0]
 
+  //  Check to see if we need to get any related objects
+  if (thisObject.relatedObjectIds && thisObject.relatedObjectIds.idsToRelationship && thisObject.relatedObjectIds.ids) {
+    //  Build a lookup map of the ids to types
+    const objectRelationships = {}
+    JSON.parse(thisObject.relatedObjectIds.idsToRelationship).forEach((obj) => {
+      objectRelationships[parseInt(obj.id, 10)] = {
+        relatedType: obj.relatedType,
+        selfType: obj.selfType
+      }
+    })
+
+    //  Go grab all the related objects
+    args.ids = thisObject.relatedObjectIds.ids
+    const relatedObjects = await getObjects(args, context, 2)
+    //  Tuck in the types from the map
+    thisObject.relatedObjects = relatedObjects.map((obj) => {
+      if (objectRelationships[obj.id]) {
+        if (objectRelationships[obj.id].relatedType) obj.relatedType = objectRelationships[obj.id].relatedType
+        if (objectRelationships[obj.id].selfType) obj.selfType = objectRelationships[obj.id].selfType
+      }
+      return obj
+    })
+  }
+
   //  Update the popularCount
   const config = new Config()
   const elasticsearchConfig = config.get('elasticsearch')

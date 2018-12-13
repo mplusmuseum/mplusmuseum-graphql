@@ -40,7 +40,7 @@ type Query {
   object(
     id: Int!
     lang: String = "en"
-  ): LevelOneObject
+  ): SingleObject
 
 
   constituents(
@@ -251,6 +251,42 @@ type LevelOneObject {
   _sys: Sys
 }
 
+type SingleObject {
+  id: Int
+  publicAccess: Boolean
+  objectNumber: String
+  sortNumber: String
+  title: String
+  otherTitle: String
+  displayDate: String
+  displayDateOther: String
+  beginDate: Int
+  endDate: Int
+  dimension: String
+  creditLine: String
+  medium: String
+  classification: Classification
+  constituents: [LevelTwoConstituent]
+  images: [Image]
+  color: ColorInfo
+  objectRights: ObjectRights
+  popularCount: Int
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
+  relatedObjects: [RelatedObject]
+  _sys: Sys
+}
+
 type LevelTwoObject {
   id: Int
   publicAccess: Boolean
@@ -295,6 +331,42 @@ type LevelThreeObject {
   sortNumber: String
   title: String
   titleOther: String
+  displayDate: String
+  displayDateOther: String
+  beginDate: Int
+  endDate: Int
+  dimension: String
+  creditLine: String
+  medium: String
+  classification: Classification
+  images: [Image]
+  color: ColorInfo
+  objectRights: ObjectRights
+  popularCount: Int
+  onView: Boolean
+  allORC: String
+  archiveDescription: String
+  objectStatus: String
+  inscription: String
+  objectName: String
+  collectionType: String
+  collectionCode: String
+  scopeNContent: String
+  baselineDescription: String
+  isRecommended: Boolean
+  recommendedBlurb: String
+  _sys: Sys
+}
+
+type RelatedObject {
+  id: Int
+  relatedType: String
+  selfType: String
+  publicAccess: Boolean
+  objectNumber: String
+  sortNumber: String
+  title: String
+  otherTitle: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
