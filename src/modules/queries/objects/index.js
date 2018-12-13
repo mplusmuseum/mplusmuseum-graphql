@@ -356,6 +356,32 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  const notObjectNames = ['Fonds', 'Series', 'Sub-fonds', 'Sub-subseries', 'Subseries']
+  const notObjects = notObjectNames.map((name) => {
+    return {
+      term: {
+        'classification.archivalLevel.areacat.en.keyword': name
+      }
+    }
+  })
+
+  //  Check for objects or not objects
+  if (args.onlyObjects && args.onlyObjects === true) {
+    must.push({
+      bool: {
+        must_not: notObjects
+      }
+    })
+  }
+
+  if (args.onlyNotObjects && args.onlyNotObjects === true) {
+    must.push({
+      bool: {
+        should: notObjects
+      }
+    })
+  }
+
   //  If we are searching based on popularCount we want to reject all the ones
   //  that aren't null
   /*
