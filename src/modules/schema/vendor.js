@@ -252,6 +252,7 @@ type LevelOneObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
 
@@ -325,6 +326,7 @@ type LevelTwoObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
 
@@ -359,6 +361,7 @@ type LevelThreeObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
 
@@ -395,7 +398,14 @@ type RelatedObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  relatedObjects: [RelatedObjectShort]
   _sys: Sys
+}
+
+type RelatedObjectShort {
+  id: Int
+  relatedType: String
+  selfType: String
 }
 
 type LevelOneConstituent {

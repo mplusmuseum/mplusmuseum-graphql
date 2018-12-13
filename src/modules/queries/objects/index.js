@@ -704,6 +704,15 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  //  Unpack the related object ids
+  records = records.map((record) => {
+    if (record.relatedObjectIds && record.relatedObjectIds.idsToRelationship) {
+      //  Just send back the expanded JSON
+      record.relatedObjects = JSON.parse(record.relatedObjectIds.idsToRelationship)
+    }
+    return record
+  })
+
   //  Now sort out all the images stuff
   records = records.map((record) => {
     if (record.images) delete record.images
