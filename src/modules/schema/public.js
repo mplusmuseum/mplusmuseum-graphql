@@ -29,9 +29,15 @@ type Query {
     luminosity: Int
     hsl_range: Int = 30
     isRecommended: Boolean
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [LevelOneObject]
 
-  randomobjects: [LevelOneObject]
+  randomobjects(
+    lang: String = "en"
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
+  ): [LevelOneObject]
 
   object(
     id: Int!
