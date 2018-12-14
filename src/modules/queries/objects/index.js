@@ -869,10 +869,13 @@ const getObject = async (args, context, initialCall = false) => {
         selfType: obj.selfType
       }
     })
-
     //  Go grab all the related objects
-    args.ids = thisObject.relatedObjectIds.ids
-    const relatedObjects = await getObjects(args, context, 2)
+    const newArgs = JSON.parse(JSON.stringify(args))
+    newArgs.ids = thisObject.relatedObjectIds.ids
+    delete newArgs.id
+
+    const relatedObjects = await getObjects(newArgs, context, 2)
+
     //  Tuck in the types from the map
     thisObject.relatedObjects = relatedObjects.map((obj) => {
       if (objectRelationships[obj.id]) {
