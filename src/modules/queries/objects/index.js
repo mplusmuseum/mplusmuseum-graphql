@@ -68,8 +68,17 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   //  Set up the client
   const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const page = common.getPage(args)
-  const perPage = common.getPerPage(args)
+  let page = common.getPage(args)
+  let perPage = common.getPerPage(args)
+  const originalPerPage = common.getPerPage(args)
+
+  //  If we have been told to shuffle the objects then we need to
+  //  override the pages and then set them back afterwards
+  if (args.shuffle && args.shuffle === true) {
+    page = 0
+    perPage = 100
+  }
+
   const body = {
     from: page * perPage,
     size: perPage
@@ -415,6 +424,17 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
     return record
   })
+
+  //  If we were told to shuffle, then we need to do that here
+  //  and the slice back down to the original perPage request
+  if (args.shuffle && args.shuffle === true) {
+    records = records
+      .map(a => [Math.random(), a])
+      .sort((a, b) => a[0] - b[0])
+      .map(a => a[1])
+      .splice(0, originalPerPage)
+    perPage = originalPerPage
+  }
 
   //  Grab the language specific stuff
   records = records.map((record) => {
