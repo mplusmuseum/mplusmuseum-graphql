@@ -132,7 +132,7 @@ type LevelOneObject {
   objectNumber: String
   sortNumber: String
   title: String
-  otherTitle: String
+  titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
@@ -168,7 +168,7 @@ type SingleObject {
   objectNumber: String
   sortNumber: String
   title: String
-  otherTitle: String
+  titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
@@ -204,7 +204,7 @@ type LevelTwoObject {
   objectNumber: String
   sortNumber: String
   title: String
-  otherTitle: String
+  titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
@@ -240,7 +240,7 @@ type LevelThreeObject {
   objectNumber: String
   sortNumber: String
   title: String
-  otherTitle: String
+  titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
@@ -277,7 +277,7 @@ type RelatedObject {
   objectNumber: String
   sortNumber: String
   title: String
-  otherTitle: String
+  titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int

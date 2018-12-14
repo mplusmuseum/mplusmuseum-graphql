@@ -79,14 +79,14 @@ exports.getSingleTextFromArrayByNotLang = (thisObj, lang) => {
   if (!thisObj) return null
 
   const matchingText = getSingleTextFromArrayByLang(thisObj, lang)
-  let otherTitle = null
+  let titleOther = null
   Object.entries(thisObj).forEach((entry) => {
     const value = entry[1]
-    if (value !== matchingText) otherTitle = value
+    if (value !== matchingText) titleOther = value
   })
   //  Make sure it's actually null if it's nothing at all
-  if (otherTitle === '') otherTitle = null
-  return otherTitle
+  if (titleOther === '') titleOther = null
+  return titleOther
 }
 
 const getAggregates = async (args, field, index) => {
