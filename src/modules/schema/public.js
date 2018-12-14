@@ -31,12 +31,14 @@ type Query {
     isRecommended: Boolean
     onlyObjects: Boolean
     onlyNotObjects: Boolean
+    shuffle: Boolean
   ): [LevelOneObject]
 
   randomobjects(
     lang: String = "en"
     onlyObjects: Boolean
     onlyNotObjects: Boolean
+    shuffle: Boolean
   ): [LevelOneObject]
 
   object(
