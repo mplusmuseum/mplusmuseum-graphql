@@ -160,6 +160,7 @@ type LevelOneObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  blurbExternalUrl: String
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -196,6 +197,7 @@ type SingleObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  blurbExternalUrl: String
   relatedObjects: [RelatedObject]
   _sys: Sys
 }
@@ -232,6 +234,7 @@ type LevelTwoObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  blurbExternalUrl: String
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -267,6 +270,7 @@ type LevelThreeObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  blurbExternalUrl: String
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -304,6 +308,7 @@ type RelatedObject {
   baselineDescription: String
   isRecommended: Boolean
   recommendedBlurb: String
+  blurbExternalUrl: String
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }

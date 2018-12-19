@@ -514,10 +514,15 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete record.inscription
     if (match !== null) record.inscription = match
 
-    //  Get the default value of ecommendedBlurb
+    //  Get the default value of recommendedBlurb
     match = common.getSingleTextFromArrayByLang(record.recommendedBlurb, args.lang)
     delete record.recommendedBlurb
     if (match !== null) record.recommendedBlurb = match
+
+    //  Get the default value of blurbExternalUrl
+    match = common.getSingleTextFromArrayByLang(record.blurbExternalUrl, args.lang)
+    delete record.blurbExternalUrl
+    if (match !== null) record.blurbExternalUrl = match
 
     //  Clean up the area and category
     if (record.classification) {
