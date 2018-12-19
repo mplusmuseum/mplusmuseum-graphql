@@ -421,7 +421,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }).catch((err) => {
     console.error(err)
   })
-
   let total = null
   if (objects.hits.total) total = objects.hits.total
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
