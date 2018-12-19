@@ -119,6 +119,16 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   const must = []
+
+  // Do the publicAccess toggle
+  if ('publicAccess' in args) {
+    must.push({
+      match: {
+        'publicAccess': args.publicAccess
+      }
+    })
+  }
+
   //  Make sure the item is public access
   if (context.isVendor !== true) {
     must.push({

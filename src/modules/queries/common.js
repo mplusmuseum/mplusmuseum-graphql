@@ -112,6 +112,18 @@ const getAggregates = async (args, field, index) => {
     }
   }
 
+  if ('publicAccess' in args) {
+    body.query = {
+      bool: {
+        must: {
+          match: {
+            'publicAccess': args.publicAccess
+          }
+        }
+      }
+    }
+  }
+
   // Now let us add extra sorting if needed
   if ('sort_field' in args && (args.sort_field === 'title' || args.sort_field === 'count')) {
     let sortOrder = 'asc'

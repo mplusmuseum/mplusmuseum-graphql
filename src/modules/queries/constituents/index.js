@@ -65,6 +65,16 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
   }
 
   const must = []
+
+  // Do the publicAccess toggle
+  if ('publicAccess' in args) {
+    must.push({
+      match: {
+        'publicAccess': args.publicAccess
+      }
+    })
+  }
+
   //  Only get those who are public access
   if (context.isVendor !== true) {
     must.push({

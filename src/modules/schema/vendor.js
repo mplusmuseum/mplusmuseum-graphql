@@ -4,6 +4,7 @@ type Query {
   objects(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     ids: [Int]
     lang: String = "en"
     sort: String = "asc"
@@ -38,6 +39,7 @@ type Query {
 
   randomobjects(
     lang: String = "en"
+    publicAccess: Boolean
     onlyObjects: Boolean
     onlyNotObjects: Boolean
     shuffle: Boolean
@@ -52,6 +54,7 @@ type Query {
   constituents(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     ids: [Int]
     lang: String = "en"
     sort: String = "asc"
@@ -125,6 +128,7 @@ type Query {
     lang: String = "en"
     page: Int
     per_page: Int
+    publicAccess: Boolean
     category: String
     area: String
     medium: String
@@ -140,6 +144,7 @@ type Query {
   areas(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -148,6 +153,7 @@ type Query {
   categories(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -156,6 +162,7 @@ type Query {
   archivalLevels(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -164,6 +171,7 @@ type Query {
   statuses(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -172,6 +180,7 @@ type Query {
   names(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -180,6 +189,7 @@ type Query {
   collectionTypes(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -188,6 +198,7 @@ type Query {
   collectionCodes(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
@@ -196,6 +207,7 @@ type Query {
   mediums(
     page: Int
     per_page: Int
+    publicAccess: Boolean
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
