@@ -10,8 +10,10 @@ exports.index = (req, res) => {
 
     //  ADD/UPDATE DASHBOARD
     if (req.body.action === 'updatedashboard' && 'dashboard' in req.body && req.body.dashboard !== '' && 'handshake' in req.body && req.body.handshake !== '') {
+      let host = req.body.dashboard
+      if (host[host.length - 1] !== '/') host = `${host}/`
       config.set('dashboard', {
-        host: req.body.dashboard,
+        host,
         handshake: req.body.handshake
       })
       // const pingtools = require('../../modules/pingtools')
@@ -24,6 +26,7 @@ exports.index = (req, res) => {
       config.set('elasticsearch', {
         host: req.body.elasticsearch
       })
+      config.set('baseTMS', req.body.baseTMS)
       const pingtools = require('../../modules/pingtools')
       pingtools.pingES()
 

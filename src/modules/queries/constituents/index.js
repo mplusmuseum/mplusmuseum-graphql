@@ -15,7 +15,10 @@ This is where we get all the constituents
 const getConstituents = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
   const config = new Config()
-  const index = 'constituents_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `constituents_${baseTMS}`
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')
@@ -62,6 +65,16 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
   }
 
   const must = []
+
+  // Do the publicAccess toggle
+  if ('publicAccess' in args) {
+    must.push({
+      match: {
+        'publicAccess': args.publicAccess
+      }
+    })
+  }
+
   //  Only get those who are public access
   if (context.isVendor !== true) {
     must.push({

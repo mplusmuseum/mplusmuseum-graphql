@@ -66,21 +66,24 @@ class ESLogger {
       return
     }
     const esclient = new elasticsearch.Client(elasticsearchConfig)
-    const index = 'logs_mplus_graphql'
+    const baseTMS = config.get('baseTMS')
 
-    data.name = name
-    data.datetime = new Date()
-    data.timestamp = data.datetime.getTime()
+    if (baseTMS !== null) {
+      const index = `logs_${baseTMS}_graphql`
+      data.name = name
+      data.datetime = new Date()
+      data.timestamp = data.datetime.getTime()
 
-    esclient.update({
-      index,
-      type: 'log',
-      id: data.timestamp,
-      body: {
-        doc: data,
-        doc_as_upsert: true
-      }
-    })
+      esclient.update({
+        index,
+        type: 'log',
+        id: data.timestamp,
+        body: {
+          doc: data,
+          doc_as_upsert: true
+        }
+      })
+    }
   }
 }
 
@@ -109,14 +112,18 @@ exports.createIndex = async () => {
     return
   }
   const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const index = 'logs_mplus_graphql'
-  const exists = await esclient.indices.exists({
-    index
-  })
-  if (exists === false) {
-    await esclient.indices.create({
+  const baseTMS = config.get('baseTMS')
+
+  if (baseTMS !== null) {
+    const index = `logs_${baseTMS}_graphql`
+    const exists = await esclient.indices.exists({
       index
     })
+    if (exists === false) {
+      await esclient.indices.create({
+        index
+      })
+    }
   }
 }
 

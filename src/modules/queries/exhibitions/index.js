@@ -15,7 +15,10 @@ This is where we get all the exhibitions
 const getExhibitions = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
   const config = new Config()
-  const index = 'exhibitions_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `exhibitions_${baseTMS}`
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')
@@ -156,7 +159,7 @@ const getExhibitions = async (args, context, levelDown = 3, initialCall = false)
 
   //  If we are in here the 1st time, then we get more info about the objects
   //  but if we are any deeper levels down then we don't want to go and fetch any more
-  async function asyncForEach(array, callback) {
+  async function asyncForEach (array, callback) {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array)
     }

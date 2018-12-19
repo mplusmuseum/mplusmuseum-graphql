@@ -112,6 +112,18 @@ const getAggregates = async (args, field, index) => {
     }
   }
 
+  if ('publicAccess' in args) {
+    body.query = {
+      bool: {
+        must: {
+          match: {
+            'publicAccess': args.publicAccess
+          }
+        }
+      }
+    }
+  }
+
   // Now let us add extra sorting if needed
   if ('sort_field' in args && (args.sort_field === 'title' || args.sort_field === 'count')) {
     let sortOrder = 'asc'
@@ -146,7 +158,11 @@ const getAggregates = async (args, field, index) => {
 
 exports.getAreas = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `classification.area.areacat.${args.lang}.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `classification.area.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Areas query`, {
     method: 'getAreas',
@@ -163,7 +179,11 @@ exports.getAreas = async (args, context, levelDown = 3, initialCall = false) => 
 
 exports.getCategories = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `classification.category.areacat.${args.lang}.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `classification.category.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Categories query`, {
     method: 'getCategories',
@@ -180,7 +200,11 @@ exports.getCategories = async (args, context, levelDown = 3, initialCall = false
 
 exports.getArchivalLevels = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `classification.archivalLevel.areacat.${args.lang}.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `classification.archivalLevel.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`ArchivalLevels query`, {
     method: 'getArchivalLevels',
@@ -197,7 +221,11 @@ exports.getArchivalLevels = async (args, context, levelDown = 3, initialCall = f
 
 exports.getMediums = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `medium.${args.lang}.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `medium.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Mediums query`, {
     method: 'getMediums',
@@ -214,7 +242,11 @@ exports.getMediums = async (args, context, levelDown = 3, initialCall = false) =
 
 exports.getStatuses = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `objectStatus.${args.lang}.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `objectStatus.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`objectStatus query`, {
     method: 'getStatuses',
@@ -231,7 +263,11 @@ exports.getStatuses = async (args, context, levelDown = 3, initialCall = false) 
 
 exports.getNames = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `objectName.${args.lang}.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `objectName.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`objectNames query`, {
     method: 'getNames',
@@ -248,7 +284,11 @@ exports.getNames = async (args, context, levelDown = 3, initialCall = false) => 
 
 exports.getCollectionCodes = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `collectionCode.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `collectionCode.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`collectionCode query`, {
     method: 'getCollectionCodes',
@@ -265,7 +305,11 @@ exports.getCollectionCodes = async (args, context, levelDown = 3, initialCall = 
 
 exports.getCollectionTypes = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
-  const aggs = getAggregates(args, `collectionType.keyword`, 'objects_mplus')
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `collectionType.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`collectionType query`, {
     method: 'getCollectionTypes',
@@ -282,7 +326,10 @@ exports.getCollectionTypes = async (args, context, levelDown = 3, initialCall = 
 
 exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false) => {
   const config = new Config()
-  const index = 'config_ismakers_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `config_ismakers_${baseTMS}`
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')
