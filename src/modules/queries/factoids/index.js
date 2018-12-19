@@ -15,7 +15,10 @@ This is where we get all the factoids
 const getFactoids = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
   const config = new Config()
-  const index = 'factoids_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `factoids_${baseTMS}`
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')

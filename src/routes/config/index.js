@@ -24,6 +24,7 @@ exports.index = (req, res) => {
       config.set('elasticsearch', {
         host: req.body.elasticsearch
       })
+      config.set('baseTMS', req.body.baseTMS)
       const pingtools = require('../../modules/pingtools')
       pingtools.pingES()
 

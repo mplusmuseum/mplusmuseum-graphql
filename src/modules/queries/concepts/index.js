@@ -15,7 +15,10 @@ This is where we get all the concepts
 const getConcepts = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
   const config = new Config()
-  const index = 'concepts_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `concepts_${baseTMS}`
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')

@@ -58,7 +58,10 @@ This is where we get all the objects
 const getObjects = async (args, context, levelDown = 2, initialCall = false) => {
   const startTime = new Date().getTime()
   const config = new Config()
-  const index = 'objects_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `objects_${baseTMS}`
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')
@@ -813,7 +816,10 @@ const getRandomObjects = async (args, context, initialCall = false) => {
   const startTime = new Date().getTime()
 
   const config = new Config()
-  const index = 'randomobjects_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `randomobjects_${baseTMS}`
 
   //  Grab the elastic search config details
   const elasticsearchConfig = config.get('elasticsearch')
@@ -910,7 +916,10 @@ const getObject = async (args, context, initialCall = false) => {
   const config = new Config()
   const elasticsearchConfig = config.get('elasticsearch')
   const esclient = new elasticsearch.Client(elasticsearchConfig)
-  const index = 'objects_mplus'
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `objects_${baseTMS}`
   const type = 'object'
 
   //  If there isn't a "popularCount" field then we need to add one
