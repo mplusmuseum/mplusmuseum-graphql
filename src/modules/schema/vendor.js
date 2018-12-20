@@ -33,6 +33,7 @@ type Query {
     saturation: [Int]
     hsl_range: Int = 30
     isRecommended: Boolean
+    withBlurb: Boolean
     onlyObjects: Boolean
     onlyNotObjects: Boolean
     shuffle: Boolean
