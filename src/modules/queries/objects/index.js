@@ -344,24 +344,77 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete args.color_source
   }
 
+  //  If we've been sent a hue then it's a fair guess that
+  //  we've been sent some colour information to search
   if ('hue' in args && args.hue !== '') {
-    let hMin = args.hue - 30
-    let hMax = args.hue + 30
-    //  If we have gone off the bottom of the scale then
-    //  we need to switch things around
-    must.push({
-      range: {
-        'colorHSLInt.h': {
-          gte: hMin,
-          lte: hMax
+    //  First get the hue that we know we have
+    const hues = args.hue
+    let lums = []
+    let sats = []
+
+    //  Now grab the possible luminosity values
+    if ('luminosity' in args && args.luminosity !== '') {
+      lums = args.luminosity
+    }
+    if (lums.length === 0) lums = [50] // default
+
+    //  Now grab the possible saturation values
+    if ('saturation' in args && args.saturation !== '') {
+      sats = args.saturation
+    }
+    if (sats.length === 0) sats = [30] // default
+
+    //  We're going to track our way through the arrays
+    //  this is a bit of an odd way to do it but it
+    //  actually make sense believe me
+    let arrayPosCounter = 0
+    const hslShoulds = []
+    hues.forEach((hue) => {
+      //  Either get the matching lums, or the first one
+      let thisLum = lums[0]
+      if (arrayPosCounter < lums.length) {
+        thisLum = lums[arrayPosCounter]
+      }
+      //  Either get the sats, or the first one
+      let thisSat = sats[0]
+      if (arrayPosCounter < sats.length) {
+        thisSat = sats[arrayPosCounter]
+      }
+
+      const colourSearch = {
+        bool: {
+          must: [{
+            range: {
+              'colorHSLInt.h': {
+                gte: hue - 30,
+                lte: hue + 30
+              }
+            }
+          },
+          {
+            range: {
+              'colorHSLInt.l': {
+                gte: thisLum - 25,
+                lte: thisLum + 25
+              }
+            }
+          },
+          {
+            range: {
+              'colorHSLInt.s': {
+                gte: thisSat
+              }
+            }
+          }
+          ]
         }
       }
+      hslShoulds.push(colourSearch)
+      arrayPosCounter++
     })
     must.push({
-      range: {
-        'colorHSLInt.s': {
-          gte: 50
-        }
+      bool: {
+        should: hslShoulds
       }
     })
   } else {
