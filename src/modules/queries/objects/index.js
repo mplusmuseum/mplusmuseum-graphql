@@ -431,6 +431,22 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if (args.withBlurb) {
+    must.push({
+      bool: {
+        should: [{
+          exists: {
+            field: `recommendedBlurb.en.keyword`
+          }
+        }, {
+          exists: {
+            field: `recommendedBlurb.zh-hant.keyword`
+          }
+        }]
+      }
+    })
+  }
+
   const notObjectNames = ['Fonds', 'Series', 'Sub-fonds', 'Sub-subseries', 'Subseries']
   const notObjects = notObjectNames.map((name) => {
     return {
