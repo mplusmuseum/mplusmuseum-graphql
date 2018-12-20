@@ -27,7 +27,7 @@ type Query {
     color_source: String = "google"
     hue: [Int]
     luminosity: [Int]
-    saturations: [Int]
+    saturation: [Int]
     hsl_range: Int = 30
     isRecommended: Boolean
     onlyObjects: Boolean
