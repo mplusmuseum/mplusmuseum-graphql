@@ -158,6 +158,7 @@ type LevelOneObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collection: Collection
   scopeNContent: String
   baselineDescription: String
   isRecommended: Boolean
@@ -195,6 +196,7 @@ type SingleObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collection: Collection
   scopeNContent: String
   baselineDescription: String
   isRecommended: Boolean
@@ -232,6 +234,7 @@ type LevelTwoObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collection: Collection
   scopeNContent: String
   baselineDescription: String
   isRecommended: Boolean
@@ -268,6 +271,7 @@ type LevelThreeObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collection: Collection
   scopeNContent: String
   baselineDescription: String
   isRecommended: Boolean
@@ -306,6 +310,7 @@ type RelatedObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collection: Collection
   scopeNContent: String
   baselineDescription: String
   isRecommended: Boolean
@@ -453,6 +458,14 @@ type ObjectRights {
   concatRemark: String
   currentStatus: String
   rights: [Right]
+}
+
+type Collection {
+  code: String
+  type: String
+  objectId: Int
+  title: String
+  titleOther: String
 }
 
 type Right {
