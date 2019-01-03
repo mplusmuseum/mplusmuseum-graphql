@@ -3,6 +3,96 @@ const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
 
+const addCollectionInformation = async (lang, objects) => {
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return objects
+  const index = `objects_${baseTMS}`
+
+  //  Grab the elastic search config details
+  const elasticsearchConfig = config.get('elasticsearch')
+  if (elasticsearchConfig === null) {
+    return objects
+  }
+
+  // go get a map of the collections stuff
+  if (!global.collectionMap || global.collectionMap.expire >= new Date().getTime()) {
+    const pushThis = {
+      match: {}
+    }
+    const must = []
+    pushThis.match[`classification.archivalLevel.areacat.en.keyword`] = 'Fonds'
+    must.push(pushThis)
+    const body = {
+      from: 0,
+      size: 60,
+      query: {
+        bool: {
+          must
+        }
+      }
+    }
+
+    const esclient = new elasticsearch.Client(elasticsearchConfig)
+    const objects = await esclient.search({
+      index,
+      body
+    }).catch((err) => {
+      console.error(err)
+    })
+
+    if (objects.hits && objects.hits.hits) {
+      global.collectionMap = {
+        expires: new Date().getTime() + (60 * 60 * 1000),
+        collections: {}
+      }
+      objects.hits.hits.forEach((obj) => {
+        const object = obj._source
+        //  Grab the titles
+        let titleEN = null
+        let titleTC = null
+        if (object.title) {
+          if (object.title.en) titleEN = object.title.en
+          if (object.title['zh-hant']) titleTC = object.title['zh-hant']
+        }
+        if (lang === 'en') {
+          global.collectionMap.collections[object.collectionCode] = {
+            id: object.id,
+            title: titleEN,
+            titleOther: titleTC
+          }
+        } else {
+          global.collectionMap.collections[object.collectionCode] = {
+            id: object.id,
+            title: titleTC,
+            titleOther: titleEN
+          }
+          if (titleTC === null) {
+            global.collectionMap.collections[object.collectionCode].title = titleEN
+            global.collectionMap.collections[object.collectionCode].titleOther = null
+          }
+        }
+      })
+    }
+  }
+
+  return objects.map((object) => {
+    object.collection = {
+      code: object.collectionCode,
+      type: object.collectionType,
+      objectId: null,
+      title: null,
+      titleOther: null
+    }
+    if (global.collectionMap && global.collectionMap.collections && global.collectionMap.collections[object.collectionCode]) {
+      object.collection.objectId = global.collectionMap.collections[object.collectionCode].id
+      object.collection.title = global.collectionMap.collections[object.collectionCode].title
+      object.collection.titleOther = global.collectionMap.collections[object.collectionCode].titleOther
+    }
+    return object
+  })
+}
+
 const cleanObjectColor = (object) => {
   const newObject = object
 
@@ -864,6 +954,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     record = cleanObjectColor(record)
     return record
   })
+
+  //  Add the collections data
+  records = await addCollectionInformation(args.lang, records)
 
   //  Finally, add the pagination information
   const sys = {
