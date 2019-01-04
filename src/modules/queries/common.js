@@ -1,6 +1,65 @@
 const Config = require('../../classes/config')
 const elasticsearch = require('elasticsearch')
 const logging = require('../logging')
+const crypto = require('crypto')
+
+const doCacheQuery = async (cacheable, index, body) => {
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+
+  //  This is the empty dataset we return if we fail
+  //  to do any of the things
+  const emptyDataSet = {
+    hits: {
+      hits: []
+    }
+  }
+
+  //  Set up the connection
+  if (elasticsearchConfig === null) {
+    return emptyDataSet
+  }
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+
+  //  Hash the query body
+  const bodyhash = crypto
+    .createHash('md5')
+    .update(JSON.stringify(body))
+    .digest('hex')
+
+  //  If we have been passed a cacheable results, and we aleady have the
+  //  results in cache then get it back out
+  if (cacheable && global.queryCache && global.queryCache[bodyhash] && global.queryCache[bodyhash].expire > new Date().getTime()) {
+    const deepStringResults = JSON.stringify(global.queryCache[bodyhash].results)
+    const deepJSONCopy = JSON.parse(deepStringResults)
+    return deepJSONCopy
+  }
+
+  //  If we didn't just pull the results out of cache, then go and get them
+  //  Grab the results
+  const results = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+    return emptyDataSet
+  })
+
+  //  If the results are cacheable, then pop them back into cache
+  if (cacheable) {
+    if (!global.queryCache) global.queryCache = {}
+    const deepStringResults = JSON.stringify(results)
+    const deepJSONCopy = JSON.parse(deepStringResults)
+    global.queryCache[bodyhash] = {
+      expire: new Date().getTime() + (60 * 60 * 1000),
+      results: deepJSONCopy
+    }
+  }
+
+  //  Return the results
+  return results
+}
+exports.doCacheQuery = doCacheQuery
 
 const getPage = (args) => {
   const defaultPage = 0
@@ -90,16 +149,8 @@ exports.getSingleTextFromArrayByNotLang = (thisObj, lang) => {
 }
 
 const getAggregates = async (args, field, index) => {
-  const config = new Config()
-
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
   //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const cacheable = true
   const perPage = getAggPerPage(args)
   const body = {}
 
@@ -140,12 +191,8 @@ const getAggregates = async (args, field, index) => {
   }
 
   //  Run the search
-  const results = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-  })
+  const results = await doCacheQuery(cacheable, index, body)
+
   const records = results.aggregations.results.buckets
 
   return records.map((record) => {
@@ -331,24 +378,13 @@ exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false
 
   const index = `config_ismakers_${baseTMS}`
 
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
   //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const cacheable = true
   const body = {
     from: 0,
     size: 1000
   }
-  const objects = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-  })
+  const objects = await doCacheQuery(cacheable, index, body)
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
     record.title = record.id
     return record

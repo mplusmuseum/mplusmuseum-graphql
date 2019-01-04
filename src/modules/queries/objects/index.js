@@ -2,74 +2,13 @@ const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
-const crypto = require('crypto')
-
-const doCacheQuery = async (cacheable, index, body) => {
-  const config = new Config()
-  const elasticsearchConfig = config.get('elasticsearch')
-
-  //  This is the empty dataset we return if we fail
-  //  to do any of the things
-  const emptyDataSet = {
-    hits: {
-      hits: []
-    }
-  }
-
-  //  Set up the connection
-  if (elasticsearchConfig === null) {
-    return emptyDataSet
-  }
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
-
-  //  Hash the query body
-  const bodyhash = crypto
-    .createHash('md5')
-    .update(JSON.stringify(body))
-    .digest('hex')
-
-  console.log('bodyhash: ', bodyhash)
-
-  //  If we have been passed a cacheable results, and we aleady have the
-  //  results in cache then get it back out
-  if (cacheable && global.queryCache && global.queryCache[bodyhash] && global.queryCache[bodyhash].expire > new Date().getTime()) {
-    return global.queryCache[bodyhash].results
-  }
-
-  //  If we didn't just pull the results out of cache, then go and get them
-  //  Grab the results
-  const results = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-    return emptyDataSet
-  })
-
-  //  If the results are cacheable, then pop them back into cache
-  if (cacheable) {
-    if (!global.queryCache) global.queryCache = {}
-    global.queryCache[bodyhash] = {
-      expire: new Date().getTime() + (60 * 60 * 1000),
-      results: JSON.parse(JSON.stringify(results))
-    }
-  }
-
-  //  Return the results
-  return results
-}
 
 const addCollectionInformation = async (lang, objects) => {
   const config = new Config()
+  const cacheable = true
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return objects
   const index = `objects_${baseTMS}`
-
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return objects
-  }
 
   // go get a map of the collections stuff
   if (!global.collectionMap || global.collectionMap.expire >= new Date().getTime()) {
@@ -89,13 +28,7 @@ const addCollectionInformation = async (lang, objects) => {
       }
     }
 
-    const esclient = new elasticsearch.Client(elasticsearchConfig)
-    const objects = await esclient.search({
-      index,
-      body
-    }).catch((err) => {
-      console.error(err)
-    })
+    const objects = await common.doCacheQuery(cacheable, index, body)
 
     if (objects.hits && objects.hits.hits) {
       global.collectionMap = {
@@ -402,6 +335,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('title' in args && args.title !== '') {
+    //  Don't cache when doing string searches
+    cacheable = false
     must.push({
       multi_match: {
         query: args.title,
@@ -413,6 +348,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('keyword' in args && args.title !== '') {
+    //  Don't cache when doing keyword searches
+    cacheable = false
     must.push({
       multi_match: {
         query: args.keyword,
@@ -487,7 +424,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   //  If we've been sent a hue then it's a fair guess that
   //  we've been sent some colour information to search
-  if ('hue' in args && args.hue !== '') {
+  if ('hue' in args && args.hue !== '' && args.hue.length > 0) {
     //  First get the hue that we know we have
     const hues = args.hue
     let lums = []
@@ -553,6 +490,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       hslShoulds.push(colourSearch)
       arrayPosCounter++
     })
+    //  Don't cache colour searches
+    cacheable = false
     must.push({
       bool: {
         should: hslShoulds
@@ -563,6 +502,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     //  these from the args
     delete args.hsl_range
   }
+  if (args.hue && args.hue.length === 0) delete args.hue
+  if (args.hue && args.luminosity.length === 0) delete args.luminosity
+  if (args.hue && args.hue.saturation === 0) delete args.saturation
 
   if (args.isRecommended) {
     must.push({
@@ -614,17 +556,10 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
-  //  If we are searching based on popularCount we want to reject all the ones
-  //  that aren't null
-  /*
-  if (args.sort_field && args.sort_field === 'popularCount') {
-    must.push({
-      exists: {
-        field: 'popularCount'
-      }
-    })
+  //  If this query is too specific then don't cache it
+  if (must.length > 4) {
+    cacheable = false
   }
-  */
 
   if (must.length > 0) {
     body.query = {
@@ -635,8 +570,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   //  Run the search
-  const objects = await doCacheQuery(cacheable, index, body)
-  console.log(objects.hits.hits[0]._source)
+  const objects = await common.doCacheQuery(cacheable, index, body)
   let total = null
   if (objects.hits.total) total = objects.hits.total
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
@@ -1037,21 +971,14 @@ exports.getObjects = getObjects
 
 const getRandomObjects = async (args, context, initialCall = false) => {
   const startTime = new Date().getTime()
-
+  const cacheable = true
   const config = new Config()
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
   const index = `randomobjects_${baseTMS}`
 
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
   //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
   const page = common.getPage(args)
   const perPage = common.getPerPage(args)
   const body = {
@@ -1059,12 +986,7 @@ const getRandomObjects = async (args, context, initialCall = false) => {
     size: perPage
   }
 
-  const results = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-  })
+  const results = await common.doCacheQuery(cacheable, index, body)
   args.ids = []
   if (results && results.hits && results.hits.hits) {
     const randomIds = results.hits.hits.map((hit) => hit._source)[0]
