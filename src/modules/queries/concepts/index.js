@@ -1,5 +1,4 @@
 const Config = require('../../../classes/config')
-const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
 
@@ -20,14 +19,8 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
 
   const index = `concepts_${baseTMS}`
 
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
   //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  let cacheable = true
   const page = common.getPage(args)
   const perPage = common.getPerPage(args)
   const body = {
@@ -114,6 +107,8 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
   }
 
   if ('title' in args && args.title !== '') {
+    //  Don't cache when doing string searches
+    cacheable = false
     must.push({
       multi_match: {
         query: args.title,
@@ -125,6 +120,8 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
   }
 
   if ('keyword' in args && args.title !== '') {
+    //  Don't cache when doing string searches
+    cacheable = false
     must.push({
       multi_match: {
         query: args.keyword,
@@ -133,6 +130,11 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
         operator: 'or'
       }
     })
+  }
+
+  //  If this query is too specific then don't cache it
+  if (must.length > 4) {
+    cacheable = false
   }
 
   if (must.length > 0) {
@@ -144,12 +146,7 @@ const getConcepts = async (args, context, levelDown = 3, initialCall = false) =>
   }
 
   //  Run the search
-  const results = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-  })
+  const results = await common.doCacheQuery(cacheable, index, body)
 
   let total = null
   if (results.hits.total) total = results.hits.total

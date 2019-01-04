@@ -50,3 +50,29 @@ exports.startPingingES = () => {
   }, 60 * 1000)
   pingES()
 }
+
+const cullQueryCache = () => {
+  if (global.queryCache) {
+    const deleteList = []
+    const cullTime = new Date().getTime()
+    Object.entries(global.queryCache).forEach((entry) => {
+      const key = entry[0]
+      const query = entry[1]
+      if (cullTime >= query.expire) deleteList.push(key)
+    })
+
+    if (deleteList.length > 0) {
+      deleteList.forEach((key) => {
+        delete global.queryCache[key]
+      })
+    }
+  }
+}
+
+exports.cullQueryCache = cullQueryCache
+exports.startCullingQueryCache = () => {
+  global.cullQueryCache = setInterval(() => {
+    cullQueryCache()
+  }, 10 * 1000)
+  cullQueryCache()
+}

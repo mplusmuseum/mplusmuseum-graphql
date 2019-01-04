@@ -1,5 +1,4 @@
 const Config = require('../../../classes/config')
-const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
 
@@ -20,14 +19,8 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
 
   const index = `factoids_${baseTMS}`
 
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
   //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const cacheable = true
   const page = common.getPage(args)
   const perPage = common.getPerPage(args)
   const body = {
@@ -103,12 +96,7 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
   }
 
   //  Run the search
-  const results = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-  })
+  const results = await common.doCacheQuery(cacheable, index, body)
 
   let total = null
   if (results.hits.total) total = results.hits.total
