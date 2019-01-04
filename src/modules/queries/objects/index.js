@@ -2,6 +2,62 @@ const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
+const crypto = require('crypto')
+
+const doCacheQuery = async (cacheable, index, body) => {
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+
+  //  This is the empty dataset we return if we fail
+  //  to do any of the things
+  const emptyDataSet = {
+    hits: {
+      hits: []
+    }
+  }
+
+  //  Set up the connection
+  if (elasticsearchConfig === null) {
+    return emptyDataSet
+  }
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+
+  //  Hash the query body
+  const bodyhash = crypto
+    .createHash('md5')
+    .update(JSON.stringify(body))
+    .digest('hex')
+
+  console.log('bodyhash: ', bodyhash)
+
+  //  If we have been passed a cacheable results, and we aleady have the
+  //  results in cache then get it back out
+  if (cacheable && global.queryCache && global.queryCache[bodyhash] && global.queryCache[bodyhash].expire > new Date().getTime()) {
+    return global.queryCache[bodyhash].results
+  }
+
+  //  If we didn't just pull the results out of cache, then go and get them
+  //  Grab the results
+  const results = await esclient.search({
+    index,
+    body
+  }).catch((err) => {
+    console.error(err)
+    return emptyDataSet
+  })
+
+  //  If the results are cacheable, then pop them back into cache
+  if (cacheable) {
+    if (!global.queryCache) global.queryCache = {}
+    global.queryCache[bodyhash] = {
+      expire: new Date().getTime() + (60 * 60 * 1000),
+      results: JSON.parse(JSON.stringify(results))
+    }
+  }
+
+  //  Return the results
+  return results
+}
 
 const addCollectionInformation = async (lang, objects) => {
   const config = new Config()
@@ -149,18 +205,13 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   const startTime = new Date().getTime()
   const config = new Config()
   const baseTMS = config.get('baseTMS')
+  let cacheable = true
+
   if (baseTMS === null) return []
 
   const index = `objects_${baseTMS}`
 
-  //  Grab the elastic search config details
-  const elasticsearchConfig = config.get('elasticsearch')
-  if (elasticsearchConfig === null) {
-    return []
-  }
-
   //  Set up the client
-  const esclient = new elasticsearch.Client(elasticsearchConfig)
   let page = common.getPage(args)
   let perPage = common.getPerPage(args)
   const originalPerPage = common.getPerPage(args)
@@ -584,12 +635,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   //  Run the search
-  const objects = await esclient.search({
-    index,
-    body
-  }).catch((err) => {
-    console.error(err)
-  })
+  const objects = await doCacheQuery(cacheable, index, body)
+  console.log(objects.hits.hits[0]._source)
   let total = null
   if (objects.hits.total) total = objects.hits.total
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
