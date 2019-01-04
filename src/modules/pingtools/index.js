@@ -73,6 +73,6 @@ exports.cullQueryCache = cullQueryCache
 exports.startCullingQueryCache = () => {
   global.cullQueryCache = setInterval(() => {
     cullQueryCache()
-  }, 10 * 1000)
+  }, 60 * 1000)
   cullQueryCache()
 }
