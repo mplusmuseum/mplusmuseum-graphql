@@ -50,8 +50,9 @@ const doCacheQuery = async (cacheable, index, body) => {
     if (!global.queryCache) global.queryCache = {}
     const deepStringResults = JSON.stringify(results)
     const deepJSONCopy = JSON.parse(deepStringResults)
+    const cacheExpiresLimitMins = 10 // Cache for 10 minu
     global.queryCache[bodyhash] = {
-      expire: new Date().getTime() + (60 * 60 * 1000),
+      expire: new Date().getTime() + (cacheExpiresLimitMins * 60 * 1000),
       results: deepJSONCopy
     }
   }

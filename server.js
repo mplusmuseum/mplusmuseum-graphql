@@ -493,6 +493,7 @@ if (buildOnly === false) {
   //  kinda like cron jobs
   const pingtools = require('./app/modules/pingtools')
   pingtools.startPingingES()
+  pingtools.startCullingQueryCache()
   const logging = require('./app/modules/logging')
   logging.startCulling()
   logging.createIndex()
