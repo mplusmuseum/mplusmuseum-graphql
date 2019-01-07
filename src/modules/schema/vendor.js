@@ -28,6 +28,8 @@ type Query {
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
+    missingPrimaryImage: Boolean
+    hasImage: Boolean
     hue: [Int]
     luminosity: [Int]
     saturation: [Int]

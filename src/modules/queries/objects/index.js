@@ -514,6 +514,53 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  //  Check to see if we have missing images or not
+  if ('missingPrimaryImage' in args) {
+    must.push({
+      match: {
+        'remote.status': 'ok'
+      }
+    })
+    if (args.missingPrimaryImage === true) {
+      must.push({
+        bool: {
+          must_not: {
+            exists: {
+              field: 'remote.colors.predominant'
+            }
+          }
+        }
+      })
+    } else {
+      must.push({
+        exists: {
+          field: 'remote.colors.predominant'
+        }
+      })
+    }
+  }
+
+  //  Check to see if we have missing images or not
+  if ('hasImage' in args) {
+    if (args.hasImage === true) {
+      must.push({
+        exists: {
+          field: 'remote.status'
+        }
+      })
+    } else {
+      must.push({
+        bool: {
+          must_not: {
+            exists: {
+              field: 'remote.status'
+            }
+          }
+        }
+      })
+    }
+  }
+
   if (args.withBlurb) {
     must.push({
       bool: {
