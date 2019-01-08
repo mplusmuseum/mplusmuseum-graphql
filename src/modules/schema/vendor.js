@@ -39,6 +39,7 @@ type Query {
     onlyObjects: Boolean
     onlyNotObjects: Boolean
     shuffle: Boolean
+    shuffleSeed: String
   ): [LevelOneObject]
 
   randomobjects(
@@ -47,6 +48,7 @@ type Query {
     onlyObjects: Boolean
     onlyNotObjects: Boolean
     shuffle: Boolean
+    shuffleSeed: String
   ): [LevelOneObject]
 
   object(

@@ -2,6 +2,7 @@ const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
+const RandomGen = require('random-seed')
 
 const addCollectionInformation = async (lang, objects) => {
   const config = new Config()
@@ -147,13 +148,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Set up the client
   let page = common.getPage(args)
   let perPage = common.getPerPage(args)
+  const originalPage = common.getPage(args)
   const originalPerPage = common.getPerPage(args)
 
   //  If we have been told to shuffle the objects then we need to
   //  override the pages and then set them back afterwards
   if (args.shuffle && args.shuffle === true) {
     page = 0
-    perPage = 100
+    perPage = 500
   }
 
   const body = {
@@ -626,12 +628,18 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   //  If we were told to shuffle, then we need to do that here
   //  and the slice back down to the original perPage request
-  if (args.shuffle && args.shuffle === true) {
+  if ('shuffle' in args && args.shuffle === true) {
+    let gen = new RandomGen()
+    if (args.shuffleSeed) {
+      gen = new RandomGen(args.shuffleSeed)
+    }
     records = records
-      .map(a => [Math.random(), a])
+      .map((a) => {
+        return [gen.random(), a]
+      })
       .sort((a, b) => a[0] - b[0])
       .map(a => a[1])
-      .splice(0, originalPerPage)
+      .splice((originalPage * originalPerPage), originalPerPage)
     perPage = originalPerPage
   }
 
