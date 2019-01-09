@@ -570,11 +570,11 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       bool: {
         should: [{
           exists: {
-            field: `recommendedBlurb.en.keyword`
+            field: `recommendedBlurb.en`
           }
         }, {
           exists: {
-            field: `recommendedBlurb.zh-hant.keyword`
+            field: `recommendedBlurb.zh-hant`
           }
         }]
       }
