@@ -525,7 +525,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         bool: {
           must_not: {
             exists: {
-              field: 'remote.colors.predominant'
+              field: 'color.predominant'
             }
           },
           must: {
@@ -545,7 +545,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
           },
           {
             exists: {
-              field: 'remote.colors.predominant'
+              field: 'color.predominant'
             }
           }
           ]
