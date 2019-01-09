@@ -153,6 +153,14 @@ const root = {
   hello: () => {
     return `world`
   },
+  killCache: (args, context) => {
+    if (context.isDashboard === true || context.isSelf === true) {
+      delete global.queryCache
+      return true
+    } else {
+      return false
+    }
+  },
   objects: (args, context) => {
     /* eslint-disable import/no-unresolved */
     return queries.objects.getObjects(args, context, undefined, true)
@@ -234,6 +242,15 @@ const getGrpObj = (isPlayground, isVendor, token) => {
     grpObj.schema = buildSchema(schemaPublic.schema)
     grpObj.context.isPublic = true
     grpObj.context.isVendor = false
+  }
+  const configObj = new Config()
+  grpObj.context.isDashboard = false
+  grpObj.context.isSelf = false
+  if (configObj.dashboard && configObj.dashboard.handshake && configObj.dashboard.handshake === token) {
+    grpObj.context.isDashboard = true
+  }
+  if (configObj.handshake && configObj.handshake === token) {
+    grpObj.context.isSelf = true
   }
   return grpObj
 }

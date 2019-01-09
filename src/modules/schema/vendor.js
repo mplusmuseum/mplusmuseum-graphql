@@ -1,6 +1,7 @@
 exports.schema = `
 type Query {
   hello: String
+  killCache: Boolean
   objects(
     page: Int
     per_page: Int
