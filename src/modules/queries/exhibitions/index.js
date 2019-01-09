@@ -21,6 +21,8 @@ const getExhibitions = async (args, context, levelDown = 3, initialCall = false)
 
   //  Set up the client
   let cacheable = true
+  //  If we are the dashboard (or ourself) don't use a cached query
+  if (context.isSelf || context.isDashboard) cacheable = false
   const page = common.getPage(args)
   const perPage = common.getPerPage(args)
   const body = {

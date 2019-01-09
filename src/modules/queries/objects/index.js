@@ -140,6 +140,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   const config = new Config()
   const baseTMS = config.get('baseTMS')
   let cacheable = true
+  //  If we are the dashboard (or ourself) don't use a cached query
+  if (context.isSelf || context.isDashboard) cacheable = false
 
   if (baseTMS === null) return []
 
