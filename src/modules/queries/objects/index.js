@@ -466,28 +466,28 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       const colourSearch = {
         bool: {
           must: [{
-            range: {
-              'colorHSLInt.h': {
-                gte: hue - 30,
-                lte: hue + 30
+              range: {
+                'colorHSLInt.h': {
+                  gte: hue - 30,
+                  lte: hue + 30
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.l': {
+                  gte: thisLum - 25,
+                  lte: thisLum + 25
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.s': {
+                  gte: thisSat
+                }
               }
             }
-          },
-          {
-            range: {
-              'colorHSLInt.l': {
-                gte: thisLum - 25,
-                lte: thisLum + 25
-              }
-            }
-          },
-          {
-            range: {
-              'colorHSLInt.s': {
-                gte: thisSat
-              }
-            }
-          }
           ]
         }
       }
@@ -570,11 +570,11 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       bool: {
         should: [{
           exists: {
-            field: `recommendedBlurb.en.keyword`
+            field: `recommendedBlurb.en`
           }
         }, {
           exists: {
-            field: `recommendedBlurb.zh-hant.keyword`
+            field: `recommendedBlurb.zh-hant`
           }
         }]
       }
