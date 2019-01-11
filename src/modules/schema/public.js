@@ -15,6 +15,7 @@ type Query {
     collectionCode: String
     objectName: String
     objectStatus: String
+    objectNumber: String
     medium: String
     displayDate: String
     beginDate: Int

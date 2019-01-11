@@ -226,6 +226,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if ('objectNumber' in args && args.objectNumber !== '') {
+    must.push({
+      match: {
+        objectNumber: args.objectNumber
+      }
+    })
+  }
+
   if ('area' in args && args.area !== '') {
     const pushThis = {
       match: {}
@@ -618,7 +626,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   //  If this query is too specific then don't cache it
-  if (must.length > 4) {
+  if (must.length > 6) {
     cacheable = false
   }
 
