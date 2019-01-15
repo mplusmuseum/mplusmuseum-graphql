@@ -23,6 +23,7 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
+    constituents: [Int]
     exhibition: Int
     concept: Int
     title: String

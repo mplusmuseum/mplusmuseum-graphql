@@ -21,6 +21,7 @@ type Query {
     beginDate: Int
     endDate: Int
     constituent: Int
+    constituents: [Int]
     title: String
     keyword: String
     color: String
