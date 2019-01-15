@@ -330,6 +330,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if ('constituents' in args && Array.isArray(args.constituents)) {
+    must.push({
+      terms: {
+        'consituents.ids': args.constituents
+      }
+    })
+  }
+
   if ('exhibition' in args && args.exhibition !== '') {
     must.push({
       match: {
