@@ -307,6 +307,7 @@ type RelatedObject {
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
+  constituents: [LevelThreeConstituent]
   popularCount: Int
   onView: Boolean
   allORC: String
