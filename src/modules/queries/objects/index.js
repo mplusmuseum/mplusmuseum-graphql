@@ -791,6 +791,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     }
     const constituents = await queryConstituents.getConstituents(newArgs, context, levelDown + 1)
 
+    //  We also need to get the maker roles
+    const makerRoles = await common.getMakerRoles(`config_ismakers_${baseTMS}`)
+
     //  Now I want to turn those constituents into a map so I can quickly look them up
     const constituentsMap = {}
     constituents.forEach((constituent) => {
@@ -818,6 +821,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
             const newConstituent = JSON.parse(JSON.stringify(constituentsMap[roleRank.id]))
             newConstituent.rank = roleRank.rank
             newConstituent.role = roleRank.role
+            newConstituent.isMakerOfObject = false
+            if (roleRank.role in makerRoles && makerRoles[roleRank.role] === 'true') newConstituent.isMakerOfObject = true
             newConstituents.push(newConstituent)
           }
         })

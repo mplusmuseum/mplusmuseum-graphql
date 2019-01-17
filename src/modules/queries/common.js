@@ -149,6 +149,24 @@ exports.getSingleTextFromArrayByNotLang = (thisObj, lang) => {
   return titleOther
 }
 
+exports.getMakerRoles = async (index) => {
+  const cacheable = true
+  const body = {
+    from: 0,
+    size: 200
+  }
+  const results = await doCacheQuery(cacheable, index, body)
+  if (results && results.hits && results.hits.hits) {
+    const makers = results.hits.hits
+    const isMaker = {}
+    makers.forEach((maker) => {
+      isMaker[maker._source.id] = maker._source.value
+    })
+    return isMaker
+  }
+  return {}
+}
+
 const getAggregates = async (args, field, index) => {
   //  Set up the client
   const cacheable = true

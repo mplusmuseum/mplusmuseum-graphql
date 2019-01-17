@@ -486,6 +486,7 @@ type LevelTwoConstituent {
   isMaker: Boolean
   roles: [String]
   role: String
+  isMakerOfObject: Boolean
   objectCount: Int
   exhibitionBios: [ExhibitionLabels]
   objects: [LevelTwoObject]
