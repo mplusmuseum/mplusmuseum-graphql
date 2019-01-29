@@ -337,7 +337,7 @@ type LevelOneConstituent {
   id: Int
   publicAccess: Boolean
   name: String
-  otherName: String
+  nameOther: String
   alphaSortName: String
   displayBio: String
   gender: String
@@ -357,7 +357,7 @@ type LevelTwoConstituent {
   id: Int
   publicAccess: Boolean
   name: String
-  otherName: String
+  nameOther: String
   alphaSortName: String
   displayBio: String
   gender: String
@@ -379,7 +379,7 @@ type LevelThreeConstituent {
   id: Int
   publicAccess: Boolean
   name: String
-  otherName: String
+  nameOther: String
   alphaSortName: String
   displayBio: String
   gender: String
