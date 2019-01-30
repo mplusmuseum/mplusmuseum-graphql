@@ -60,6 +60,7 @@ const apiLoggerFile = winston.createLogger({
 // const elasticsearchConfig = config.get('elasticsearch')
 class ESLogger {
   object (name, data) {
+    /*
     const config = new Config()
     const elasticsearchConfig = config.get('elasticsearch')
     if (elasticsearchConfig === null) {
@@ -84,6 +85,7 @@ class ESLogger {
         }
       })
     }
+    */
   }
 }
 
