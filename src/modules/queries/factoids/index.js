@@ -79,10 +79,24 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
       }
     })
   }
+  if ('isCollection' in args) {
+    must.push({
+      match: {
+        isCollection: args.isCollection
+      }
+    })
+  }
   if ('isPopular' in args) {
     must.push({
       match: {
         isPopular: args.isPopular
+      }
+    })
+  }
+  if ('keyword' in args) {
+    must.push({
+      term: {
+        'keyword.keyword': args.keyword
       }
     })
   }
@@ -118,7 +132,16 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
     newRecord.isArchive = (record.isArchive)
     newRecord.isColour = (record.isColour)
     newRecord.isRecommended = (record.isRecommended)
+    newRecord.isCollection = (record.isCollection)
     newRecord.isPopular = (record.isPopular)
+    newRecord.keyword = []
+    if (record.keyword) {
+      if (Array.isArray(record.keyword)) {
+        newRecord.keyword = record.keyword
+      } else {
+        newRecord.keyword = record.keyword.split()
+      }
+    }
     return newRecord
   })
 

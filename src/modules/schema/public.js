@@ -131,8 +131,10 @@ type Query {
     isArchive: Boolean
     isColour: Boolean
     isRecommended: Boolean
+    isCollection: Boolean
     isPopular: Boolean
-  ): [Factoids]
+    keyword: String
+    ): [Factoids]
 
 }
 
@@ -492,7 +494,9 @@ type Factoids {
   isArchive: Boolean
   isColour: Boolean
   isRecommended: Boolean
+  isCollection: Boolean
   isPopular: Boolean
+  keyword: [String]
 }
 
 type Sys {
