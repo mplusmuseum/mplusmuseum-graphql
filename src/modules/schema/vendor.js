@@ -449,6 +449,8 @@ type RelatedObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
@@ -466,6 +468,7 @@ type RelatedObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
