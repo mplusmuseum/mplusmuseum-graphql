@@ -1,29 +1,48 @@
-<nav class="header">
-  <div class="nav-wrapper">
-    <a href="/" class="brand-logo left">M+ - GraphQL</a>
-    {{#if user}}
-    <ul>
-      {{#if user.roles.isAdmin}}
-      <li>
-        <a href="/status">Status</a>
-      </li>
-      <li>
-        <a href="/config">Config</a>
-      </li>
-      {{/if}}
-    </ul>
-    <ul class="right">
-      <li>
-        <a href="/logout">Logout</a>
-      </li>
-    </ul>
-    {{else}}
-    <ul class="right">
-      <li>
-        <a href="/login">Login</a>
-      </li>
-    </ul>
+<nav id="navbar" class="navbar has-background-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    {{#if loggedIn}}
+      <a class="navbar-item" href="/">
+        M+
+      </a>
     {{/if}}
+    <div class="navbar-burger burger" onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start capitalise">
+      {{#if user}}
+        {{#if user.roles.isAdmin}}
+          <a class="navbar-item" href="/status">
+            Status
+          </a>
+          <a class="navbar-item" href="/config">
+            Config
+          </a>
+        {{/if}}
+      {{/if}}
+    </div>
+
+    <div class="navbar-end">
+      {{#if user}}
+        <a class="navbar-item" href="/settings">
+          <figure class="image is-32x32">
+            <img class="avatar" src="{{user.picture}}" />
+          </figure>&nbsp;{{user.nickname}}
+        </a>
+        </a>
+        <a class="navbar-item capitalise" href="/logout">
+          {{i18n.nav.logout}}
+        </a>
+      {{else}}
+        <a class="navbar-item capitalise" href="/login">
+          {{i18n.nav.login}}
+        </a>
+      {{/if}}
+    </div>
   </div>
 </nav>
-{{#if user}} {{> connections}} {{/if}}
+{{> connections}}

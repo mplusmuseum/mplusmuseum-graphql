@@ -1,7 +1,19 @@
-<div class="connections">
-  <div class="elasticsearch">
-    Elastic Search: {{#if config.elasticsearch.host}}
-    <a href="/status/elasticsearch">{{{elasticsearchStatus}}}</a> {{else}} {{#if user.roles.isAdmin}}
-    <a href="/config">Not configured</a>{{else}}Not configured{{/if}} {{/if}}
+<div class="container sub-nav">
+  <div class="level has-background-white-bis">
+
+    <div class="level-left">
+      &nbsp;
+    </div>
+    <div class="level-right">
+      {{#if user}}
+        <div class="level-item">
+          Elastic Search: {{#if config.elasticsearch.host}}
+            <a href="/developer/elasticsearch/status">{{{elasticsearchStatus}}}</a>
+          {{else}} {{#if user.roles.isAdmin}}
+              <a href="/config">Not configured</a>
+            {{else}}Not configured{{/if}} {{/if}}
+        </div>
+      {{/if}}
+    </div>
   </div>
 </div>
