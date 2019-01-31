@@ -211,6 +211,15 @@ const root = {
   collectionCodes: (args, context) => {
     return queries.common.getCollectionCodes(args, context, undefined, true)
   },
+  collectionNames: (args, context) => {
+    return queries.common.getCollectionNames(args, context, undefined, true)
+  },
+  departments: (args, context) => {
+    return queries.common.getDepartments(args, context, undefined, true)
+  },
+  styles: (args, context) => {
+    return queries.common.getStyles(args, context, undefined, true)
+  },
   mediums: (args, context) => {
     return queries.common.getMediums(args, context, undefined, true)
   },

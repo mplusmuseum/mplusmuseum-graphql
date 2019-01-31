@@ -322,6 +322,30 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if ('collectionName' in args && args.collectionName !== '') {
+    must.push({
+      match: {
+        'collectionName': args.collectionName
+      }
+    })
+  }
+
+  if ('department' in args && args.department !== '') {
+    must.push({
+      match: {
+        'department': args.department
+      }
+    })
+  }
+
+  if ('style' in args && args.style !== '') {
+    must.push({
+      match: {
+        'style': args.style
+      }
+    })
+  }
+
   if ('constituent' in args && args.constituent !== '') {
     must.push({
       match: {
@@ -482,28 +506,28 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       const colourSearch = {
         bool: {
           must: [{
-            range: {
-              'colorHSLInt.h': {
-                gte: hue - 30,
-                lte: hue + 30
+              range: {
+                'colorHSLInt.h': {
+                  gte: hue - 30,
+                  lte: hue + 30
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.l': {
+                  gte: thisLum - 25,
+                  lte: thisLum + 25
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.s': {
+                  gte: thisSat
+                }
               }
             }
-          },
-          {
-            range: {
-              'colorHSLInt.l': {
-                gte: thisLum - 25,
-                lte: thisLum + 25
-              }
-            }
-          },
-          {
-            range: {
-              'colorHSLInt.s': {
-                gte: thisSat
-              }
-            }
-          }
           ]
         }
       }
@@ -555,15 +579,15 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       must.push({
         bool: {
           must: [{
-            match: {
-              'remote.status': 'ok'
+              match: {
+                'remote.status': 'ok'
+              }
+            },
+            {
+              exists: {
+                field: 'color.predominant'
+              }
             }
-          },
-          {
-            exists: {
-              field: 'color.predominant'
-            }
-          }
           ]
         }
       })

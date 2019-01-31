@@ -390,6 +390,69 @@ exports.getCollectionTypes = async (args, context, levelDown = 3, initialCall = 
   return aggs
 }
 
+exports.getCollectionNames = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `collectionName.keyword`, `objects_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`collectionName query`, {
+    method: 'getCollectionNames',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getDepartments = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `department.keyword`, `objects_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`department query`, {
+    method: 'getDepartments',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getStyles = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, `style.keyword`, `objects_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`style query`, {
+    method: 'getStyles',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
 exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false) => {
   const config = new Config()
   const baseTMS = config.get('baseTMS')
