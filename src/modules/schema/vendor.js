@@ -22,6 +22,9 @@ type Query {
     displayDate: String
     beginDate: Int
     endDate: Int
+    collectionName: String
+    style: String
+    department: String
     constituent: Int
     constituents: [Int]
     exhibition: Int
@@ -59,7 +62,6 @@ type Query {
     lang: String = "en"
   ): SingleObject
 
-
   constituents(
     page: Int
     per_page: Int
@@ -91,7 +93,6 @@ type Query {
     color_source: String = "google"
   ): LevelOneConstituent
 
-
   exhibitions(
     page: Int
     per_page: Int = 500
@@ -116,7 +117,6 @@ type Query {
     color_threshold: Float = 50.0
     color_source: String = "google"
   ): LevelOneExhibition
-
 
   concepts(
     page: Int
@@ -213,6 +213,30 @@ type Query {
     sort_field: String = "id"
   ): [CollectionCodes]
 
+  collectionNames(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionNames]
+
+  departments(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Departments]
+
+  styles(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Styles]
+
   mediums(
     page: Int
     per_page: Int
@@ -254,6 +278,8 @@ type LevelOneObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
@@ -273,6 +299,7 @@ type LevelOneObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -294,6 +321,8 @@ type SingleObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
@@ -313,6 +342,7 @@ type SingleObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -334,6 +364,8 @@ type LevelTwoObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
@@ -353,6 +385,7 @@ type LevelTwoObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -374,6 +407,8 @@ type LevelThreeObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
@@ -390,6 +425,7 @@ type LevelThreeObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -626,17 +662,17 @@ type ArchivalLevels {
   count: Int
 }
 
-type Mediums {
-  title: String
-  count: Int
-}
-
 type Statuses {
   title: String
   count: Int
 }
 
 type Names {
+  title: String
+  count: Int
+}
+
+type Mediums {
   title: String
   count: Int
 }
@@ -655,6 +691,21 @@ type CollectionTypes {
 }
 
 type CollectionCodes {
+  title: String
+  count: Int
+}
+
+type CollectionNames {
+  title: String
+  count: Int
+}
+
+type Departments {
+  title: String
+  count: Int
+}
+
+type Styles {
   title: String
   count: Int
 }

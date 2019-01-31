@@ -20,8 +20,12 @@ type Query {
     displayDate: String
     beginDate: Int
     endDate: Int
+    collectionName: String
+    style: String
+    department: String
     constituent: Int
     constituents: [Int]
+    exhibition: Int
     title: String
     keyword: String
     color: String
@@ -54,7 +58,6 @@ type Query {
     lang: String = "en"
   ): SingleObject
 
-
   constituents(
     page: Int
     per_page: Int
@@ -84,7 +87,32 @@ type Query {
     color_threshold: Float = 50.0
     color_source: String = "google"
 ): LevelOneConstituent
-  
+
+  exhibitions(
+    page: Int
+    per_page: Int = 500
+    ids: [Int]
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+    type: String
+    title: String
+    keyword: String
+  ): [LevelThreeExhibition]
+
+  exhibition(
+    id: Int!
+    lang: String = "en"
+    page: Int
+    per_page: Int
+    category: String
+    area: String
+    medium: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
+  ): LevelOneExhibition
+
   areas(
     page: Int
     per_page: Int
@@ -109,6 +137,59 @@ type Query {
     sort_field: String = "id"
   ): [ArchivalLevels]
   
+  statuses(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Statuses]
+
+  names(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Names]
+
+  collectionTypes(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionTypes]
+
+  collectionCodes(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionCodes]
+
+  collectionNames(
+    page: Int
+    per_page: Int
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionNames]
+
+  departments(
+    page: Int
+    per_page: Int
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Departments]
+
+  styles(
+    page: Int
+    per_page: Int
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Styles]
+
   mediums(
     page: Int
     per_page: Int
@@ -140,7 +221,6 @@ type Query {
 
 type LevelOneObject {
   id: Int
-  publicAccess: Boolean
   objectNumber: String
   sortNumber: String
   title: String
@@ -149,11 +229,14 @@ type LevelOneObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
   classification: Classification
   constituents: [LevelTwoConstituent]
+  exhibitions: ExhibitionsShort
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -166,6 +249,7 @@ type LevelOneObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -178,7 +262,6 @@ type LevelOneObject {
 
 type SingleObject {
   id: Int
-  publicAccess: Boolean
   objectNumber: String
   sortNumber: String
   title: String
@@ -187,11 +270,14 @@ type SingleObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
   classification: Classification
   constituents: [LevelTwoConstituent]
+  exhibitions: ExhibitionsShort
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -204,6 +290,7 @@ type SingleObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -216,7 +303,6 @@ type SingleObject {
 
 type LevelTwoObject {
   id: Int
-  publicAccess: Boolean
   objectNumber: String
   sortNumber: String
   title: String
@@ -225,11 +311,14 @@ type LevelTwoObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
   classification: Classification
   constituents: [LevelThreeConstituent]
+  exhibitions: [LevelThreeExhibition]
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -242,6 +331,7 @@ type LevelTwoObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -254,7 +344,6 @@ type LevelTwoObject {
 
 type LevelThreeObject {
   id: Int
-  publicAccess: Boolean
   objectNumber: String
   sortNumber: String
   title: String
@@ -263,6 +352,8 @@ type LevelThreeObject {
   displayDateOther: String
   beginDate: Int
   endDate: Int
+  style: String
+  department: String
   dimension: String
   creditLine: String
   medium: String
@@ -279,6 +370,7 @@ type LevelThreeObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  collectionName: String
   collection: Collection
   scopeNContent: String
   baselineDescription: String
@@ -293,7 +385,6 @@ type RelatedObject {
   id: Int
   relatedType: String
   selfType: String
-  publicAccess: Boolean
   objectNumber: String
   sortNumber: String
   title: String
@@ -337,7 +428,6 @@ type RelatedObjectShort {
 
 type LevelOneConstituent {
   id: Int
-  publicAccess: Boolean
   name: String
   nameOther: String
   alphaSortName: String
@@ -351,13 +441,18 @@ type LevelOneConstituent {
   isMaker: Boolean
   roles: [String]
   objectCount: Int
+  exhibitionBios: [ExhibitionLabels]
   objects: [LevelOneObject]
+  activeCity: String
+  birthCity: String
+  deathCity: String
+  artInt: Int
+  region: String
   _sys: Sys
 }
 
 type LevelTwoConstituent {
   id: Int
-  publicAccess: Boolean
   name: String
   nameOther: String
   alphaSortName: String
@@ -373,13 +468,19 @@ type LevelTwoConstituent {
   role: String
   isMakerOfObject: Boolean
   objectCount: Int
+  exhibitionBios: [ExhibitionLabels]
   objects: [LevelTwoObject]
+  activeCity: String
+  birthCity: String
+  deathCity: String
+  artInt: Int
+  region: String
   _sys: Sys
 }
 
 type LevelThreeConstituent {
   id: Int
-  publicAccess: Boolean
+  name: String
   name: String
   nameOther: String
   alphaSortName: String
@@ -392,7 +493,53 @@ type LevelThreeConstituent {
   isMaker: Boolean
   roles: [String]
   objectCount: Int
+  exhibitionBios: [ExhibitionLabels]
   _sys: Sys
+}
+
+type LevelOneExhibition {
+  id: Int
+  title: String
+  type: String
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+  objects: [LevelOneObject]
+  artInt: Int
+  _sys: Sys
+}
+
+type LevelThreeExhibition {
+  id: Int
+  title: String
+  type: String
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+  artInt: Int
+  _sys: Sys
+}
+
+type ExhibitionsShort {
+  exhibitions: [ExhibitionShort]
+  labels: [ExhibitionLabels]
+  _sys: Sys
+}
+
+type ExhibitionShort {
+  id: Int
+  title: String
+  type: String
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+  section: String
+  _sys: Sys
+}
+
+type ExhibitionLabels {
+  purpose: String
+  text: String
 }
 
 type Classification {
@@ -416,7 +563,50 @@ type ArchivalLevels {
   count: Int
 }
 
+type Statuses {
+  title: String
+  count: Int
+}
+
+type Names {
+  title: String
+  count: Int
+}
+
 type Mediums {
+  title: String
+  count: Int
+}
+
+type Collection {
+  code: String
+  type: String
+  objectId: Int
+  title: String
+  titleOther: String
+}
+
+type CollectionTypes {
+  title: String
+  count: Int
+}
+
+type CollectionCodes {
+  title: String
+  count: Int
+}
+
+type CollectionNames {
+  title: String
+  count: Int
+}
+
+type Departments {
+  title: String
+  count: Int
+}
+
+type Styles {
   title: String
   count: Int
 }
@@ -434,7 +624,6 @@ type Venue {
 type Image {
   rank: Int
   primaryDisplay: Boolean
-  publicAccess: Boolean
   status: String
   public_id: String
   version: Int
@@ -470,14 +659,6 @@ type ObjectRights {
   rights: [Right]
 }
 
-type Collection {
-  code: String
-  type: String
-  objectId: Int
-  title: String
-  titleOther: String
-}
-
 type Right {
   title: String
   group: String
@@ -498,6 +679,7 @@ type Factoids {
   isPopular: Boolean
   keyword: [String]
 }
+
 
 type Sys {
   pagination: Pagination
