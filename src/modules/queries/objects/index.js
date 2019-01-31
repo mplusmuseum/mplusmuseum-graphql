@@ -853,6 +853,30 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       }
       newConstituents = newConstituents.filter(Boolean)
       if (newConstituents.length === 0) newConstituents = null
+      //  Check to see if we have a maker, and if not turn a manufacturing maker into one
+      if (newConstituents) {
+        let foundMaker = false
+        let manufacturerID = null
+        newConstituents.forEach((constituent) => {
+          if (constituent.isMakerOfObject) foundMaker = true
+          if (constituent.role === 'Manufacturer') manufacturerID = constituent.id
+          if (constituent.role === '製造商') manufacturerID = constituent.id
+        })
+
+        //  If we didn't find a maker and we do have a manufacture then we set them as the maker
+        if (foundMaker === false && manufacturerID !== null) {
+          foundMaker = true
+          newConstituents = newConstituents.map((constituent) => {
+            if (constituent.id === manufacturerID) constituent.isMakerOfObject = true
+            return constituent
+          })
+        }
+
+        //  If we _still_ haven't found a maker, then force the 1st constituent to be the maker
+        if (foundMaker === false) {
+          newConstituents[0].isMakerOfObject = true
+        }
+      }
       record.constituents = newConstituents
       delete record.consituents
       return record
