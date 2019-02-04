@@ -1075,6 +1075,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Add the collections data
   records = await addCollectionInformation(args.lang, records)
 
+  //  Clean up baseline descriptions
+  records = records.map((record) => {
+    if (Array.isArray(record.baselineDescription)) {
+      record.baselineDescription = record.baselineDescription.join('\r\n\r\n')
+    }
+    return record
+  })
+
   //  Finally, add the pagination information
   const sys = {
     pagination: {
