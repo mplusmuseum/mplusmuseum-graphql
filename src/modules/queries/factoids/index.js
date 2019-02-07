@@ -86,6 +86,13 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
       }
     })
   }
+  if ('isMain' in args) {
+    must.push({
+      match: {
+        isMain: args.isMain
+      }
+    })
+  }
   if ('isPopular' in args) {
     must.push({
       match: {
@@ -133,6 +140,7 @@ const getFactoids = async (args, context, levelDown = 3, initialCall = false) =>
     newRecord.isColour = (record.isColour)
     newRecord.isRecommended = (record.isRecommended)
     newRecord.isCollection = (record.isCollection)
+    newRecord.isMain = (record.isMain)
     newRecord.isPopular = (record.isPopular)
     newRecord.keyword = []
     if (record.keyword) {
