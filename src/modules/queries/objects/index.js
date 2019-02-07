@@ -235,51 +235,69 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('area' in args && args.area !== '') {
-    const pushThis = {
-      match: {}
-    }
-    pushThis.match[`classification.area.areacat.${args.lang}.keyword`] = args.area
-    must.push(pushThis)
+    must.push({
+      multi_match: {
+        query: args.area,
+        type: 'best_fields',
+        fields: ['classification.area.areacat.en.keyword', 'classification.area.areacat.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
   }
 
   if ('category' in args && args.category !== '') {
-    const pushThis = {
-      match: {}
-    }
-    pushThis.match[`classification.category.areacat.${args.lang}.keyword`] = args.category
-    must.push(pushThis)
+    must.push({
+      multi_match: {
+        query: args.category,
+        type: 'best_fields',
+        fields: ['classification.category.areacat.en.keyword', 'classification.category.areacat.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
   }
 
   if ('archivalLevel' in args && args.archivalLevel !== '') {
-    const pushThis = {
-      match: {}
-    }
-    pushThis.match[`classification.archivalLevel.areacat.${args.lang}.keyword`] = args.archivalLevel
-    must.push(pushThis)
+    must.push({
+      multi_match: {
+        query: args.archivalLevel,
+        type: 'best_fields',
+        fields: ['classification.archivalLevel.areacat.en.keyword', 'classification.archivalLevel.areacat.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
   }
 
   if ('medium' in args && args.medium !== '') {
-    const pushThis = {
-      match: {}
-    }
-    pushThis.match[`medium.${args.lang}.keyword`] = args.medium
-    must.push(pushThis)
+    must.push({
+      multi_match: {
+        query: args.medium,
+        type: 'best_fields',
+        fields: ['medium.en.keyword', 'medium.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
   }
 
   if ('objectName' in args && args.objectName !== '') {
-    const pushThis = {
-      match: {}
-    }
-    pushThis.match[`objectName.${args.lang}.keyword`] = args.objectName
-    must.push(pushThis)
+    must.push({
+      multi_match: {
+        query: args.objectName,
+        type: 'best_fields',
+        fields: ['objectName.en.keyword', 'objectName.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
   }
 
   if ('objectStatus' in args && args.objectStatus !== '') {
-    const pushThis = {
-      match: {}
-    }
-    pushThis.match[`objectStatus.${args.lang}.keyword`] = args.objectStatus
-    must.push(pushThis)
+    must.push({
+      multi_match: {
+        query: args.objectStatus,
+        type: 'best_fields',
+        fields: ['objectStatus.en.keyword', 'objectStatus.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
   }
 
   if ('displayDate' in args && args.displayDate !== '') {
