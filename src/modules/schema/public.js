@@ -119,6 +119,14 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
   ): [Area]
   
   categories(
@@ -127,6 +135,14 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
   ): [Categories]
   
   archivalLevels(

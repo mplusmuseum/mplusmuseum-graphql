@@ -182,14 +182,90 @@ const getAggregates = async (args, field, index) => {
     }
   }
 
+  const must = []
+
   if ('publicAccess' in args) {
+    must.push({
+      match: {
+        'publicAccess': args.publicAccess
+      }
+    })
+  }
+
+  if ('collectionCode' in args && args.collectionCode !== '') {
+    must.push({
+      match: {
+        'collectionCode': args.collectionCode
+      }
+    })
+  }
+
+  if ('collectionType' in args && args.collectionType !== '') {
+    must.push({
+      match: {
+        'collectionType': args.collectionType
+      }
+    })
+  }
+
+  if ('collectionName' in args && args.collectionName !== '') {
+    must.push({
+      match: {
+        'collectionName': args.collectionName
+      }
+    })
+  }
+
+  if ('department' in args && args.department !== '') {
+    must.push({
+      match: {
+        'department': args.department
+      }
+    })
+  }
+
+  if ('style' in args && args.style !== '') {
+    must.push({
+      match: {
+        'style': args.style
+      }
+    })
+  }
+
+  if ('constituent' in args && args.constituent !== '') {
+    must.push({
+      match: {
+        'consituents.ids': args.constituent
+      }
+    })
+  }
+
+  if ('area' in args && args.area !== '') {
+    must.push({
+      multi_match: {
+        query: args.area,
+        type: 'best_fields',
+        fields: ['classification.area.areacat.en.keyword', 'classification.area.areacat.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
+  }
+
+  if ('category' in args && args.category !== '') {
+    must.push({
+      multi_match: {
+        query: args.category,
+        type: 'best_fields',
+        fields: ['classification.category.areacat.en.keyword', 'classification.category.areacat.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
+  }
+
+  if (must.length > 0) {
     body.query = {
       bool: {
-        must: {
-          match: {
-            'publicAccess': args.publicAccess
-          }
-        }
+        must
       }
     }
   }
