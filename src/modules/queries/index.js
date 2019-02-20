@@ -1,3 +1,4 @@
+exports.bibliographies = require('./bibliographies')
 exports.concepts = require('./concepts')
 exports.constituents = require('./constituents')
 exports.exhibitions = require('./exhibitions')

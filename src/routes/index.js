@@ -190,6 +190,12 @@ const root = {
   concept: (args, context) => {
     return queries.concepts.getConcept(args, context, true)
   },
+  bibliographies: (args, context) => {
+    return queries.bibliographies.getBibliographies(args, context, undefined, true)
+  },
+  bibliography: (args, context) => {
+    return queries.bibliographies.getBibliography(args, context, true)
+  },
   areas: (args, context) => {
     return queries.common.getAreas(args, context, undefined, true)
   },

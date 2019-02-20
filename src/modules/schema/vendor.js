@@ -146,6 +146,19 @@ type Query {
     color_source: String = "google"
   ): LevelOneConcept
 
+  bibliographies(
+    page: Int
+    per_page: Int = 500
+    ids: [Int]
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [LevelThreeBibliography]
+  
+  bibliography(
+    id: Int!
+    lang: String = "en"
+  ): LevelOneBibliography
+
   timeline(
     lang: String = "en"
   ): [Timeline]
@@ -636,6 +649,24 @@ type LevelThreeConcept {
   beginDate: Int
   endDate: Int
   conceptUse: String
+  _sys: Sys
+}
+
+type LevelOneBibliography {
+  id: Int
+  title: String
+  subTitle: String
+  placePublished: String
+  yearPublished: String
+  _sys: Sys
+}
+
+type LevelThreeBibliography {
+  id: Int
+  title: String
+  subTitle: String
+  placePublished: String
+  yearPublished: String
   _sys: Sys
 }
 
