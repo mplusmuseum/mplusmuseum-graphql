@@ -113,6 +113,19 @@ type Query {
     color_source: String = "google"
   ): LevelOneExhibition
 
+  bibliographies(
+    page: Int
+    per_page: Int = 500
+    sort: String = "asc"
+    sort_field: String = "id"
+    ids: [Int]
+  ): [LevelThreeBibliography]
+  
+  bibliography(
+    id: Int!
+    lang: String = "en"
+  ): LevelOneBibliography
+
   areas(
     page: Int
     per_page: Int
@@ -543,6 +556,24 @@ type LevelThreeExhibition {
 type ExhibitionsShort {
   exhibitions: [ExhibitionShort]
   labels: [ExhibitionLabels]
+  _sys: Sys
+}
+
+type LevelOneBibliography {
+  id: Int
+  title: String
+  subTitle: String
+  placePublished: String
+  yearPublished: String
+  _sys: Sys
+}
+
+type LevelThreeBibliography {
+  id: Int
+  title: String
+  subTitle: String
+  placePublished: String
+  yearPublished: String
   _sys: Sys
 }
 
