@@ -1035,6 +1035,46 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  // Now we want to get the bibliographies
+  let bibliographiesIds = []
+  records.forEach((record) => {
+    if (record.references && record.references.ids) {
+      record.references.ids.forEach((id) => {
+        if (!bibliographiesIds.includes(id)) bibliographiesIds.push(id)
+      })
+    }
+  })
+
+  //  If we have some then we need to go and get the records
+  if (bibliographiesIds.length !== 0) {
+    const newArgs = {
+      ids: bibliographiesIds
+    }
+    const bibliographies = await queryBibliographies.getBibliographies(newArgs, context, levelDown + 1)
+    const bibliographiesMap = {}
+    bibliographies.forEach((bibliography) => {
+      bibliographiesMap[bibliography.id] = bibliography
+    })
+
+    //  Now we go back through the records subbing in the full information
+    records = records.map((record) => {
+      if (record.references && record.references.ids) {
+        const newBibliographies = []
+        let idsToReference = {}
+        if (record.references.idsToReference) idsToReference = JSON.parse(record.references.idsToReference)
+        record.references.ids.forEach((id) => {
+          if (bibliographiesMap[id]) {
+            const newBib = JSON.parse(JSON.stringify(bibliographiesMap[id]))
+            if (idsToReference[id]) newBib.pageNumber = idsToReference[id]
+            newBibliographies.push(newBib)
+          }
+        })
+        if (newBibliographies.length !== 0) record.bibliographies = newBibliographies
+      }
+      return record
+    })
+  }
+
   //  Unpack the related object ids
   records = records.map((record) => {
     if (record.relatedObjectIds && record.relatedObjectIds.idsToRelationship) {
@@ -1257,6 +1297,7 @@ const getObject = async (args, context, initialCall = false) => {
 }
 exports.getObject = getObject
 
+const queryBibliographies = require('../bibliographies')
 const queryConcepts = require('../concepts')
 const queryConstituents = require('../constituents')
 const queryExhibitions = require('../exhibitions')

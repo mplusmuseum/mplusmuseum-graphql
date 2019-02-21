@@ -317,6 +317,7 @@ type LevelOneObject {
   constituents: [LevelTwoConstituent]
   exhibitions: ExhibitionsShort
   concepts: [LevelThreeConcept]
+  bibliographies: [LevelTwoBibliography]
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -360,6 +361,7 @@ type SingleObject {
   constituents: [LevelTwoConstituent]
   exhibitions: ExhibitionsShort
   concepts: [LevelThreeConcept]
+  bibliographies: [LevelTwoBibliography]
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -403,6 +405,7 @@ type LevelTwoObject {
   constituents: [LevelThreeConstituent]
   exhibitions: [LevelThreeExhibition]
   concepts: [LevelThreeConcept]
+  bibliographies: [LevelTwoBibliography]
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -656,8 +659,20 @@ type LevelOneBibliography {
   id: Int
   title: String
   subTitle: String
+  format: String
   placePublished: String
   yearPublished: String
+  _sys: Sys
+}
+
+type LevelTwoBibliography {
+  id: Int
+  title: String
+  subTitle: String
+  format: String
+  placePublished: String
+  yearPublished: String
+  pageNumber: String
   _sys: Sys
 }
 
@@ -665,6 +680,7 @@ type LevelThreeBibliography {
   id: Int
   title: String
   subTitle: String
+  format: String
   placePublished: String
   yearPublished: String
   _sys: Sys

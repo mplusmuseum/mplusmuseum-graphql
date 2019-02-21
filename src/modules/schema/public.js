@@ -113,19 +113,6 @@ type Query {
     color_source: String = "google"
   ): LevelOneExhibition
 
-  bibliographies(
-    page: Int
-    per_page: Int = 500
-    sort: String = "asc"
-    sort_field: String = "id"
-    ids: [Int]
-  ): [LevelThreeBibliography]
-  
-  bibliography(
-    id: Int!
-    lang: String = "en"
-  ): LevelOneBibliography
-
   areas(
     page: Int
     per_page: Int
@@ -267,6 +254,7 @@ type LevelOneObject {
   classification: Classification
   constituents: [LevelTwoConstituent]
   exhibitions: ExhibitionsShort
+  bibliographies: [LevelTwoBibliography]
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -308,6 +296,7 @@ type SingleObject {
   classification: Classification
   constituents: [LevelTwoConstituent]
   exhibitions: ExhibitionsShort
+  bibliographies: [LevelTwoBibliography]
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -349,6 +338,7 @@ type LevelTwoObject {
   classification: Classification
   constituents: [LevelThreeConstituent]
   exhibitions: [LevelThreeExhibition]
+  bibliographies: [LevelTwoBibliography]
   images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
@@ -563,8 +553,20 @@ type LevelOneBibliography {
   id: Int
   title: String
   subTitle: String
+  format: String
   placePublished: String
   yearPublished: String
+  _sys: Sys
+}
+
+type LevelTwoBibliography {
+  id: Int
+  title: String
+  subTitle: String
+  format: String
+  placePublished: String
+  yearPublished: String
+  pageNumber: String
   _sys: Sys
 }
 
@@ -572,6 +574,7 @@ type LevelThreeBibliography {
   id: Int
   title: String
   subTitle: String
+  format: String
   placePublished: String
   yearPublished: String
   _sys: Sys
