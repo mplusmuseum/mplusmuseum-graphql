@@ -380,6 +380,22 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if ('bibliography' in args && args.bibliography !== '') {
+    must.push({
+      match: {
+        'references.ids': args.bibliography
+      }
+    })
+  }
+
+  if ('bibliographies' in args && Array.isArray(args.bibliographies)) {
+    must.push({
+      terms: {
+        'references.ids': args.bibliographies
+      }
+    })
+  }
+
   if ('exhibition' in args && args.exhibition !== '') {
     must.push({
       match: {

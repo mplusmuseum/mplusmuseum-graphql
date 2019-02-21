@@ -27,6 +27,7 @@ type Query {
     department: String
     constituent: Int
     constituents: [Int]
+    bibliographies: [Int]
     exhibition: Int
     concept: Int
     title: String
