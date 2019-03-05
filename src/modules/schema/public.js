@@ -504,7 +504,6 @@ type LevelTwoConstituent {
 type LevelThreeConstituent {
   id: Int
   name: String
-  name: String
   nameOther: String
   alphaSortName: String
   displayBio: String
