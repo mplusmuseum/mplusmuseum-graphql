@@ -25,14 +25,11 @@ type Query {
     department: String
     constituent: Int
     constituents: [Int]
-    exhibition: Int
     title: String
     keyword: String
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
-    missingPrimaryImage: Boolean
-    hasImage: Boolean
     hue: [Int]
     luminosity: [Int]
     saturation: [Int]
@@ -87,31 +84,6 @@ type Query {
     color_threshold: Float = 50.0
     color_source: String = "google"
 ): LevelOneConstituent
-
-  exhibitions(
-    page: Int
-    per_page: Int = 500
-    ids: [Int]
-    lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
-    type: String
-    title: String
-    keyword: String
-  ): [LevelThreeExhibition]
-
-  exhibition(
-    id: Int!
-    lang: String = "en"
-    page: Int
-    per_page: Int
-    category: String
-    area: String
-    medium: String
-    color: String
-    color_threshold: Float = 50.0
-    color_source: String = "google"
-  ): LevelOneExhibition
 
   areas(
     page: Int
@@ -253,9 +225,7 @@ type LevelOneObject {
   medium: String
   classification: Classification
   constituents: [LevelTwoConstituent]
-  exhibitions: ExhibitionsShort
   bibliographies: [LevelTwoBibliography]
-  images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
@@ -295,9 +265,7 @@ type SingleObject {
   medium: String
   classification: Classification
   constituents: [LevelTwoConstituent]
-  exhibitions: ExhibitionsShort
   bibliographies: [LevelTwoBibliography]
-  images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
@@ -337,9 +305,7 @@ type LevelTwoObject {
   medium: String
   classification: Classification
   constituents: [LevelThreeConstituent]
-  exhibitions: [LevelThreeExhibition]
   bibliographies: [LevelTwoBibliography]
-  images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
@@ -378,7 +344,6 @@ type LevelThreeObject {
   creditLine: String
   medium: String
   classification: Classification
-  images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
   popularCount: Int
@@ -419,7 +384,6 @@ type RelatedObject {
   creditLine: String
   medium: String
   classification: Classification
-  images: [Image]
   color: ColorInfo
   objectRights: ObjectRights
   constituents: [LevelThreeConstituent]
@@ -519,35 +483,6 @@ type LevelThreeConstituent {
   _sys: Sys
 }
 
-type LevelOneExhibition {
-  id: Int
-  title: String
-  type: String
-  beginDate: String
-  endDate: String
-  venues: [Venue]
-  objects: [LevelOneObject]
-  artInt: Int
-  _sys: Sys
-}
-
-type LevelThreeExhibition {
-  id: Int
-  title: String
-  type: String
-  beginDate: String
-  endDate: String
-  venues: [Venue]
-  artInt: Int
-  _sys: Sys
-}
-
-type ExhibitionsShort {
-  exhibitions: [ExhibitionShort]
-  labels: [ExhibitionLabels]
-  _sys: Sys
-}
-
 type LevelOneBibliography {
   id: Int
   title: String
@@ -579,16 +514,6 @@ type LevelThreeBibliography {
   _sys: Sys
 }
 
-type ExhibitionShort {
-  id: Int
-  title: String
-  type: String
-  beginDate: String
-  endDate: String
-  venues: [Venue]
-  section: String
-  _sys: Sys
-}
 
 type ExhibitionLabels {
   purpose: String
@@ -672,20 +597,6 @@ type Venue {
   title: String
   beginDate: String
   endDate: String
-}
-
-type Image {
-  rank: Int
-  primaryDisplay: Boolean
-  status: String
-  public_id: String
-  version: Int
-  signature: String
-  width: Int
-  height: Int
-  format: String
-  altText: String
-  mediaUse: String
 }
 
 type ColorInfo {
