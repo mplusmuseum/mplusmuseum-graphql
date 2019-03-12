@@ -262,6 +262,17 @@ const getAggregates = async (args, field, index) => {
     })
   }
 
+  if ('archivalLevel' in args && args.archivalLevel !== '') {
+    must.push({
+      multi_match: {
+        query: args.archivalLevel,
+        type: 'best_fields',
+        fields: ['classification.archivalLevel.areacat.en.keyword', 'classification.archivalLevel.areacat.zh-hant.keyword'],
+        operator: 'or'
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {

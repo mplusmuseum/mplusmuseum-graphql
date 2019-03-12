@@ -8,24 +8,18 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    publicAccess: Boolean
+    objectNumber: String
     category: String
     area: String
-    archivalLevel: String
-    collectionType: String
-    collectionCode: String
-    objectName: String
-    objectStatus: String
-    objectNumber: String
-    medium: String
+    title: String
     displayDate: String
     beginDate: Int
     endDate: Int
-    collectionName: String
-    style: String
-    department: String
+    medium: String
     constituent: Int
     constituents: [Int]
-    title: String
+    exhibition: Int
     keyword: String
     color: String
     color_threshold: Float = 50.0
@@ -34,18 +28,6 @@ type Query {
     luminosity: [Int]
     saturation: [Int]
     hsl_range: Int = 30
-    isRecommended: Boolean
-    withBlurb: Boolean
-    onlyObjects: Boolean
-    onlyNotObjects: Boolean
-    shuffle: Boolean
-    shuffleSeed: String
-  ): [LevelOneObject]
-
-  randomobjects(
-    lang: String = "en"
-    onlyObjects: Boolean
-    onlyNotObjects: Boolean
     shuffle: Boolean
     shuffleSeed: String
   ): [LevelOneObject]
@@ -58,18 +40,19 @@ type Query {
   constituents(
     page: Int
     per_page: Int
-    ids: [Int]
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    ids: [Int]
+    publicAccess: Boolean
     name: String
-    keyword: String
+    role: String
     gender: String
     beginDate: Int
     endDate: Int
     nationality: String
+    keyword: String
     isMaker: Boolean
-    role: String
   ): [LevelThreeConstituent]
   
   constituent(
@@ -79,11 +62,60 @@ type Query {
     per_page: Int
     category: String
     area: String
+    title: String
+    displayDate: String
+    beginDate: Int
+    endDate: Int
     medium: String
+    constituent: Int
+    constituents: [Int]
+    exhibition: Int
+    keyword: String
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
-): LevelOneConstituent
+    hue: [Int]
+    luminosity: [Int]
+    saturation: [Int]
+    hsl_range: Int = 30
+  ): LevelOneConstituent
+
+  exhibitions(
+    page: Int
+    per_page: Int = 500
+    ids: [Int]
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+    type: String
+    title: String
+    keyword: String
+  ): [LevelThreeExhibition]
+
+  exhibition(
+    id: Int!
+    lang: String = "en"
+    page: Int
+    per_page: Int
+    category: String
+    area: String
+    title: String
+    displayDate: String
+    beginDate: Int
+    endDate: Int
+    medium: String
+    constituent: Int
+    constituents: [Int]
+    exhibition: Int
+    keyword: String
+    color: String
+    color_threshold: Float = 50.0
+    color_source: String = "google"
+    hue: [Int]
+    luminosity: [Int]
+    saturation: [Int]
+    hsl_range: Int = 30
+  ): LevelOneExhibition
 
   areas(
     page: Int
@@ -91,12 +123,6 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
-    collectionCode: String
-    collectionType: String
-    collectionName: String
-    department: String
-    style: String
-    constituent: Int
     area: String
     category: String
   ): [Area]
@@ -107,76 +133,9 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
-    collectionCode: String
-    collectionType: String
-    collectionName: String
-    department: String
-    style: String
-    constituent: Int
     area: String
     category: String
   ): [Categories]
-  
-  archivalLevels(
-    page: Int
-    per_page: Int
-    lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [ArchivalLevels]
-  
-  statuses(
-    page: Int
-    per_page: Int
-    lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [Statuses]
-
-  names(
-    page: Int
-    per_page: Int
-    lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [Names]
-
-  collectionTypes(
-    page: Int
-    per_page: Int
-    lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [CollectionTypes]
-
-  collectionCodes(
-    page: Int
-    per_page: Int
-    lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [CollectionCodes]
-
-  collectionNames(
-    page: Int
-    per_page: Int
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [CollectionNames]
-
-  departments(
-    page: Int
-    per_page: Int
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [Departments]
-
-  styles(
-    page: Int
-    per_page: Int
-    sort: String = "asc"
-    sort_field: String = "id"
-  ): [Styles]
 
   mediums(
     page: Int
@@ -190,220 +149,108 @@ type Query {
     lang: String = "en"
   ): [MakerTypes]
 
-  factoids(
-    page: Int
-    per_page: Int
-    isConstituent: Boolean
-    isArea: Boolean
-    isCategory: Boolean
-    isMedium: Boolean
-    isArchive: Boolean
-    isColour: Boolean
-    isRecommended: Boolean
-    isCollection: Boolean
-    isMain: Boolean
-    isPopular: Boolean
-    keyword: String
-    ): [Factoids]
-
 }
 
 type LevelOneObject {
   id: Int
-  objectNumber: String
   sortNumber: String
+  publicAccess: Boolean
+  objectNumber: String
+  classification: Classification
   title: String
   titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
   endDate: Int
-  style: String
-  department: String
   dimension: String
-  creditLine: String
   medium: String
-  classification: Classification
+  creditLine: String
   constituents: [LevelTwoConstituent]
-  bibliographies: [LevelTwoBibliography]
   color: ColorInfo
-  objectRights: ObjectRights
-  popularCount: Int
-  onView: Boolean
-  allORC: String
-  archiveDescription: String
-  objectStatus: String
-  inscription: String
-  objectName: String
-  collectionType: String
-  collectionCode: String
-  collectionName: String
-  collection: Collection
-  scopeNContent: String
-  baselineDescription: String
-  isRecommended: Boolean
-  recommendedBlurb: String
-  blurbExternalUrl: String
-  relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
 
 type SingleObject {
   id: Int
-  objectNumber: String
   sortNumber: String
+  publicAccess: Boolean
+  objectNumber: String
+  classification: Classification
   title: String
   titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
   endDate: Int
-  style: String
-  department: String
   dimension: String
-  creditLine: String
   medium: String
-  classification: Classification
+  creditLine: String
   constituents: [LevelTwoConstituent]
-  bibliographies: [LevelTwoBibliography]
+  images: [Image]
   color: ColorInfo
-  objectRights: ObjectRights
-  popularCount: Int
-  onView: Boolean
-  allORC: String
-  archiveDescription: String
-  objectStatus: String
-  inscription: String
-  objectName: String
-  collectionType: String
-  collectionCode: String
-  collectionName: String
-  collection: Collection
-  scopeNContent: String
-  baselineDescription: String
-  isRecommended: Boolean
-  recommendedBlurb: String
-  blurbExternalUrl: String
-  relatedObjects: [RelatedObject]
   _sys: Sys
 }
 
 type LevelTwoObject {
   id: Int
-  objectNumber: String
   sortNumber: String
+  publicAccess: Boolean
+  objectNumber: String
+  classification: Classification
   title: String
   titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
   endDate: Int
-  style: String
-  department: String
   dimension: String
-  creditLine: String
   medium: String
-  classification: Classification
   constituents: [LevelThreeConstituent]
-  bibliographies: [LevelTwoBibliography]
+  images: [Image]
   color: ColorInfo
-  objectRights: ObjectRights
-  popularCount: Int
-  onView: Boolean
-  allORC: String
-  archiveDescription: String
-  objectStatus: String
-  inscription: String
-  objectName: String
-  collectionType: String
-  collectionCode: String
-  collectionName: String
-  collection: Collection
-  scopeNContent: String
-  baselineDescription: String
-  isRecommended: Boolean
-  recommendedBlurb: String
-  blurbExternalUrl: String
-  relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
 
 type LevelThreeObject {
   id: Int
-  objectNumber: String
   sortNumber: String
+  publicAccess: Boolean
+  objectNumber: String
+  classification: Classification
   title: String
   titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
   endDate: Int
-  style: String
-  department: String
   dimension: String
-  creditLine: String
   medium: String
-  classification: Classification
+  creditLine: String
+  images: [Image]
   color: ColorInfo
-  objectRights: ObjectRights
-  popularCount: Int
-  onView: Boolean
-  allORC: String
-  archiveDescription: String
-  objectStatus: String
-  inscription: String
-  objectName: String
-  collectionType: String
-  collectionCode: String
-  collectionName: String
-  collection: Collection
-  scopeNContent: String
-  baselineDescription: String
-  isRecommended: Boolean
-  recommendedBlurb: String
-  blurbExternalUrl: String
-  relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
 
 type RelatedObject {
   id: Int
-  relatedType: String
-  selfType: String
-  objectNumber: String
   sortNumber: String
+  publicAccess: Boolean
+  objectNumber: String
+  classification: Classification
   title: String
   titleOther: String
   displayDate: String
   displayDateOther: String
   beginDate: Int
   endDate: Int
-  style: String
-  department: String
   dimension: String
-  creditLine: String
   medium: String
-  classification: Classification
+  creditLine: String
+  images: [Image]
   color: ColorInfo
-  objectRights: ObjectRights
-  constituents: [LevelThreeConstituent]
-  popularCount: Int
-  onView: Boolean
-  allORC: String
-  archiveDescription: String
-  objectStatus: String
-  inscription: String
-  objectName: String
-  collectionType: String
-  collectionCode: String
-  collectionName: String
-  collection: Collection
-  scopeNContent: String
-  baselineDescription: String
-  isRecommended: Boolean
-  recommendedBlurb: String
-  blurbExternalUrl: String
-  relatedObjects: [RelatedObjectShort]
+  relatedType: String
+  selfType: String
   _sys: Sys
 }
 
@@ -411,75 +258,79 @@ type RelatedObjectShort {
   id: Int
   relatedType: String
   selfType: String
+  _sys: Sys
 }
 
 type LevelOneConstituent {
   id: Int
+  publicAccess: Boolean
   name: String
   nameOther: String
-  alphaSortName: String
+  type: String
+  roles: [String]
+  isMaker: Boolean
   displayBio: String
   gender: String
   beginDate: Int
   endDate: Int
   nationality: String
-  type: String
-  rank: Int
-  isMaker: Boolean
-  roles: [String]
   objectCount: Int
-  exhibitionBios: [ExhibitionLabels]
   objects: [LevelOneObject]
-  activeCity: String
-  birthCity: String
-  deathCity: String
-  artInt: Int
-  region: String
   _sys: Sys
 }
 
 type LevelTwoConstituent {
   id: Int
+  publicAccess: Boolean
   name: String
   nameOther: String
-  alphaSortName: String
+  type: String
+  roles: [String]
+  role: String
+  isMaker: Boolean
+  isMakerOfObject: Boolean
   displayBio: String
   gender: String
   beginDate: Int
   endDate: Int
   nationality: String
-  type: String
-  rank: Int
-  isMaker: Boolean
-  roles: [String]
-  role: String
-  isMakerOfObject: Boolean
   objectCount: Int
-  exhibitionBios: [ExhibitionLabels]
   objects: [LevelTwoObject]
-  activeCity: String
-  birthCity: String
-  deathCity: String
-  artInt: Int
-  region: String
   _sys: Sys
 }
 
 type LevelThreeConstituent {
   id: Int
+  publicAccess: Boolean
   name: String
   nameOther: String
-  alphaSortName: String
+  type: String
+  roles: [String]
+  isMaker: Boolean
   displayBio: String
   gender: String
   beginDate: Int
   endDate: Int
   nationality: String
-  type: String
-  isMaker: Boolean
-  roles: [String]
   objectCount: Int
-  exhibitionBios: [ExhibitionLabels]
+  _sys: Sys
+}
+
+type LevelOneExhibition {
+  id: Int
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+  objects: [LevelOneObject]
+  _sys: Sys
+}
+
+type LevelThreeExhibition {
+  id: Int
+  beginDate: String
+  endDate: String
+  venues: [Venue]
+  artInt: Int
   _sys: Sys
 }
 
@@ -493,37 +344,9 @@ type LevelOneBibliography {
   _sys: Sys
 }
 
-type LevelTwoBibliography {
-  id: Int
-  title: String
-  subTitle: String
-  format: String
-  placePublished: String
-  yearPublished: String
-  pageNumber: String
-  _sys: Sys
-}
-
-type LevelThreeBibliography {
-  id: Int
-  title: String
-  subTitle: String
-  format: String
-  placePublished: String
-  yearPublished: String
-  _sys: Sys
-}
-
-
-type ExhibitionLabels {
-  purpose: String
-  text: String
-}
-
 type Classification {
   area: String
   category: String
-  archivalLevel: String
 }
 
 type Area {
@@ -536,55 +359,7 @@ type Categories {
   count: Int
 }
 
-type ArchivalLevels {
-  title: String
-  count: Int
-}
-
-type Statuses {
-  title: String
-  count: Int
-}
-
-type Names {
-  title: String
-  count: Int
-}
-
 type Mediums {
-  title: String
-  count: Int
-}
-
-type Collection {
-  code: String
-  type: String
-  objectId: Int
-  title: String
-  titleOther: String
-}
-
-type CollectionTypes {
-  title: String
-  count: Int
-}
-
-type CollectionCodes {
-  title: String
-  count: Int
-}
-
-type CollectionNames {
-  title: String
-  count: Int
-}
-
-type Departments {
-  title: String
-  count: Int
-}
-
-type Styles {
   title: String
   count: Int
 }
@@ -597,6 +372,10 @@ type Venue {
   title: String
   beginDate: String
   endDate: String
+}
+
+type Image {
+  altText: String
 }
 
 type ColorInfo {
@@ -613,38 +392,6 @@ type ColorValue {
   color: String
   value: Float
 }
-
-type ObjectRights {
-  type: String
-  copyright: String
-  concatRights: String
-  concatRemark: String
-  currentStatus: String
-  rights: [Right]
-}
-
-type Right {
-  title: String
-  group: String
-}
-
-type Factoids {
-  id: String
-  text: String
-  textTC: String
-  isConstituent: Boolean
-  isArea: Boolean
-  isCategory: Boolean
-  isMedium: Boolean
-  isArchive: Boolean
-  isColour: Boolean
-  isRecommended: Boolean
-  isCollection: Boolean
-  isMain: Boolean
-  isPopular: Boolean
-  keyword: [String]
-}
-
 
 type Sys {
   pagination: Pagination
