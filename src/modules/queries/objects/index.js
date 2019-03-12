@@ -228,8 +228,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   if ('objectNumber' in args && args.objectNumber !== '') {
     must.push({
-      match: {
-        objectNumber: args.objectNumber
+      term: {
+        'objectNumber.keyword': args.objectNumber
       }
     })
   }
