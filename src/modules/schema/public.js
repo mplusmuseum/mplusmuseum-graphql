@@ -177,6 +177,7 @@ type LevelOneObject {
   medium: String
   creditLine: String
   constituents: [LevelTwoConstituent]
+  images: [Image]
   color: ColorInfo
   _sys: Sys
 }
