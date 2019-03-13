@@ -295,6 +295,7 @@ type LevelTwoConstituent {
   publicAccess: Boolean
   name: String
   nameOther: String
+  alphaSortName: String
   type: String
   roles: [String]
   role: String
@@ -315,6 +316,7 @@ type LevelThreeConstituent {
   publicAccess: Boolean
   name: String
   nameOther: String
+  alphaSortName: String
   type: String
   roles: [String]
   isMaker: Boolean
