@@ -32,8 +32,8 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
-  const keywordFields = ['nationality']
-  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality', 'objectcount']
+  const keywordFields = ['nationality', 'region']
+  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality', 'region', 'objectcount']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
@@ -118,6 +118,14 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
       match: {}
     }
     pushThis.match[`nationality.keyword`] = args.nationality
+    must.push(pushThis)
+  }
+
+  if ('region' in args && args.region !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`region.keyword`] = args.region
     must.push(pushThis)
   }
 

@@ -66,19 +66,20 @@ type Query {
   constituents(
     page: Int
     per_page: Int
-    publicAccess: Boolean
-    ids: [Int]
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    ids: [Int]
+    publicAccess: Boolean
     name: String
-    keyword: String
+    role: String
     gender: String
     beginDate: Int
     endDate: Int
     nationality: String
+    region: String
+    keyword: String
     isMaker: Boolean
-    role: String
   ): [LevelThreeConstituent]
   
   constituent(
