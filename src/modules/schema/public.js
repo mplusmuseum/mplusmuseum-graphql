@@ -12,6 +12,7 @@ type Query {
     objectNumber: String
     category: String
     area: String
+    archivalLevel: String
     title: String
     displayDate: String
     beginDate: Int
@@ -136,6 +137,15 @@ type Query {
     area: String
     category: String
   ): [Categories]
+
+  archivalLevels(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ArchivalLevels]
 
   mediums(
     page: Int
@@ -266,9 +276,9 @@ type LevelOneConstituent {
   publicAccess: Boolean
   name: String
   nameOther: String
+  alphaSortName: String
   type: String
   roles: [String]
-  isMaker: Boolean
   displayBio: String
   gender: String
   beginDate: Int
@@ -334,19 +344,10 @@ type LevelThreeExhibition {
   _sys: Sys
 }
 
-type LevelOneBibliography {
-  id: Int
-  title: String
-  subTitle: String
-  format: String
-  placePublished: String
-  yearPublished: String
-  _sys: Sys
-}
-
 type Classification {
   area: String
   category: String
+  archivalLevel: String
 }
 
 type Area {
@@ -355,6 +356,11 @@ type Area {
 }
 
 type Categories {
+  title: String
+  count: Int
+}
+
+type ArchivalLevels {
   title: String
   count: Int
 }

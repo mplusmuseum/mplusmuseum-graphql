@@ -89,10 +89,22 @@ type Query {
     per_page: Int
     category: String
     area: String
+    title: String
+    displayDate: String
+    beginDate: Int
+    endDate: Int
     medium: String
+    constituent: Int
+    constituents: [Int]
+    exhibition: Int
+    keyword: String
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
+    hue: [Int]
+    luminosity: [Int]
+    saturation: [Int]
+    hsl_range: Int = 30
   ): LevelOneConstituent
 
   exhibitions(
@@ -114,10 +126,22 @@ type Query {
     per_page: Int
     category: String
     area: String
+    title: String
+    displayDate: String
+    beginDate: Int
+    endDate: Int
     medium: String
+    constituent: Int
+    constituents: [Int]
+    exhibition: Int
+    keyword: String
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
+    hue: [Int]
+    luminosity: [Int]
+    saturation: [Int]
+    hsl_range: Int = 30
   ): LevelOneExhibition
 
   concepts(
@@ -142,10 +166,22 @@ type Query {
     publicAccess: Boolean
     category: String
     area: String
+    title: String
+    displayDate: String
+    beginDate: Int
+    endDate: Int
     medium: String
+    constituent: Int
+    constituents: [Int]
+    exhibition: Int
+    keyword: String
     color: String
     color_threshold: Float = 50.0
     color_source: String = "google"
+    hue: [Int]
+    luminosity: [Int]
+    saturation: [Int]
+    hsl_range: Int = 30
   ): LevelOneConcept
 
   bibliographies(
