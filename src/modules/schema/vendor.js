@@ -329,6 +329,55 @@ type Query {
     sort_field: String = "id"
   ): [ConActiveCities]
 
+  conBirthCities(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ConBirthCities]
+
+  conDeathCities(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ConDeathCities]
+
+  genders(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Genders]
+
+  nationalities(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Nationalities]
+
+  conRegions(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ConRegions]
+
+  conTypes(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ConTypes]
+
+  conRoles(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ConRoles]
+
 
 
   factoids(
@@ -834,6 +883,48 @@ type MakerTypes {
 }
 
 type ConActiveCities {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type ConBirthCities {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type ConDeathCities {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type Genders {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type Nationalities {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type ConRegions {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type ConTypes {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type ConRoles {
   title: String
   count: Int
   _sys: MiniSys

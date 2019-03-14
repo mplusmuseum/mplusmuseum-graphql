@@ -235,6 +235,27 @@ const root = {
   conActiveCities: (args, context) => {
     return queries.common.getConActiveCities(args, context, undefined, true)
   },
+  conBirthCities: (args, context) => {
+    return queries.common.getConBirthCities(args, context, undefined, true)
+  },
+  conDeathCities: (args, context) => {
+    return queries.common.getConDeathCities(args, context, undefined, true)
+  },
+  genders: (args, context) => {
+    return queries.common.getGenders(args, context, undefined, true)
+  },
+  nationalities: (args, context) => {
+    return queries.common.getNationalities(args, context, undefined, true)
+  },
+  conRegions: (args, context) => {
+    return queries.common.getConRegions(args, context, undefined, true)
+  },
+  conTypes: (args, context) => {
+    return queries.common.getConTypes(args, context, undefined, true)
+  },
+  conRoles: (args, context) => {
+    return queries.common.getConRoles(args, context, undefined, true)
+  },
   timeline: (args, context) => {
     return queries.timeline.getTimeline(args, context, undefined, true)
   },
