@@ -588,8 +588,172 @@ exports.getConActiveCities = async (args, context, levelDown = 3, initialCall = 
   }
   const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
-  apiLogger.object(`style query`, {
-    method: 'getStyles',
+  apiLogger.object(`activeCity query`, {
+    method: 'getConActiveCities',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getConBirthCities = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `birthCity.en.keyword`
+  if (args.lang && args.lang === 'zh-hant') {
+    field = `birthCity.zh-hant.keyword`
+  }
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`birthCity query`, {
+    method: 'getConBirthCities',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getConDeathCities = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `deathCity.en.keyword`
+  if (args.lang && args.lang === 'zh-hant') {
+    field = `deathCity.zh-hant.keyword`
+  }
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`deathCity query`, {
+    method: 'getConDeathCities',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+exports.getGenders = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `gender.en.keyword`
+  if (args.lang && args.lang === 'zh-hant') {
+    field = `gender.zh-hant.keyword`
+  }
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`gender query`, {
+    method: 'getGenders',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+exports.getNationalities = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `nationality.en.keyword`
+  if (args.lang && args.lang === 'zh-hant') {
+    field = `nationality.zh-hant.keyword`
+  }
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`nationality query`, {
+    method: 'getNationalities',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+exports.getConRegions = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `region.en.keyword`
+  if (args.lang && args.lang === 'zh-hant') {
+    field = `region.zh-hant.keyword`
+  }
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`region query`, {
+    method: 'getConRegions',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+exports.getConTypes = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `type.keyword`
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`type query`, {
+    method: 'getConTypes',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+exports.getConRoles = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `roles.keyword`
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`roles query`, {
+    method: 'getConRoles',
     args,
     context,
     levelDown,
