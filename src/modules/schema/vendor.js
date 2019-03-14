@@ -416,6 +416,7 @@ type LevelOneObject {
   style: String
   department: String
   dimension: String
+  dimensionDetail: DimensionDetail
   creditLine: String
   medium: String
   classification: Classification
@@ -460,6 +461,7 @@ type SingleObject {
   style: String
   department: String
   dimension: String
+  dimensionDetail: DimensionDetail
   creditLine: String
   medium: String
   classification: Classification
@@ -504,6 +506,7 @@ type LevelTwoObject {
   style: String
   department: String
   dimension: String
+  dimensionDetail: DimensionDetail
   creditLine: String
   medium: String
   classification: Classification
@@ -548,6 +551,7 @@ type LevelThreeObject {
   style: String
   department: String
   dimension: String
+  dimensionDetail: DimensionDetail
   creditLine: String
   medium: String
   classification: Classification
@@ -590,6 +594,7 @@ type RelatedObject {
   style: String
   department: String
   dimension: String
+  dimensionDetail: DimensionDetail
   creditLine: String
   medium: String
   classification: Classification
@@ -1043,5 +1048,11 @@ type MiniSys {
   totalRows: Int
 }
 
-
+type DimensionDetail {
+  unit: String
+  element: String
+  width: Float
+  height: Float
+  depth: Float
+}
 `
