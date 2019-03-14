@@ -174,7 +174,7 @@ type LevelOneObject {
   beginDate: Int
   endDate: Int
   dimension: String
-  dimensionDetail: DimensionDetail
+  dimensionDetails: [DimensionDetails]
   medium: String
   creditLine: String
   constituents: [LevelTwoConstituent]
@@ -196,7 +196,7 @@ type SingleObject {
   beginDate: Int
   endDate: Int
   dimension: String
-  dimensionDetail: DimensionDetail
+  dimensionDetails: [DimensionDetails]
   medium: String
   creditLine: String
   constituents: [LevelTwoConstituent]
@@ -218,7 +218,7 @@ type LevelTwoObject {
   beginDate: Int
   endDate: Int
   dimension: String
-  dimensionDetail: DimensionDetail
+  dimensionDetails: [DimensionDetails]
   medium: String
   constituents: [LevelThreeConstituent]
   images: [Image]
@@ -239,7 +239,7 @@ type LevelThreeObject {
   beginDate: Int
   endDate: Int
   dimension: String
-  dimensionDetail: DimensionDetail
+  dimensionDetails: [DimensionDetails]
   medium: String
   creditLine: String
   images: [Image]
@@ -260,7 +260,7 @@ type RelatedObject {
   beginDate: Int
   endDate: Int
   dimension: String
-  dimensionDetail: DimensionDetail
+  dimensionDetails: [DimensionDetails]
   medium: String
   creditLine: String
   images: [Image]
@@ -423,9 +423,10 @@ type MiniSys {
   totalRows: Int
 }
 
-type DimensionDetail {
+type DimensionDetails {
   unit: String
   element: String
+  rank: String
   width: Float
   height: Float
   depth: Float
