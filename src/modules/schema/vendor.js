@@ -61,6 +61,7 @@ type Query {
   object(
     id: Int!
     lang: String = "en"
+    publicAccess: Boolean
   ): SingleObject
 
   constituents(
@@ -316,6 +317,17 @@ type Query {
   makertypes(
     lang: String = "en"
   ): [MakerTypes]
+
+
+  
+  conActiveCities(
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [ConActiveCities]
+
+
 
   factoids(
     page: Int
@@ -819,6 +831,12 @@ type MakerTypes {
   title: String
 }
 
+type ConActiveCities {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
 type Venue {
   title: String
   beginDate: String
@@ -910,4 +928,11 @@ type Pagination {
   total: Int
   maxPage: Int
 }
+
+type MiniSys {
+  total: Int
+  totalRows: Int
+}
+
+
 `

@@ -298,16 +298,40 @@ const getAggregates = async (args, field, index) => {
 
   //  Run the search
   const results = await doCacheQuery(cacheable, index, body)
-
-  const records = results.aggregations.results.buckets
-
-  return records.map((record) => {
+  const records = results.aggregations.results.buckets.map((record) => {
     return {
       title: record.key,
       count: record.doc_count
     }
   })
+
+  //  Finally, add totals
+  let total = 0
+  records.forEach((record) => {
+    total += record.count
+  })
+  const sys = {
+    total,
+    totalRows: records.length
+  }
+
+  if (records.length > 0) {
+    records[0]._sys = sys
+  }
+  return records
 }
+
+/*
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+
+   OBJECTS
+
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+*/
 
 exports.getAreas = async (args, context, levelDown = 3, initialCall = false) => {
   const startTime = new Date().getTime()
@@ -539,6 +563,48 @@ exports.getStyles = async (args, context, levelDown = 3, initialCall = false) =>
   })
   return aggs
 }
+
+/*
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+
+   CONSTITUENTS
+
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+*/
+
+exports.getConActiveCities = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  let field = `activeCity.en.keyword`
+  if (args.lang && args.lang === 'zh-hant') {
+    field = `activeCity.zh-hant.keyword`
+  }
+  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`style query`, {
+    method: 'getStyles',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+/*
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+*/
 
 exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false) => {
   const config = new Config()

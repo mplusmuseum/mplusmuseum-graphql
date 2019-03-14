@@ -232,6 +232,9 @@ const root = {
   makertypes: (args, context) => {
     return queries.common.getMakerTypes(args, context, undefined, true)
   },
+  conActiveCities: (args, context) => {
+    return queries.common.getConActiveCities(args, context, undefined, true)
+  },
   timeline: (args, context) => {
     return queries.timeline.getTimeline(args, context, undefined, true)
   },
