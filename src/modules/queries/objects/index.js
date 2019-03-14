@@ -1249,7 +1249,7 @@ const getObject = async (args, context, initialCall = false) => {
   const thisObject = objectArray[0]
 
   //  Check to see if we need to get any related objects
-  if (thisObject.relatedObjectIds && thisObject.relatedObjectIds.idsToRelationship && thisObject.relatedObjectIds.ids) {
+  if (thisObject && thisObject.relatedObjectIds && thisObject.relatedObjectIds.idsToRelationship && thisObject.relatedObjectIds.ids) {
     //  Build a lookup map of the ids to types
     const objectRelationships = {}
     JSON.parse(thisObject.relatedObjectIds.idsToRelationship).forEach((obj) => {
@@ -1286,7 +1286,7 @@ const getObject = async (args, context, initialCall = false) => {
   const type = 'object'
 
   //  If there isn't a "popularCount" field then we need to add one
-  if (!thisObject.popularCount) {
+  if (thisObject && !thisObject.popularCount) {
     esclient.update({
       index,
       type,
@@ -1300,14 +1300,16 @@ const getObject = async (args, context, initialCall = false) => {
       }
     })
   } else {
-    esclient.update({
-      index,
-      type,
-      id: thisObject.id,
-      body: {
-        script: 'ctx._source.popularCount += 1'
-      }
-    })
+    if (thisObject) {
+      esclient.update({
+        index,
+        type,
+        id: thisObject.id,
+        body: {
+          script: 'ctx._source.popularCount += 1'
+        }
+      })
+    }
   }
   return thisObject
 }

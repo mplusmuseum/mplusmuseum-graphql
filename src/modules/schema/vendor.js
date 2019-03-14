@@ -88,6 +88,7 @@ type Query {
     lang: String = "en"
     page: Int
     per_page: Int
+    publicAccess: Boolean
     category: String
     area: String
     title: String
@@ -125,6 +126,7 @@ type Query {
     lang: String = "en"
     page: Int
     per_page: Int
+    publicAccess: Boolean
     category: String
     area: String
     title: String
