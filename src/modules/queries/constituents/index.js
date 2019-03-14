@@ -32,8 +32,8 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
-  const keywordFields = ['nationality', 'region']
-  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'nationality', 'region', 'objectcount']
+  const keywordFields = ['activeCity', 'birthCity', 'deathCity', 'gender', 'nationality', 'region', 'type']
+  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'activecity', 'birthcity', 'deathcity', 'type', 'nationality', 'region', 'objectcount']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
@@ -42,6 +42,11 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
 
     //  Special cases
     if (sortField === 'gender') sortField = `gender.${args.lang}.keyword`
+    if (sortField === 'activeCity') sortField = `activeCity.${args.lang}.keyword`
+    if (sortField === 'birthCity') sortField = `birthCity.${args.lang}.keyword`
+    if (sortField === 'deathCity') sortField = `deathCity.${args.lang}.keyword`
+    if (sortField === 'nationality') sortField = `nationality.${args.lang}.keyword`
+    if (sortField === 'region') sortField = `region.${args.lang}.keyword`
     if (sortField === 'name') sortField = `name.${args.lang}.displayname.keyword`
     if (sortField === 'alphaSortName') sortField = `name.${args.lang}.alphasort.keyword`
 
@@ -113,11 +118,59 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     must.push(pushThis)
   }
 
+  if ('type' in args && args.type !== '') {
+    const pushThis = {
+      match: {}
+    }
+    pushThis.match[`type.keyword`] = args.type
+    must.push(pushThis)
+  }
+
+  if ('activeCity' in args && args.activeCity !== '') {
+    const pushThis = {
+      match: {}
+    }
+    if (args.lang && args.lang !== 'en') {
+      pushThis.match[`activeCity.zh-hant.keyword`] = args.activeCity
+    } else {
+      pushThis.match[`activeCity.en.keyword`] = args.activeCity
+    }
+    must.push(pushThis)
+  }
+
+  if ('birthCity' in args && args.birthCity !== '') {
+    const pushThis = {
+      match: {}
+    }
+    if (args.lang && args.lang !== 'en') {
+      pushThis.match[`birthCity.zh-hant.keyword`] = args.birthCity
+    } else {
+      pushThis.match[`birthCity.en.keyword`] = args.birthCity
+    }
+    must.push(pushThis)
+  }
+
+  if ('deathCity' in args && args.deathCity !== '') {
+    const pushThis = {
+      match: {}
+    }
+    if (args.lang && args.lang !== 'en') {
+      pushThis.match[`deathCity.zh-hant.keyword`] = args.deathCity
+    } else {
+      pushThis.match[`deathCity.en.keyword`] = args.deathCity
+    }
+    must.push(pushThis)
+  }
+
   if ('nationality' in args && args.nationality !== '') {
     const pushThis = {
       match: {}
     }
-    pushThis.match[`nationality.keyword`] = args.nationality
+    if (args.lang && args.lang !== 'en') {
+      pushThis.match[`nationality.zh-hant.keyword`] = args.nationality
+    } else {
+      pushThis.match[`nationality.en.keyword`] = args.nationality
+    }
     must.push(pushThis)
   }
 
@@ -125,7 +178,11 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     const pushThis = {
       match: {}
     }
-    pushThis.match[`region.keyword`] = args.region
+    if (args.lang && args.lang !== 'en') {
+      pushThis.match[`region.zh-hant.keyword`] = args.region
+    } else {
+      pushThis.match[`region.en.keyword`] = args.region
+    }
     must.push(pushThis)
   }
 

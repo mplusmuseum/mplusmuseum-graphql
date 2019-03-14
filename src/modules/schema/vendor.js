@@ -77,7 +77,11 @@ type Query {
     gender: String
     beginDate: Int
     endDate: Int
+    activeCity: String
+    birthCity: String
+    deathCity: String
     nationality: String
+    type: String
     region: String
     keyword: String
     isMaker: Boolean
@@ -818,31 +822,37 @@ type Classification {
 type Area {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type Categories {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type ArchivalLevels {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type Statuses {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type Names {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type Mediums {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type Collection {
@@ -851,31 +861,37 @@ type Collection {
   objectId: Int
   title: String
   titleOther: String
+  _sys: MiniSys
 }
 
 type CollectionTypes {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type CollectionCodes {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type CollectionNames {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type Departments {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type Styles {
   title: String
   count: Int
+  _sys: MiniSys
 }
 
 type MakerTypes {
