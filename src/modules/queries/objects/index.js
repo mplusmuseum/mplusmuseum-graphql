@@ -1102,7 +1102,16 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   //  Now sort out all the images stuff
   records = records.map((record) => {
+    const originalImages = JSON.parse(JSON.stringify(record.images))
+    const originalImagesMap = {}
+    Object.entries(originalImages).forEach((original) => {
+      const image = original[1]
+      if (image.src) {
+        originalImagesMap[image.src] = image
+      }
+    })
     if (record.images) delete record.images
+
     if (record.remote) {
       const imagesObj = JSON.parse(record.remote.images)
       const newImages = []
@@ -1117,20 +1126,53 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         }
         //  Grab the language part
         let altText = null
-        if (args.lang === 'en' && image.AltText) {
-          altText = image.AltText
+        if (args.lang === 'en') {
+          if (image.AltText) {
+            altText = image.AltText
+          } else {
+            //  If there isn't any alt text, have a look in the original data
+            if (originalImagesMap[image.src] && originalImagesMap[image.src].AltText) {
+              altText = originalImagesMap[image.src].AltText
+            }
+          }
         } else {
           if (image.AltTextTC) {
             altText = image.AltTextTC
           } else {
             if (image.AltText) altText = image.AltText
           }
+          //  If there isn't any alt text, have a look in the original data
+          if (!altText) {
+            if (originalImagesMap[image.src] && originalImagesMap[image.src].AltTextTC) {
+              altText = originalImagesMap[image.src].AltTextTC
+            }
+          }
         }
         image.altText = altText
 
-        //  Clean up all the unwanted fields
-        image.mediaUse = image.MediaUse
+        //  Grab the mediaUse
+        //  If we have MediaUse is the remote data we have, then use it
+        if (image.MediaUse) {
+          image.mediaUse = image.MediaUse
+        } else {
+          //  Otherwise go an look in the actual orginal image data to
+          //  see if we have media use there
+          if (originalImagesMap[image.src] && originalImagesMap[image.src].mediaUse) {
+            image.mediaUse = originalImagesMap[image.src].mediaUse
+          }
+        }
+
+        //  If it's an array, FOR THE MOMENT we return just the first one
+        if (Array.isArray(image.mediaUse)) {
+          if (image.mediaUse.length === 0) {
+            image.mediaUse = null
+          } else {
+            image.mediaUse = image.mediaUse[0]
+          }
+        }
         image.rank = parseInt(image.rank, 10)
+
+        //  Clean up all the unwanted fields
         delete image.MediaUse
         delete image.AltText
         delete image.AltTextTC
