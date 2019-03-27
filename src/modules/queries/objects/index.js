@@ -1102,7 +1102,10 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   //  Now sort out all the images stuff
   records = records.map((record) => {
-    const originalImages = JSON.parse(JSON.stringify(record.images))
+    let originalImages = {}
+    if (record.images) {
+      originalImages = JSON.parse(JSON.stringify(record.images))
+    }
     const originalImagesMap = {}
     Object.entries(originalImages).forEach((original) => {
       const image = original[1]
