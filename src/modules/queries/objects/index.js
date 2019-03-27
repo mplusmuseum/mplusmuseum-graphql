@@ -1129,25 +1129,23 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         }
         //  Grab the language part
         let altText = null
+
         if (args.lang === 'en') {
-          if (image.AltText) {
-            altText = image.AltText
+          if (originalImagesMap[image.src] && originalImagesMap[image.src].AltText) {
+            altText = originalImagesMap[image.src].AltText
           } else {
-            //  If there isn't any alt text, have a look in the original data
-            if (originalImagesMap[image.src] && originalImagesMap[image.src].AltText) {
-              altText = originalImagesMap[image.src].AltText
+            if (image.AltText) {
+              altText = image.AltText
             }
           }
         } else {
-          if (image.AltTextTC) {
-            altText = image.AltTextTC
+          if (originalImagesMap[image.src] && originalImagesMap[image.src].AltTextTC) {
+            altText = originalImagesMap[image.src].AltTextTC
           } else {
-            if (image.AltText) altText = image.AltText
-          }
-          //  If there isn't any alt text, have a look in the original data
-          if (!altText) {
-            if (originalImagesMap[image.src] && originalImagesMap[image.src].AltTextTC) {
-              altText = originalImagesMap[image.src].AltTextTC
+            if (image.AltTextTC) {
+              altText = image.AltTextTC
+            } else {
+              if (image.AltText) altText = image.AltText
             }
           }
         }
@@ -1155,13 +1153,11 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
         //  Grab the mediaUse
         //  If we have MediaUse is the remote data we have, then use it
-        if (image.MediaUse) {
-          image.mediaUse = image.MediaUse
+        if (originalImagesMap[image.src] && originalImagesMap[image.src].mediaUse) {
+          image.mediaUse = originalImagesMap[image.src].mediaUse
         } else {
-          //  Otherwise go an look in the actual orginal image data to
-          //  see if we have media use there
-          if (originalImagesMap[image.src] && originalImagesMap[image.src].mediaUse) {
-            image.mediaUse = originalImagesMap[image.src].mediaUse
+          if (image.MediaUse) {
+            image.mediaUse = image.MediaUse
           }
         }
 
