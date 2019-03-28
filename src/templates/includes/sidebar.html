@@ -1,0 +1,86 @@
+<div class="docs-sidebar off-canvas-sidebar" id="sidebar">
+
+  <div class="docs-brand"><a class="docs-logo" href="/">
+      <h2>M+ </h2><small class="label label-secondary text-bold">Developer Portal</small>
+    </a>
+  </div>
+  <div class="docs-nav">
+    <div class="accordion-container">
+      <div class="accordion">
+        <input id="accordion-aboutapi" type="checkbox" name="docs-accordion-checkbox" hidden=""
+          {{#ifEqual navOpen "aboutapi"}}checked=checked{{/ifEqual}}>
+        <label class="accordion-header c-hand" for="accordion-aboutapi">About the M+ API</label>
+        <div class="accordion-body">
+          <ul class="menu menu-nav">
+            <li class="menu-item"><a href="/{{lang}}/documentation/about#background">Background</a>
+            </li>
+            <li class="menu-item"><a href="/{{lang}}/documentation/about#thedata">The Data</a>
+            </li>
+            <li class="menu-item"><a href="/{{lang}}/documentation/about#access">Access</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion">
+        <input id="accordion-documentation" type="checkbox" name="docs-accordion-checkbox" hidden=""
+          {{#ifEqual navOpen "documentation"}}checked=checked{{/ifEqual}}>
+        <label class="accordion-header c-hand" for="accordion-documentation">API Documentation</label>
+        <div class="accordion-body">
+          <ul class="menu menu-nav">
+            {{#if user}}
+              <li class="menu-item"><a href="/{{lang}}/documentation#apitoken">Your API Token</a></li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#endpoint">The M+ API Endpointn</a></li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#graphQL">About GraphQL</a>
+                <ul class="menu menu-nav">
+                  <li class="menu-item"><a href="/{{lang}}/documentation#communicatingwithgraphql">Communicating with
+                      GraphQL</a>
+                  </li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#playground">GraphQL Playground</a></li>
+                </ul>
+              </li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#graphQL">GraphQL Queries</a>
+                <ul class="menu menu-nav">
+                  <li class="menu-item"><a href="/{{lang}}/documentation#introspection">Introspection</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#objects">Objects</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#area">Areas</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#categories">Categories</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#mediums">Mediums</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#constituents">Constituents</a></li>
+                </ul>
+              </li>
+            {{else}}
+              <li class="menu-item"><a href="/login">You must be logged in to see the documentation</a>
+              </li>
+            {{/if}}
+          </ul>
+        </div>
+      </div>
+      {{#if user.roles.isVendor}}
+        <div class="accordion">
+          <input id="accordion-siggonline" type="checkbox" name="docs-accordion-checkbox" hidden=""
+            {{#ifEqual navOpen "siggonline"}}checked=checked{{/ifEqual}}>
+          <label class="accordion-header c-hand" for="accordion-siggonline">Sigg Online</label>
+          <div class="accordion-body">
+            <ul class="menu menu-nav">
+              <li class="menu-item"><a href="/{{lang}}/documentation#graphQL">Getting Started</a>
+                <ul class="menu menu-nav">
+                  <li class="menu-item"><a href="/{{lang}}/documentation#objectrights">Object Rights</a>
+                  </li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#concepts">Concepts</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#exhibitions">Exhibitions</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#timeline">Timeline</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="accordion">
+        <input id="accordion-elements" type="checkbox" name="docs-accordion-checkbox" hidden="">
+        <label class="accordion-header c-hand"><a href="/en/termsofuse">Terms of Use</a></label>
+      </div>
+    </div>
+
+  </div>
+</div>
