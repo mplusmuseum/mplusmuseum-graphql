@@ -163,7 +163,6 @@ router.use(function (req, res, next) {
 
   //  Read in the correct language
   const i18n = JSON.parse(fs.readFileSync(path.join(langDir, `strings.${defaultLang}.json`)))
-  console.log(i18n)
   if (selectedLang !== defaultLang) {
     const selectedi18n = JSON.parse(fs.readFileSync(path.join(langDir, `strings.${selectedLang}.json`)))
     Object.entries(selectedi18n).forEach((branch) => {
@@ -420,6 +419,7 @@ router.get('/wait', main.wait)
 
 router.get('/:lang/documentation', documentation.index)
 router.get('/:lang/documentation/about', documentation.about)
+router.get('/:lang/documentation/termsofuse', documentation.termsofuse)
 
 // ############################################################################
 //

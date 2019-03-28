@@ -10,3 +10,8 @@ exports.about = (req, res) => {
   req.templateValues.navOpen = 'aboutapi'
   return res.render('documentation/about', req.templateValues)
 }
+
+exports.termsofuse = (req, res) => {
+  req.templateValues.navOpen = 'termsofuse'
+  return res.render('documentation/termsofuse', req.templateValues)
+}
