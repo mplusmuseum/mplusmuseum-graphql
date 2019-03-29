@@ -7,8 +7,8 @@ exports.index = (req, res) => {
   let isVendor = false
   let loadFile = 'public'
 
-  if (req.user && req.user.roles && 'isVendor' in req.user.roles) {
-    isVendor = req.user.roles.isVendor
+  if (req.templateValues.user && req.templateValues.user.roles && 'isVendor' in req.templateValues.user.roles) {
+    isVendor = req.templateValues.user.roles.isVendor
   }
   if (isVendor) loadFile = 'vendors'
   const Queries = require(`../../classes/queries/${loadFile}.js`)

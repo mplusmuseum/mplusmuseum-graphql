@@ -1,5 +1,5 @@
 exports.index = (req, res) => {
-  return res.render('main/index', req.templateValues)
+  return res.redirect('/en/documentation/about')
 }
 
 exports.wait = (req, res) => {

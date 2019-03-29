@@ -51,6 +51,7 @@
     "aggs-per-page": "以<code class=\"red\">per_page</code>（每頁結果）篩選可限制查詢結果的數目。舉個例說，輸入<code>(per_page: 10)</code>的話，就只會回傳10項紀錄。與查詢物件不同，此數據集不能分頁。",
     "category-1": "你可以擷取所有有效類別，用以篩選物件。舉個例說，運行以下查詢的話，便會回傳數個類別，接著，你可以採用 <code>(category: \"xxxxxxxx\")</code> ，即以類別查詢物件。當中的\"xxxxxxxx\" 就是上述查詢回傳的類別之一。",
     "medium-1": "你可以擷取所有有效媒介，用以篩選物件。舉個例說，運行以下查詢的話，便會回傳數個媒介，接著你可以採用 <code>(medium: \"xxxxxxxx\")</code>查詢物件，當中的 \"xxxxxxxx\" 就是上述查詢回傳的範圍之一。",
+    "archivalLevel-1": "You can fetch all the valid archival levels which you can then use to filter objects by. For example running the query below will return a handful of levels, which you would then use in an Object query with <code>(archivalLevel: \"xxxxxxxx\")</code> where \"xxxxxxxx\" is one of the level returned by this query.",
     "constituents-1": "構成要素就是與物件有關的人物和機構，如藝術家、賣家或買家，亦可能是策展人或展示物件的機構。",
     "constituents-2": "這項查詢選擇所有構成要素，並能夠透過以下字段進行篩選。備註：篩選屬累加性質而非任擇其一，篩選兩個字段的話，只會回傳同時吻合兩者的數據。",
     "constituents-filters": "有效的篩選為：<code class=\"red\">page</code>（頁數）、<code class=\"red\">per_page</code>（每頁結果）、<code class=\"red\">sort_field</code>（字段排序）、<code class=\"red\">sort</code>（排序）、<code class=\"red\">[ids]</code>、<code class=\"red\">gender</code>（性別）、<code class=\"red\">beginDate</code>（開始日期）、<code class=\"red\">endDate</code>（結束日期）、<code class=\"red\">nationality</code>（國籍）和 <code class=\"red\">lang</code>（語言)",

@@ -85,7 +85,7 @@ router.use(function (req, res, next) {
   req.templateValues.config = req.config
   req.templateValues.NODE_ENV = process.env.NODE_ENV
 
-  if (!req.session.user) {
+  if (!req.session || !req.session.user) {
     req.templateValues.user = null
   } else {
     //  Shortcut the roles
@@ -489,7 +489,7 @@ if (configObj.get('auth0') !== null) {
         req.session.save()
         console.log(`Logging in >> ${pow.user_id}`)
         req.session.save()
-        res.redirect(307, '/')
+        res.redirect(307, '/en/documentation')
       }, 2500)
     }
   )

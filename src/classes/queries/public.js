@@ -78,34 +78,55 @@ class Queries {
     this.objectLarge = `query {
   object[[]] {
     id
+    sortNumber
     publicAccess
     objectNumber
-    sortNumber
-    title
-    displayDate
-    beginDate
-    endDate
-    dimension
-    creditLine
-    medium
     classification {
       area
       category
+      archivalLevel
     }
-    images {
-      rank
-      primaryDisplay
-      publicAccess
-      public_id
-      status
-      version
-      signature
+    title
+    titleOther
+    displayDate
+    displayDateOther
+    beginDate
+    endDate
+    dimension
+    dimensionDetails {
       width
       height
-      format
-      altText
-      mediaUse
+      depth
+      unit
+      element
+      rank
     }
+    medium
+    creditLine
+    constituents {
+      id
+      name
+    }
+    images {
+      altText
+    }
+    color {
+      predominant {
+        color
+        value
+      }
+      search {
+        google {
+          color
+          value
+        }
+        cloudinary {
+          color
+          value
+        }
+      }
+    }
+    
   }
 }`
 
@@ -128,7 +149,6 @@ class Queries {
       gender
       beginDate
       nationality
-      rank
       role
       objects {
         id
@@ -165,79 +185,10 @@ class Queries {
   }
 }`
 
-    this.objectsRandom = `query {
-  randomobjects {
-    id
-    objectNumber
-    title
-    displayDate
-    medium
-    classification {
-      area
-      category
-    }
-  }
-}`
-
-    this.objectsLarge = `query {
-  objects[[]] {
-    id
-    publicAccess
-    objectNumber
-    sortNumber
-    title
-    displayDate
-    beginDate
-    endDate
-    dimension
-    creditLine
-    medium
-    classification {
-      area
-      category
-    }
-    images {
-      rank
-      primaryDisplay
-      publicAccess
-      public_id
-      status
-      version
-      signature
-      width
-      height
-      format
-      altText
-      mediaUse
-    }
-    color {
-      predominant {
-        color
-        value
-      }
-      search {
-        google {
-          color
-          value
-        }
-        cloudinary {
-          color
-          value
-        }
-      }
-    }
-  }
-}`
-
     this.objectsColor = `query {
   objects[[]] {
     id
     title
-    images {
-      public_id
-      version
-      format
-    }
     color {
       predominant {
         color
@@ -277,7 +228,6 @@ class Queries {
       beginDate
       nationality
       role
-      rank
     }
   }
 }`
@@ -296,7 +246,6 @@ class Queries {
     constituents {
       name
       role
-      rank
     }
   }
 }`
@@ -305,6 +254,7 @@ class Queries {
   constituents[[]] {
     id
     name
+    nameOther
     alphaSortName
     displayBio
     gender
@@ -320,6 +270,7 @@ class Queries {
   constituent[[]] {
     id
     name
+    nameOther
     alphaSortName
     displayBio
     gender
@@ -368,6 +319,13 @@ class Queries {
   }
 }`
 
+    this.archivalLevels = `query {
+  archivalLevels[[]] {
+    title
+    count
+  }
+}`
+
     this.constituentLarge = `query {
   constituent[[]] {
     id
@@ -380,6 +338,94 @@ class Queries {
     endDate
     nationality
     type
+  }
+}`
+
+    this.objectsLarge = `query {
+  objects[[]] {
+    id
+    publicAccess
+    objectNumber
+    sortNumber
+    title
+    displayDate
+    beginDate
+    endDate
+    dimension
+    creditLine
+    medium
+    classification {
+      area
+      category
+    }
+  }
+}`
+
+    this.objectsLargeWithExhibitions = `query {
+  objects[[]] {
+    id
+    title
+    classification {
+      area
+      category
+    }
+    exhibitions {
+      exhibitions {
+        id
+        beginDate
+        endDate
+        section
+        venues {
+          title
+          beginDate
+          endDate
+        }
+      }
+      labels {
+        text
+        purpose
+      }
+    }
+    constituents {
+      id
+      name
+      nationality
+      gender
+      displayBio
+      exhibitionBios {
+        text
+        purpose
+      }
+    }
+  }
+}`
+    this.exhibitions = `query {
+      exhibitions[[]] {
+        id
+        beginDate
+        endDate
+        venues {
+          title
+          beginDate
+          endDate
+        }
+      }
+}`
+
+    this.exhibition = `query {
+  exhibition[[]] {
+    id
+    beginDate
+    endDate
+    venues {
+      title
+      beginDate
+      endDate
+    }
+    objects {
+      id
+      title
+    }
   }
 }`
   }

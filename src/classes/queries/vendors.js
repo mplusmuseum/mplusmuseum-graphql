@@ -386,6 +386,13 @@ class Queries {
   }
 }`
 
+    this.archivalLevels = `query {
+  archivalLevels[[]] {
+    title
+    count
+  }
+}`
+
     this.constituentLarge = `query {
   constituent[[]] {
     id
