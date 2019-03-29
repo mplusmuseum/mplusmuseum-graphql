@@ -6,14 +6,23 @@
   padding-top: 1rem;
   height: 100%;
   position: fixed;
-  // display: none;
 
   .menu {
     padding: 0.4rem 0;
   }
 
+  a, .label-header {
+    font-size: .7rem;
+  }
+
+  a.terms-of-use{
+    font-size: 1rem;
+    font-weight: lighter;
+  }
+
   label, a {
     color: white !important;
+    font-weight: lighter;
   }
 
   .accordion .accordion-header {
@@ -37,18 +46,24 @@
     width: 100%;
   }
 
+  .accordion{
+    margin-bottom: 0;
+  }
+
   label.c-hand {
     font-size: 1rem;
+    text-transform: none;
   }
 
   .docs-nav {
     width: inherit;
-    top: 7.5rem;
+    top: 6rem;
   }
 
   .contacts-links {
-    margin-top: 7rem !important;
+    position: fixed;
     text-align: left;
+    bottom: 1.75rem;
     padding: 0;
     margin: 0;
     a {

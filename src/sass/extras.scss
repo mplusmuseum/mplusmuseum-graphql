@@ -1,6 +1,6 @@
 
 .container {
-  padding-top: 5rem;
+  padding-top: 3.5rem;
 }
 
 .mt-2 {
@@ -26,9 +26,15 @@
 
 hr {
   margin-top: 5rem;
-  margin-bottom: 1.5rem;
 }
 
-.docs-content {
-  padding: 0 4rem 0 20rem !important;
+div.docs-content {
+  padding-left: 20rem;
+  padding-right: 0;
+}
+
+.s-title {
+  font-size: .85rem;
+  font-weight: 900;
+  padding-top: 0 !important;
 }

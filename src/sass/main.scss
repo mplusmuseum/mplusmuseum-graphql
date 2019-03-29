@@ -15,18 +15,15 @@
   font-style:bold;
 }
 
-@font-face {
-  font-family: "Agipo";
-  src:
-  url("fonts/AgipoLight-Regular.ttf") format("ttf");
-  font-weight:300;
-  font-style:normal;
-}
 
 body {
+  color: black;
   font-size: 16px;
   font-family: 'Agipo', Arial, sans-serif;
   font-weight: normal;
   font-style: normal;
 }
->>>>>>> Implement new style for sidebar and main content
+
+.title {
+  font-weight: 900;
+}
