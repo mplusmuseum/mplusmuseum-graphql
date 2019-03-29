@@ -3,6 +3,7 @@
 <head>
   <title>M+</title>
   {{> head}}
+  <link href="/css/prism.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -15,10 +16,305 @@
     <div class="off-canvas-content">
       <div class="docs-content" id="content">
         <div class="container" id="welcome">
-          Documentation goes here
+          <h2 class="title mt-2">{{i18n.documentation.title}}</h2>
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            API TOKEN
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 class="s-title" id="apitoken">Your API Token<a class="anchor" href="#apitoken" aria-hidden="true">#</a>
+          </h3>
+          <p>
+            Below is your API developer token, this is the token you'll use to sign all your API calls. Always try to
+            keep your token private and out of public github repositories.
+          </p>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title h1 text-center">API token</div>
+              <div class="card-body h4 text-center">{{user.apitoken}}</div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            M+ ENDPOINT
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 class="s-title" id="endpoint">The M+ API Endpoint<a class="anchor" href="#endpoint"
+              aria-hidden="true">#</a></h3>
+
+          <p>
+            Below is the GraphQL endpoint which you'll be making your API calls against. See below for more details on
+            how to structure calls.
+          </p>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title h1 text-center">GraphQL API endpoint</div>
+              <div class="card-body h4 text-center"><code>{{config.graphql.host}}/graphql</code></div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            ABOUT GRAPHQL
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 class="s-title" id="graphQL">{{i18n.documentation.about-graphql}}<a class="anchor" href="#graphQL"
+              aria-hidden="true">#</a></h3>
+
+          <p>
+            {{{i18n.documentation.graphql-about-1}}}
+          </p>
+          <p>
+            {{{i18n.documentation.graphql-about-2}}}
+          </p>
+          <p>
+            {{i18n.documentation.graphql-about-3}}
+          </p>
+
+          {{!---
+            ###################################################################################
+
+            Communicating with graphQL
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="communicatingwithgraphql">{{i18n.documentation.communicating-with-graphql}}<a
+              class="anchor" href="#communicatingwithgraphql" aria-hidden="true">#</a></h4>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-1}}}
+          </p>
+          <p>
+            <code>{{config.graphql.host}}/graphql</code>
+          </p>
+          <p>
+            {{{i18n.documentation.graphql-communicating-2}}}
+          </p>
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.hello "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+
+          <pre class="query language-graphql">{{{graphQLQuery queries.hello ''}}}</pre>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-3}}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.hello '' config.graphql.host user.apitoken}}}</pre>
+          <p>
+            {{{i18n.documentation.graphql-communicating-4}}}
+          </p>
+          <pre class="query language-javascript">{{{nodeQuery queries.hello '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          {{!---
+            ###################################################################################
+
+            Playground
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="playground">{{i18n.documentation.graphql-playground}}<a class="anchor"
+              href="#playground" aria-hidden="true">#</a></h4>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-5}}}
+            <a href="{{config.graphql.host}}/playground">{{config.graphql.host}}/playground</a>
+          </p>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-6}}}
+            <a
+              href='{{exploreQuery queries.objectsMedium "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+
+          <hr class="my-4">
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            GRAPHQL QUERIES
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 class="s-title" id="graphQLqueries">{{i18n.documentation.graphql-queries}}<a class="anchor"
+              href="#graphQLqueries" aria-hidden="true">#</a></h3>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-7}}}
+          </p>
+
+          {{!---
+            ###################################################################################
+
+            Introspection
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="introspection">{{i18n.documentation.introspection}}<a class="anchor"
+              href="#introspection" aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Objects
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="objects">{{i18n.documentation.objects}}<a class="anchor" href="#objects"
+              aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Object
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="object">{{i18n.documentation.object}}<a class="anchor" href="#object"
+              aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Constituents
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="constituents">{{i18n.documentation.constituents}}<a class="anchor"
+              href="#constituents" aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Constituent
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="introspection">{{i18n.documentation.constituent}}<a class="anchor" href="#constituent"
+              aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Exhibitions
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="exhibitions">Exhibitions<a class="anchor" href="#exhibitions" aria-hidden="true">#</a>
+          </h4>
+
+          {{!---
+            ###################################################################################
+
+            Exhibition
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="exhibition">Exhibition<a class="anchor" href="#exhibition" aria-hidden="true">#</a>
+          </h4>
+
+          {{!---
+            ###################################################################################
+
+            Areas
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="areas">{{i18n.documentation.areas}}<a class="anchor" href="#areas"
+              aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Categories
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="categories">{{i18n.documentation.categories}}<a class="anchor" href="#categories"
+              aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Archival Levels
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="archivallevels">Archival Levels<a class="anchor" href="#archivallevels"
+              aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Mediums
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="mediums">{{i18n.documentation.mediums}}<a class="anchor" href="#mediums"
+              aria-hidden="true">#</a></h4>
+
+          {{!---
+            ###################################################################################
+
+            Maker Types
+
+            ###################################################################################            
+          ---}}
+
+          <h4 class="s-title" id="makertypes">Maker Types<a class="anchor" href="#makertypes" aria-hidden="true">#</a>
+          </h4>
+
         </div>
       </div>
     </div>
+
   </div>
 
 </body>

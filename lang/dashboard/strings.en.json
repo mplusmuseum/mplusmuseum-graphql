@@ -1,5 +1,6 @@
 {
   "documentation": {
+    "title": "API Documentation",
     "documentation": "GraphQL Documention",
     "intro": "Here you can find out all about how to make GraphQL calls. Remember you will need your developer key which you can always find on the main <a href=\"/developer\">Developers Help</a> page, but it's also here:",
     "note": " <strong>NOTE:</strong> This documentation is very new and evolving but should be enough to get you up and running, we will be expanding it in the near future.",

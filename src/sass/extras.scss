@@ -1,3 +1,11 @@
+body {
+  .docs-content {
+    .query {
+      margin-bottom: 4rem !important;
+    }
+  }
+}
+
 .off-canvas {
   .off-canvas-sidebar {
     width: 18rem !important;
@@ -12,4 +20,21 @@
 
 .mt-2 {
   margin-top: 2rem !important;
+}
+
+.mt-4 {
+  margin-top: 4rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 4rem !important;
+}
+
+.my-4 {
+  margin-top: 4rem !important;
+  margin-bottom: 4rem !important;
+}
+
+.no-bottom {
+  margin-bottom: 0 !important;
 }
