@@ -1,21 +1,6 @@
-body {
-  .docs-content {
-    .query {
-      margin-bottom: 4rem !important;
-    }
-  }
-}
 
-.off-canvas {
-  .off-canvas-sidebar {
-    width: 18rem !important;
-  }
-}
-
-.docs-sidebar {
-  .docs-nav {
-    width: inherit !important;
-  }
+.container {
+  padding-top: 5rem;
 }
 
 .mt-2 {
@@ -37,4 +22,13 @@ body {
 
 .no-bottom {
   margin-bottom: 0 !important;
+}
+
+hr {
+  margin-top: 5rem;
+  margin-bottom: 1.5rem;
+}
+
+.docs-content {
+  padding: 0 4rem 0 20rem !important;
 }

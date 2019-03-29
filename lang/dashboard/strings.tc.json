@@ -1,5 +1,6 @@
 {
   "documentation": {
+    "aboutapi": "",
     "documentation": "GraphQL指南",
     "intro": "你可以在這裏找到所有調用GraphQL的方式。你將需要開發者密鑰進行驗證，密鑰可在<a href=\"/developer\">開發者支援</a>頁面取得，你亦可在這裏獲取：",
     "note": "<strong>備註：</strong>此說明指南為全新撰寫，內容正在不斷完善，但現階段應足夠協助閣下之初步應用。我們將在短期內增加更多內容。",

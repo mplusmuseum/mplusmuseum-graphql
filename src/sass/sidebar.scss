@@ -1,0 +1,58 @@
+@import "./variables";
+
+#sidebar {
+  background-color: $color-accent;
+  width: 15rem;
+  padding-top: 1rem;
+  height: 100%;
+  position: fixed;
+  // display: none;
+
+  .menu {
+    padding: 0.4rem 0;
+  }
+
+  label, a {
+    color: white !important;
+  }
+
+  .accordion .accordion-header {
+    padding: 0;
+  }
+
+  label.content::after{
+    content: "\2304";
+    font-size: 1.4rem;
+  }
+
+  .menu-item {
+    font-size: .8rem;
+  }
+
+  .docs-brand {
+    top: 1.5rem;
+  }
+  
+  .docs-brand .docs-logo img {
+    width: 100%;
+  }
+
+  label.c-hand {
+    font-size: 1rem;
+  }
+
+  .docs-nav {
+    width: inherit;
+    top: 7.5rem;
+  }
+
+  .contacts-links {
+    margin-top: 7rem !important;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    a {
+      padding: 0.2rem 0;
+    }
+  }
+}
