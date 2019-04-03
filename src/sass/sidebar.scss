@@ -11,16 +11,18 @@
     padding: 0.4rem 0;
   }
 
-  a, .label-header {
+  a,
+  .label-header {
     font-size: .7rem;
   }
 
-  a.terms-of-use{
+  a.terms-of-use {
     font-size: 1rem;
     font-weight: lighter;
   }
 
-  label, a {
+  label,
+  a {
     color: white !important;
     font-weight: lighter;
   }
@@ -29,7 +31,7 @@
     padding: 0;
   }
 
-  label.content::after{
+  label.content::after {
     content: "\2304";
     font-size: 1.4rem;
   }
@@ -41,12 +43,12 @@
   .docs-brand {
     top: 1.5rem;
   }
-  
+
   .docs-brand .docs-logo img {
     width: 100%;
   }
 
-  .accordion{
+  .accordion {
     margin-bottom: 0;
   }
 
@@ -66,8 +68,14 @@
     bottom: 1.75rem;
     padding: 0;
     margin: 0;
+
     a {
       padding: 0.2rem 0;
+    }
+
+    img.footer-logo {
+      max-width: 6rem;
+      margin-top: 0.5rem;
     }
   }
 }
