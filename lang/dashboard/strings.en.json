@@ -81,7 +81,6 @@
     "filter-by-colours-4": "Finally you can specify the <code class=\"red\">color_threshold</code> if you want a value different to the default of 75.0. Valid values are floats between 0.0 and 100.0, the higher the threshold the fewer the results.",
     "filter-by-colours-5": "You can also ask for <code>predominant</code> colors in the results, which will return you hex values of the predominant colours. See the example below.",
 
-
     "object-1": "You can get a single object by passing in the <code class=\"red\">id</code> parameter. Here we are showing <em>all</em> the fields possible.",
     "areas-1": "You can fetch all the valid areas which you can then use to filter objects by. For example running the query below will return a handful of areas, which you would then use in an Object query with <code>(area: \"xxxxxxxx\")</code> where \"xxxxxxxx\" is one of the areas returned by this query.",
     "aggs-filters": "Valid filters are <code class=\"red\">page</code>, <code class=\"red\">per_page</code>, <code class=\"red\">lang</code>, <code class=\"red\">sort</code> and <code class=\"red\">sort_field</code>.",

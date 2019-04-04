@@ -1,7 +1,19 @@
 {
+  "general": {
+    "mplusapi": "M+ API"
+  },
   "documentation": {
-    "aboutapi": "",
+    "title": "API Documentation",
+    "aboutapi": "About the M+ API",
+    "background": "Background",
+    "thedata": "The Data",
+    "access": "Access",
     "documentation": "GraphQL指南",
+    "apidocumentation": "GraphQL Documention",
+    "yourapitoken": "Your API Token",
+    "apitoken": "API Token",
+    "endpoint": "The M+ API Endpoint",
+    "graphqlendpoint": "GraphQL API endpoint",
     "intro": "你可以在這裏找到所有調用GraphQL的方式。你將需要開發者密鑰進行驗證，密鑰可在<a href=\"/developer\">開發者支援</a>頁面取得，你亦可在這裏獲取：",
     "note": "<strong>備註：</strong>此說明指南為全新撰寫，內容正在不斷完善，但現階段應足夠協助閣下之初步應用。我們將在短期內增加更多內容。",
     "TOC": "目錄",
@@ -15,15 +27,31 @@
     "sorting": "排序例子",
     "fetchingbyids": "透過ID擷取數據的例子",
     "object": "物件",
+    "randomobjects": "Random Objects",
     "areas": "範圍",
     "categories": "類別",
     "mediums": "媒介",
+    "archivallevels": "Archival Levels",
     "constituents": "構成要素",
     "constituent": "構成要素",
+    "makertypes": "Maker Types",
+    "must-be-logged-in": "You must be logged in to see the documentation",
+    "sigg-online": "Sigg Online",
+    "getting-started": "Getting Started",
+    "object-rights": "Object Rights",
+    "concepts": "Concepts",
+    "exhibitions": "Exhibitions",
+    "exhibition": "Exhibition",
+    "timeline": "Timeline",
+    "terms-of-use": "Terms of Use",
+    "contact": "Contact",
+    "privacy-policy-statement": "Privacy Policy Statement",
     "nesting": "把物件嵌套在構成要素內，以及把構成要素嵌套在物件內",
     "objects-connected-constituent": "尋找與構成要素有關的物件",
     "curl": "cURL命令",
     "nodejs": "Node.js 命令",
+    "belowtoken": "Below is your API developer token, this is the token you'll use to sign all your API calls. Always try to keep your token private and out of public github repositories.",
+    "belowendpoint": "Below is the GraphQL endpoint which you'll be making your API calls against. See below for more details on how to structure calls.",
     "graphql-about-1": "GraphQL是一種數據查詢語言，用以請求從M+數據庫取得資料。一般來說，GraphQL可使用兩種操作類型：查詢（queries）及變更（mutations），可理解為讀取（read）和寫入（write）操作",
     "graphql-about-2": "另一個名為<a href=\"#introspection\">內省</a>（Introspection）的操作，讓你向GraphQL端點進行詢問。",
     "graphql-about-3": "以下是調用GraphQL端點的不同例子。",
@@ -46,6 +74,14 @@
     "object-sort-example": "以下是使用 <code>sortNumber</code>（排序號碼）進行排序的例子",
     "object-by-ids-example": "你亦可以透過輸入一系列 <code class=\"red\">ids</code>，查詢特定的物件。",
     "object-1": "你可以透過輸入<code class=\"red\">id</code>參數，獲得單一物件。以下是所有可顯示的字段。",
+
+    "filter-by-colours": "Filtering/Searching by Color",
+    "filter-by-colours-1": "If you wish to search for objects by colour, you can do that with the following filters: <code class=\"red\">color</code>, <code class=\"red\">color_threshold</code> &amp; <code class=\"red\">color_source</code>.",
+    "filter-by-colours-2": "There are two sources: <code>google</code> and <code>cloudinary</code>, the default is google and these are the following valid colours.",
+    "filter-by-colours-3": "Cloudinary decided that the following were <em>slightly</em> more useful, if you do too then specify <code>cloudinary</code> as your <code class=\"red\">color_source</code>.",
+    "filter-by-colours-4": "Finally you can specify the <code class=\"red\">color_threshold</code> if you want a value different to the default of 75.0. Valid values are floats between 0.0 and 100.0, the higher the threshold the fewer the results.",
+    "filter-by-colours-5": "You can also ask for <code>predominant</code> colors in the results, which will return you hex values of the predominant colours. See the example below.",
+
     "areas-1": "你可以擷取所有有效範圍，用以篩選物件。舉個例說，運行以下查詢的話，便會回傳數個範圍。接著，你可以採用(<code>area: \"xxxxxxxx\")</code>，即以範圍查詢物件，當中的 \"xxxxxxxx\" 就是上述查詢回傳的範圍之一。",
     "aggs-filters": "有效的篩選器為 <code class=\"red\">per_page</code>（每頁結果）、<code class=\"red\">lang</code>（語言）、<code class=\"red\">sort</code>（排序）和 <code class=\"red\">sort_field</code>（字段排序）。",
     "aggs-sort": "<code class=\"red\">sort_field</code>（字段排序）的有效值為 <code>title</code>（標題）和 <code>count</code>（數目）。<code>sort</code>（排序）的有效值為 <code>asc</code>（遞增）和 <code>desc</code>（遞減）。",
@@ -61,14 +97,43 @@
     "constituents-more-info": "以下我們稍為增加查詢資訊量，請留意我們可以用<code class=\"red\">per_page</code>（每頁結果）篩選，以限制查詢結果的數目",
     "constituents-sorting": "以下是使用<code>alphaSortName</code>（字母排序名稱）進行排序分類的例子。",
     "constituents-by-ids-example": "你亦可以透過輸入一系列 <code class=\"red\">ids</code>，查詢特定的構成要素。",
+
+    "constituents-by-roles": "Fetching by roles example",
+    "constituents-by-roles-1": "If you wanted to find all the \"Artists\" constituents ordered by the ones who had the most objects in the <em>whole</em> system, then you can do it with the following query.",
+
     "constituent-1": "你可以透過輸入<code class=\"red\">id</code>參數，獲得單一構成要素。以下所有可顯示的字段。",
     "nesting-1": "當你搜尋物件時，可以從結果中嵌套有限的構成要素。如果你請求物件的話，可以透過以下查詢獲得構成要素。",
     "nesting-2": "若你請求單一物件，你可獲取稍多有關構成要素的資訊，例子如下：",
     "nesting-3": "超過首兩層後，你不能繼續嵌套物件和構成要素，因為兩者只會不斷互相嵌套",
     "nesting-4": "你亦可在物件內嵌套構成要素，但同樣地，回傳的資訊有限，亦只限於兩層。",
     "connected-1": "要尋找與構成要素有關聯的物件，有兩個方法。如果想尋找所有由某位藝術家創造的物件，可以運行查詢，找出藝術家，亦在該項查詢內請求與該藝術家有關的物件，例子如下：",
-    "connected-2": "你亦可以構成要素ID篩選，用以搜尋物件。第二個方式的好處是，你可以進一步篩選結果。以下的查詢顯示一位用戶以某種媒介編整的全部物件。"
+    "connected-2": "你亦可以構成要素ID篩選，用以搜尋物件。第二個方式的好處是，你可以進一步篩選結果。以下的查詢顯示一位用戶以某種媒介編整的全部物件。",
+
+    "exhibitions-1": "Exhibitions work the same way, you can get all exhibitions...",
+    "exhibitions-2": "Again, you can do this via the objects endpoint. Here's a more fleshed out example for all all objects in the Sigg Online exhibition with the category of \"Painting\" shown 10 per page.",
+    "exhibitions-3": "Which should give you everything you need to string together showing objects for the exhibition. You will have to do some filtering to match the labels and bios with the exhibition using the \"purpose\" label.",
+    "exhibition-1": "Or you can just get the one we are interested in, <strong>Siggs Online</strong> is Exhibition <code>95</code> this is a minimal example...",
+
+    "makertypes-1": "You can get a list of all the \"Types\" of constituent using the following query. Note, this allows you to filter constituents by a single type"
+
   },
+
+  "sigg": {
+    "getstarted": "How to get started with Exhibitions and so on",
+    "getstarted-1": "If you are trying to work with Sigg Online data, you have a few more graphQL queries at your disposal. You also have concepts which are Artists and Artist Groups, and Exhibitions.",
+    "objectrights": "As a vendor you have access to an extra field on the object that tells you the rights for displaying that object based on who you are. In the future you access to the objects will be filtered by the server, but for now you will have to check the rights here.",
+    "concepts-1": "To get all concepts you used a query such as",
+    "concepts-2": "And to fetch a single concept you can get it by id. Id 5 is that of the \"Cultural Revolution Art\" Artists movement",
+    "concepts-3": "As usual you can get all objects for a concept two ways, you can ask the concept endpoint to incliude object data, and you can pass in the normal filters which will pass through to effect the objects, like this...",
+    "concepts-4": "...or you can ask the objects endpoint to filter on the concept...",
+    "exhibitions-1": "Exhibitions work the same way, you can get all exhibitions...",
+    "exhibitions-2": "Or you can just get the one we are interested in, <strong>Siggs Online</strong> is Exhibition <code>95</code> this is a minimal example...",
+    "exhibitions-3": "Again, you can do this via the objects endpoint. Here's a more fleshed out example for all all objects in the Sigg Online exhibition with the category of \"Painting\" shown 10 per page.",
+    "exhibitions-4": "Which should give you everything you need to string together showing objects for the exhibition. You will have to do some filtering to match the labels and bios with the exhibition using the \"purpose\" label.",
+    "timeline-1": "There is a single call you can make to fetch the timeline related to Sigg. You can filter the language by using the <code class=\"red\">lang</code> parameter, set to either <code>en</code> or <code>zh-hant</code>. The call below includes all the fields, there are no other filters or parameters.",
+    "evolving": "The graphQL endpoints and this documentation will continue to evolve over the next few weeks, hang tight!"
+  },
+
   "aboutapi": {
     "body": "<h3 class=\"title mt-2\">M+公共應用程式介面簡介</h3><h3 class=\"s-title\" id=\"background\">背景<a class=\"anchor\" href=\"#background\" aria-hidden=\"true\">#</a></h3><p>M+積極奉行「開放取用」原則，盡量發佈更多藏品元數據。M+作為公共機構，以將博物館的知識發放至公共領域為己任。更多有關本館「開放取用」計劃的進程，可點擊<a href=\"https://medium.com/mpluslabs/towards-open-access-at-m-9dcc0ae5dce7\">這裏</a>和<a href=\"https://medium.com/mpluslabs/open-access-ahead-8dfe9984344d\">這裏</a>參閱。</p><p>我們已在<a href=\"http://github.com/mplusmuseum/collection-data\">這裏</a>發佈開放數據集，但亦會透過公共應用程式介面分享數據，以方便公眾獲取這些數據，並鼓勵不同人士發揮創意。M+應用程式介面可供任何人士使用，無論是開發者、設計師、藝術家或創作者，只要是有興趣透過數據說故事，都歡迎使用。 </p><h3 class=\"s-title\" id=\"thedata\">數據<a class=\"anchor\" href=\"#thedata\" aria-hidden=\"true\">#</a></h3><p>在此應用程式介面發放的數據，都是M+長時間發展和累積的成果。這些數據由策展人、藏品管理專員、研究員，以及與M+合作的學者創建，用以描述、表達和詮釋各項M+藏品。數據以CC0開放數據的形式在此應用程式介面上發佈，讓公眾運用於其網頁、應用程式和研究項目上。 </p><p>這些數據是「按其現況」發放予研究之用，在使用時應自行考量並自負風險。我們持續記錄博物館藏品的情況和最新資料，並不斷研究及擴充館藏數據，定期更新和修訂數據集。M+不會就這些數據作出任何陳述或保證。</p> <h3 class=\"s-title\" id=\"access\">技術檔案和使用權<a class=\"anchor\" href=\"#access\" aria-hidden=\"true\">#</a></h3><p>進入此應用程式介面前，必須到<a href=\"http://api.mplus.org.hk/login\">這裏</a>註冊帳戶。註冊時，閣下將獲得應用程式介面密鑰，以作調用應用程式介面之用。</p><p>請到<a href=\"https://api.mplus.org.hk/tc/documentation/developer\">這裏</a>參閱技術檔案，了解此應用程式介面的應用細節。</p>"
   },
