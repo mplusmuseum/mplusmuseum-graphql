@@ -77,6 +77,11 @@
       padding: 0.2rem 0;
     }
 
+    a:hover {
+      background: inherit;
+      text-decoration: underline;
+    }
+
     img.footer-logo {
       max-width: 6rem;
       margin-top: 0.5rem;
