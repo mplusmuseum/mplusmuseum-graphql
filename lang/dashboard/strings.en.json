@@ -1,6 +1,8 @@
 {
   "general": {
-    "mplusapi": "M+ API"
+    "mplusapi": "M+ API",
+    "login": "Logout",
+    "logout": "Log In/Sign Up"
   },
   "documentation": {
     "title": "API Documentation",
