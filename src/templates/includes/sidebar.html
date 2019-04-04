@@ -9,20 +9,21 @@
   <div class="docs-nav">
     <div class="accordion-container">
       <div class="accordion">
-        <label class="accordion-header label-header">M+ API</label>
+        <label class="accordion-header label-header">{{i18n.general.mplusapi}}</label>
       </div>
 
       <div class="accordion">
         <input id="accordion-aboutapi" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "aboutapi"}}checked=checked{{/ifEqual}}>
-        <label class="accordion-header content c-hand" for="accordion-aboutapi">About the M+ API</label>
+        <label class="accordion-header content c-hand" for="accordion-aboutapi">{{i18n.documentation.aboutapi}}</label>
         <div class="accordion-body">
           <ul class="menu menu-nav">
-            <li class="menu-item"><a href="/{{lang}}/documentation/about#background">Background</a>
+            <li class="menu-item"><a
+                href="/{{lang}}/documentation/about#background">{{i18n.documentation.background}}</a>
             </li>
-            <li class="menu-item"><a href="/{{lang}}/documentation/about#thedata">The Data</a>
+            <li class="menu-item"><a href="/{{lang}}/documentation/about#thedata">{{i18n.documentation.thedata}}</a>
             </li>
-            <li class="menu-item"><a href="/{{lang}}/documentation/about#access">Access</a>
+            <li class="menu-item"><a href="/{{lang}}/documentation/about#access">{{i18n.documentation.access}}</a>
             </li>
           </ul>
         </div>
@@ -30,38 +31,49 @@
       <div class="accordion">
         <input id="accordion-documentation" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "documentation"}}checked=checked{{/ifEqual}}>
-        <label class="accordion-header content c-hand" for="accordion-documentation">API Documentation</label>
+        <label class="accordion-header content c-hand"
+          for="accordion-documentation">{{i18n.documentation.apidocumentation}}</label>
         <div class="accordion-body">
           <ul class="menu menu-nav">
             {{#if user}}
-              <li class="menu-item"><a href="/{{lang}}/documentation#apitoken">Your API Token</a></li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#endpoint">The M+ API Endpoint</a></li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#graphQL">About GraphQL</a>
+              <li class="menu-item"><a href="/{{lang}}/documentation#apitoken">{{i18n.documentation.apitoken}}</a></li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#endpoint">{{i18n.documentation.endpoint}}</a></li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#graphQL">{{i18n.documentation.about-graphql}}</a>
                 <ul class="menu menu-nav">
-                  <li class="menu-item"><a href="/{{lang}}/documentation#communicatingwithgraphql">Communicating with
-                      GraphQL</a>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#communicatingwithgraphql">{{i18n.documentation.communicating-with-graphql}}</a>
                   </li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#playground">GraphQL Playground</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#playground">{{i18n.documentation.graphql-playground}}</a></li>
                 </ul>
               </li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#graphQLqueries">GraphQL Queries</a>
+              <li class="menu-item"><a
+                  href="/{{lang}}/documentation#graphQLqueries">{{i18n.documentation.graphql-queries}}</a>
                 <ul class="menu menu-nav">
-                  <li class="menu-item"><a href="/{{lang}}/documentation#introspection">Introspection</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#objects">Objects</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#object">Object</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#constituents">Constituents</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#constituent">Constituent</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#introspection">{{i18n.documentation.introspection}}</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#objects">{{i18n.documentation.objects}}</a>
+                  </li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#object">{{i18n.documentation.object}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#constituents">{{i18n.documentation.constituents}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#constituent">{{i18n.documentation.constituent}}</a></li>
                   <li class="menu-item"><a href="/{{lang}}/documentation#exhibitions">Exhibitions</a></li>
                   <li class="menu-item"><a href="/{{lang}}/documentation#exhibition">Exhibition</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#area">Areas</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#categories">Categories</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#archivallevels">Archival Levels</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#mediums">Mediums</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#makertypes">Maker Types</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#area">{{i18n.documentation.areas}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#categories">{{i18n.documentation.categories}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#archivallevels">{{i18n.documentation.archivallevels}}</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#mediums">{{i18n.documentation.mediums}}</a>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#makertypes">{{i18n.documentation.makertypes}}</a></li>
                 </ul>
               </li>
             {{else}}
-              <li class="menu-item"><a href="/login">You must be logged in to see the documentation</a>
+              <li class="menu-item"><a href="/login">{{i18n.documentation.must-be-logged-in}}</a>
               </li>
             {{/if}}
           </ul>
@@ -71,16 +83,21 @@
         <div class="accordion">
           <input id="accordion-siggonline" type="checkbox" name="docs-accordion-checkbox" hidden=""
             {{#ifEqual navOpen "siggonline"}}checked=checked{{/ifEqual}}>
-          <label class="accordion-header c-hand" for="accordion-siggonline">Sigg Online</label>
+          <label class="accordion-header c-hand" for="accordion-siggonline">{{i18n.documentation.sigg-online}}</label>
           <div class="accordion-body">
             <ul class="menu menu-nav">
-              <li class="menu-item"><a href="/{{lang}}/documentation#sigg-graphQL">Getting Started</a>
+              <li class="menu-item"><a
+                  href="/{{lang}}/documentation#sigg-graphQL">{{i18n.documentation.getting-started}}</a>
                 <ul class="menu menu-nav">
-                  <li class="menu-item"><a href="/{{lang}}/documentation#sigg-objectrights">Object Rights</a>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#sigg-objectrights">{{i18n.documentation.object-rights}}</a>
                   </li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#sigg-concepts">Concepts</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#sigg-exhibitions">Exhibitions</a></li>
-                  <li class="menu-item"><a href="/{{lang}}/documentation#sigg-timeline">Timeline</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#sigg-concepts">{{i18n.documentation.concepts}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#sigg-exhibitions">{{i18n.documentation.exhibitions}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#sigg-timeline">{{i18n.documentation.timeline}}</a></li>
                 </ul>
               </li>
             </ul>
@@ -91,16 +108,13 @@
       <div class="accordion">
         <input id="accordion-elements" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "termsofuse"}}checked=checked{{/ifEqual}}>
-        <label class="accordion-header c-hand"><a class="terms-of-use" href="/en/documentation/termsofuse">Terms of
-            Use</a></label>
+        <label class="accordion-header c-hand"><a class="terms-of-use"
+            href="/en/documentation/termsofuse">{{i18n.documentation.terms-of-use}}</a></label>
       </div>
     </div>
 
     <div class="contacts-links">
       <ul class="menu menu-nav">
-        <li class="menu-item"><a href="#">Contact</a></li>
-        <li class="menu-item"><a href="#">Privacy Policy Statement</a></li>
-        <li class="menu-item"><a href="#">mplus.org.hk</a></li>
         <li class="menu-item"><a
             href="https://stories.mplus.org.hk/en/contact-m-stories/">{{i18n.documentation.contact}}</a></li>
         <li class="menu-item"><a
