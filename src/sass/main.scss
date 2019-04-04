@@ -8,22 +8,32 @@
 @import "./navbar";
 
 @font-face {
-  font-family: "Agipo";
-  src:
-  url("fonts/Agipo-Regular.ttf") format("ttf");
-  font-weight:600;
-  font-style:bold;
-}
-
-
-body {
-  color: black;
-  font-size: 16px;
-  font-family: 'Agipo', Arial, sans-serif;
+  font-family: 'Agipo';
+  src: url('/fonts/agipo-regular-webfont.woff2') format('woff2'),
+    url('/fonts/agipo-regular-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
-.title {
-  font-weight: 900;
+@font-face {
+  font-family: 'AgipoLight';
+  src: url('/fonts/agipolight-regular-webfont.woff2') format('woff2'),
+    url('/fonts/agipolight-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  color: black;
+  font-size: 16px;
+  font-family: 'AgipoLight', Arial, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.title,
+.s-title,
+label.accordion-header {
+  font-family: 'Agipo', Arial, sans-serif;
+  font-weight: 600;
 }

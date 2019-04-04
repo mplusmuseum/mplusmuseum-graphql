@@ -91,6 +91,9 @@ const watchStatic = () => {
       '**/*.jpeg',
       '**/*.xml',
       '**/*.ico',
+      '**/*.ttf',
+      '**/*.woff',
+      '**/*.woff2',
       '**/*.json'
     ]
   })
