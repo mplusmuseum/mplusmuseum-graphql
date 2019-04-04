@@ -30,15 +30,15 @@
             ###################################################################################            
           ---}}
 
-          <h3 class="s-title" id="apitoken">Your API Token<a class="anchor" href="#apitoken" aria-hidden="true">#</a>
+          <h3 class="s-title" id="apitoken">{{i18n.documentation.yourapitoken}}<a class="anchor" href="#apitoken"
+              aria-hidden="true">#</a>
           </h3>
           <p>
-            Below is your API developer token, this is the token you'll use to sign all your API calls. Always try to
-            keep your token private and out of public github repositories.
+            {{i18n.documentation.belowtoken}}
           </p>
           <div class="card">
             <div class="card-header">
-              <div class="card-title h1 text-center">API token</div>
+              <div class="card-title h1 text-center">{{i18n.documentation.apitoken}}</div>
               <div class="card-body h4 text-center">{{user.apitoken}}</div>
             </div>
           </div>
@@ -58,16 +58,15 @@
             ###################################################################################            
           ---}}
 
-          <h3 class="s-title" id="endpoint">The M+ API Endpoint<a class="anchor" href="#endpoint"
+          <h3 class="s-title" id="endpoint">{{i18n.documentation.endpoint}}<a class="anchor" href="#endpoint"
               aria-hidden="true">#</a></h3>
 
           <p>
-            Below is the GraphQL endpoint which you'll be making your API calls against. See below for more details on
-            how to structure calls.
+            {{i18n.documentation.belowendpoint}}
           </p>
           <div class="card">
             <div class="card-header">
-              <div class="card-title h1 text-center">GraphQL API endpoint</div>
+              <div class="card-title h1 text-center">{{i18n.documentation.graphqlendpoint}}</div>
               <div class="card-body h4 text-center"><code>{{config.graphql.host}}/graphql</code></div>
             </div>
           </div>
@@ -327,20 +326,16 @@
           </pre>
 
 
-          <h5 class="s-title">Filtering/Searching by Color</h5>
+          <h5 class="s-title">{{i18n.documentation.filter-by-colours}}</h5>
 
           <p>
-            If you wish to search for objects by colour, you can do that with the following filters:
-            <code class="red">color</code>,
-            <code class="red">color_threshold</code> &amp;
-            <code class="red">color_source</code>,
+            {{{i18n.documentation.filter-by-colours-1}}}
           </p>
 
           <p>
-            There are two sources:
-            <code>google</code> and
-            <code>cloudinary</code>, the default is google and these are the following valid colours.
+            {{{i18n.documentation.filter-by-colours-2}}}
           </p>
+
           <p>
             <code>gray</code>,
             <code>black</code>,
@@ -357,11 +352,9 @@
           </p>
 
           <p>
-            Cloudinary decided that the following were
-            <em>slightly</em> more useful, if you do too then specify
-            <code>cloudinary</code> as your
-            <code class="red">color_source</code>.
+            {{{i18n.documentation.filter-by-colours-3}}}
           </p>
+
           <p>
             <code>gray</code>,
             <code>black</code>,
@@ -381,24 +374,16 @@
             <code>cyan</code>.
           </p>
 
-          <p>Finally you can specify the
-            <code class="red">color_threshold</code> if you want a value different to the default of 75.0. Valid values
-            are
-            floats between 0.0
-            and 100.0, the higher the threshold the fewer the results.
+          <p>
+            {{{i18n.documentation.filter-by-colours-4}}}
           </p>
           <p>
-            You can also ask for
-            <code>predominant</code> colors in the results, which will return you hex values of the predominant colours
-            :)
-            See the
-            example below.
+            {{{i18n.documentation.filter-by-colours-5}}}
           </p>
 
           <p class="runinexplore">
             <a
-              href='{{exploreQuery queries.objectsColor "(color: \"orange\", color_threshold: 70.0, color_source: \"google\")" config.graphql.host user.apitoken}}'>Run
-              in the playground</a>
+              href='{{exploreQuery queries.objectsColor "(color: \"orange\", color_threshold: 70.0, color_source: \"google\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
             class="query language-graphql">{{{graphQLQuery queries.objectsColor '(color: "orange", color_threshold: 70.0, color_source: "google")' user.apitoken}}}
@@ -564,12 +549,10 @@
             class="query language-javascript">{{{nodeQuery queries.constituents '(ids:[238, 382, 459, 608], lang: "zh-hant")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5 class="s-title">Fetching by roles example</h5>
+          <h5 class="s-title">{{i18n.documentation.constituents-by-roles}}</h5>
 
           <p>
-            If you wanted to find all the "Artists" constituents ordered by the ones who had the most objects in the
-            <em>whole</em>
-            system, then you can do it with the following query.
+            {{{i18n.documentation.constituents-by-roles-1}}}
           </p>
 
           <p class="runinexplore no-bottom">
@@ -686,11 +669,12 @@
             ###################################################################################            
           ---}}
 
-          <h4 class="s-title" id="exhibitions">Exhibitions<a class="anchor" href="#exhibitions" aria-hidden="true">#</a>
+          <h4 class="s-title" id="exhibitions">{{i18n.documentation.exhibitions}}<a class="anchor" href="#exhibitions"
+              aria-hidden="true">#</a>
           </h4>
 
           <p>
-            Exhibitions work the same way, you can get all exhibitions...
+            {{i18n.documentation.exhibitions-1}}
           </p>
           <p class="runinexplore no-bottom">
             <a
@@ -699,10 +683,7 @@
           <pre class="query language-graphql">{{{graphQLQuery queries.exhibitions ''}}}</pre>
 
           <p>
-            Again, you can do this via the objects endpoint. Here's a more fleshed out example for all all objects in
-            the
-            Sigg Online exhibition
-            with the category of "Painting" shown 10 per page.
+            {{i18n.documentation.exhibitions-2}}
           </p>
           <p class="runinexplore no-bottom">
             <a
@@ -713,10 +694,7 @@
           </pre>
 
           <p>
-            Which should give you everything you need to string together showing objects for the exhibition. You will
-            have
-            to do some filtering to
-            match the labels and bios with the exhibition using the "purpose" label.
+            {{i18n.documentation.exhibitions-3}}
           </p>
 
           {{!---
@@ -727,13 +705,12 @@
             ###################################################################################            
           ---}}
 
-          <h4 class="s-title" id="exhibition">Exhibition<a class="anchor" href="#exhibition" aria-hidden="true">#</a>
+          <h4 class="s-title" id="exhibition">{{i18n.documentation.exhibition}}<a class="anchor" href="#exhibition"
+              aria-hidden="true">#</a>
           </h4>
 
           <p>
-            Or you can just get the one we are interested in, <strong>Siggs Online</strong> is Exhibition
-            <code>95</code>
-            this is a minimal example...
+            {{{i18n.documentation.exhibition-1}}}
           </p>
           <p class="runinexplore no-bottom">
             <a
@@ -852,8 +829,8 @@
             ###################################################################################            
           ---}}
 
-          <h4 class="s-title" id="archivallevels">Archival Levels<a class="anchor" href="#archivallevels"
-              aria-hidden="true">#</a></h4>
+          <h4 class="s-title" id="archivallevels">{{i18n.documentation.archivallevels}}<a class="anchor"
+              href="#archivallevels" aria-hidden="true">#</a></h4>
 
           <p>
             {{{i18n.documentation.archivalLevels-1}}}
@@ -946,13 +923,12 @@
             ###################################################################################            
           ---}}
 
-          <h4 class="s-title" id="makertypes">Maker Types<a class="anchor" href="#makertypes" aria-hidden="true">#</a>
+          <h4 class="s-title" id="makertypes">{{i18n.documentation.makertypes}}<a class="anchor" href="#makertypes"
+              aria-hidden="true">#</a>
           </h4>
 
           <p>
-            You can get a list of all the "Types" of constituent using the following query. Note, this allows you to
-            filter
-            constituents by a single type
+            {{i18n.documentation.makertypes-1}}
           </p>
 
           <p class="runinexplore no-bottom">
@@ -986,7 +962,7 @@
           ---}}
 
           {{#if user.roles.isVendor}}
-            <h3 class="s-title" id="apitoken">Sigg Online</h3>
+            <h3 class="s-title" id="apitoken">{{i18n.documentation.sigg-online}}</h3>
 
             {{!---
               ###################################################################################
@@ -996,15 +972,12 @@
               ###################################################################################            
             ---}}
 
-            <h4 class="s-title" id="sigg-graphQL">How to get started with Exhibitions and so on<a class="anchor"
+            <h4 class="s-title" id="sigg-graphQL">{{i18n.documentation.getstarted}}<a class="anchor"
                 href="#sigg-graphQL" aria-hidden="true">#</a>
             </h4>
 
             <p>
-              If you are trying to work with Sigg Online data, you have a few more graphQL queries at your disposal. You
-              also
-              have
-              concepts which are Artists and Artist Groups, and Exhibitions.
+              {{i18n.sigg.getstarted-1}}
             </p>
 
             {{!---
@@ -1015,14 +988,13 @@
               ###################################################################################            
             ---}}
 
-            <h4 class="s-title" id="sigg-objectrights">Object Rights<a class="anchor" href="#sigg-objectrights"
-                aria-hidden="true">#</a>
+            <h4 class="s-title" id="sigg-objectrights">{{i18n.documentation.object-rights}}<a class="anchor"
+                href="#sigg-objectrights" aria-hidden="true">#</a>
             </h4>
 
-            <p>As a vendor you have access to an extra field on the object that tells you the rights for displaying that
-              object based on who you are. In the future you access to the objects will be filtered by the server, but
-              for
-              now you will have to check the rights here.</p>
+            <p>
+              {{i18n.sigg.objectrights}}
+            </p>
 
             <p class="runinexplore no-bottom">
               <a
@@ -1038,11 +1010,11 @@
               ###################################################################################            
             ---}}
 
-            <h4 class="s-title" id="sigg-concepts">Concepts<a class="anchor" href="#sigg-concepts"
-                aria-hidden="true">#</a>
+            <h4 class="s-title" id="sigg-concepts">{{i18n.documentation.concepts}}<a class="anchor"
+                href="#sigg-concepts" aria-hidden="true">#</a>
             </h4>
 
-            <p>To get all concepts you used a query such as</p>
+            <p>{{i18n.sigg.concepts-1}}</p>
 
             <p class="runinexplore no-bottom">
               <a
@@ -1050,16 +1022,7 @@
             </p>
             <pre class="query language-graphql">{{{graphQLQuery queries.concepts ''}}}</pre>
 
-            <p>To get all concepts you used a query such as</p>
-
-            <p class="runinexplore no-bottom">
-              <a
-                href='{{exploreQuery queries.concepts "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
-            </p>
-            <pre class="query language-graphql">{{{graphQLQuery queries.concepts ''}}}</pre>
-
-            <p>And to fetch a single concept you can get it by id. Id 5 is that of the "Cultural Revolution Art" Artists
-              movement</p>
+            <p>{{i18n.sigg.concepts-2}}</p>
 
             <p class="runinexplore no-bottom">
               <a
@@ -1068,9 +1031,7 @@
             <pre class="query language-graphql">{{{graphQLQuery queries.conceptNoObjects '(id: 5)'}}}</pre>
 
             <p>
-              As usual you can get all objects for a concept two ways, you can ask the concept endpoint to incliude
-              object
-              data, and you can pass in the normal filters which will pass through to effect the objects, like this...
+              {{i18n.sigg.concepts-3}}
             </p>
 
             <p class="runinexplore no-bottom">
@@ -1082,7 +1043,7 @@
             </pre>
 
             <p>
-              ...or you can ask the objects endpoint to filter on the concept...
+              {{i18n.sigg.concepts-4}}
             </p>
 
             <p class="runinexplore no-bottom">
@@ -1100,12 +1061,12 @@
   
               ###################################################################################            
             ---}}
-            <h4 class="s-title" id="sigg-exhibitions">Exhibitions<a class="anchor" href="#sigg-exhibitions"
-                aria-hidden="true">#</a>
+            <h4 class="s-title" id="sigg-exhibitions">{{i18n.documentation.exhibitions}}<a class="anchor"
+                href="#sigg-exhibitions" aria-hidden="true">#</a>
             </h4>
 
             <p>
-              Exhibitions work the same way, you can get all exhibitions...
+              {{i18n.sigg.exhibitions-1}}
             </p>
             <p class="runinexplore no-bottom">
               <a
@@ -1114,9 +1075,7 @@
             <pre class="query language-graphql">{{{graphQLQuery queries.exhibitions ''}}}</pre>
 
             <p>
-              Or you can just get the one we are interested in, <strong>Siggs Online</strong> is Exhibition
-              <code>95</code>
-              this is a minimal example...
+              {{{i18n.sigg.exhibitions-2}}}
             </p>
             <p class="runinexplore no-bottom">
               <a
@@ -1125,10 +1084,7 @@
             <pre class="query language-graphql">{{{graphQLQuery queries.exhibition '(id:95)'}}}</pre>
 
             <p>
-              Again, you can do this via the objects endpoint. Here's a more fleshed out example for all all objects in
-              the
-              Sigg Online exhibition
-              with the category of "Painting" shown 10 per page.
+              {{i18n.sigg.exhibitions-3}}
             </p>
             <p class="runinexplore no-bottom">
               <a
@@ -1139,10 +1095,7 @@
             </pre>
 
             <p>
-              Which should give you everything you need to string together showing objects for the exhibition. You will
-              have
-              to do some filtering to
-              match the labels and bios with the exhibition using the "purpose" label.
+              {{i18n.sigg.exhibitions-4}}
             </p>
 
             {{!---
@@ -1152,16 +1105,12 @@
   
               ###################################################################################            
             ---}}
-            <h4 class="s-title" id="sigg-timeline">Timeline<a class="anchor" href="#sigg-timeline"
-                aria-hidden="true">#</a>
+            <h4 class="s-title" id="sigg-timeline">{{i18n.documentation.timeline}}<a class="anchor"
+                href="#sigg-timeline" aria-hidden="true">#</a>
             </h4>
 
             <p>
-              There is a single call you can make to fetch the timeline related to Sigg. You can filter the language by
-              using
-              the <code class="red">lang</code> parameter, set to either <code>en</code> or <code>zh-hant</code>. The
-              call
-              below includes all the fields, there are no other filters or parameters.
+              {{{i18n.sigg.timeline-1}}}
             </p>
             <p class="runinexplore no-bottom">
               <a
@@ -1170,7 +1119,7 @@
             <pre class="query language-graphql">{{{graphQLQuery queries.timeline '(lang:"en")'}}}</pre>
 
             <p>
-              The graphQL endpoints and this documentation will continue to evolve over the next few weeks, hang tight!
+              {{i18n.sigg.evolving}}
             </p>
           {{/if}}
         </div>

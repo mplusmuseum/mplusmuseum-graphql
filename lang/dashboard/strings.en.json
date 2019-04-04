@@ -10,8 +10,10 @@
     "access": "Access",
     "documentation": "GraphQL Documention",
     "apidocumentation": "GraphQL Documention",
-    "apitoken": "Your API Token",
+    "yourapitoken": "Your API Token",
+    "apitoken": "API Token",
     "endpoint": "The M+ API Endpoint",
+    "graphqlendpoint": "GraphQL API endpoint",
     "intro": "Here you can find out all about how to make GraphQL calls. Remember you will need your developer key which you can always find on the main <a href=\"/developer\">Developers Help</a> page, but it's also here:",
     "note": " <strong>NOTE:</strong> This documentation is very new and evolving but should be enough to get you up and running, we will be expanding it in the near future.",
     "TOC": "Table of Contents",
@@ -39,6 +41,7 @@
     "object-rights": "Object Rights",
     "concepts": "Concepts",
     "exhibitions": "Exhibitions",
+    "exhibition": "Exhibition",
     "timeline": "Timeline",
     "terms-of-use": "Terms of Use",
     "contact": "Contact",
@@ -47,6 +50,8 @@
     "objects-connected-constituent": "Finding objects connected to a constituent",
     "curl": "cURL",
     "nodejs": "Node.js",
+    "belowtoken": "Below is your API developer token, this is the token you'll use to sign all your API calls. Always try to keep your token private and out of public github repositories.",
+    "belowendpoint": "Below is the GraphQL endpoint which you'll be making your API calls against. See below for more details on how to structure calls.",
     "graphql-about-1": "GraphQL is a data query language you'll use to request information from the M+ data store. Traditionally GraphQL allows two types of operations, <em>queries</em> and <em>mutations</em> these can be thought of as <em>read</em> and <em>write</em> operations.",
     "graphql-about-2": "As well as one more operation called <em><a href=\"#introspection\">introspection</a></em>, which allows you to ask the GraphQL endpoint about itself.",
     "graphql-about-3": "Below you will find examples of various calls to can make to the GraphQL endpoint.",
@@ -68,6 +73,15 @@
     "object-pagination": "Here we are asking for slightly more information, note how we can use the <code class=\"red\">per_page</code> filter to limit the number of results.",
     "object-sort-example": "Here is an example of sorting by <code>sortNumber</code>.",
     "object-by-ids-example": "You can also ask for specific objects by passing in an array of <code class=\"red\">ids</code>.",
+
+    "filter-by-colours": "Filtering/Searching by Color",
+    "filter-by-colours-1": "If you wish to search for objects by colour, you can do that with the following filters: <code class=\"red\">color</code>, <code class=\"red\">color_threshold</code> &amp; <code class=\"red\">color_source</code>.",
+    "filter-by-colours-2": "There are two sources: <code>google</code> and <code>cloudinary</code>, the default is google and these are the following valid colours.",
+    "filter-by-colours-3": "Cloudinary decided that the following were <em>slightly</em> more useful, if you do too then specify <code>cloudinary</code> as your <code class=\"red\">color_source</code>.",
+    "filter-by-colours-4": "Finally you can specify the <code class=\"red\">color_threshold</code> if you want a value different to the default of 75.0. Valid values are floats between 0.0 and 100.0, the higher the threshold the fewer the results.",
+    "filter-by-colours-5": "You can also ask for <code>predominant</code> colors in the results, which will return you hex values of the predominant colours. See the example below.",
+
+
     "object-1": "You can get a single object by passing in the <code class=\"red\">id</code> parameter. Here we are showing <em>all</em> the fields possible.",
     "areas-1": "You can fetch all the valid areas which you can then use to filter objects by. For example running the query below will return a handful of areas, which you would then use in an Object query with <code>(area: \"xxxxxxxx\")</code> where \"xxxxxxxx\" is one of the areas returned by this query.",
     "aggs-filters": "Valid filters are <code class=\"red\">page</code>, <code class=\"red\">per_page</code>, <code class=\"red\">lang</code>, <code class=\"red\">sort</code> and <code class=\"red\">sort_field</code>.",
@@ -84,14 +98,43 @@
     "constituents-more-info": "Here we are asking for slightly more information, note how we can use the <code class=\"red\">per_page</code> filter to limit the number of results.",
     "constituents-sorting": "Here is an example of sorting by <code>alphaSortName</code>.",
     "constituents-by-ids-example": "You can also ask for specific constituents by passing in an array of <code class=\"red\">ids</code>.",
+
+    "constituents-by-roles": "Fetching by roles example",
+    "constituents-by-roles-1": "If you wanted to find all the \"Artists\" constituents ordered by the ones who had the most objects in the <em>whole</em> system, then you can do it with the following query.",
+
     "constituent-1": "You can get a single constituent by passing in the <code class=\"red\">id</code> parameter. Here we are showing <em>all</em> the fields possible.",
     "nesting-1": "When you are searching for objects you can nest a limited version of constituents in the results. If you are requesting <strong>Objects</strong> you can get the constituents with the following query.",
     "nesting-2": "If you are asking for a single Object then you can get a bit more information about the constituents, see the example below.",
     "nesting-3": "You cannot keep nesting objects and constituents beyond the first two levels, because they would just keep including each other forever.",
     "nesting-4": "You can also next constituents inside objects, but again with limited information returned and only down two levels.",
     "connected-1": "There are two ways to find objects connected to a constituent. If we wanted to find all the objects created by an artist we can run a query to find that artists and request the objects connected to the within the query, as shown below.",
-    "connected-2": "You can also do a search on objects using the constituent ID as a filter. The advantage of the second way allows you to filter the results with other filters. The below query shows all the objects curated by a user with a certain medium type."
+    "connected-2": "You can also do a search on objects using the constituent ID as a filter. The advantage of the second way allows you to filter the results with other filters. The below query shows all the objects curated by a user with a certain medium type.",
+
+    "exhibitions-1": "Exhibitions work the same way, you can get all exhibitions...",
+    "exhibitions-2": "Again, you can do this via the objects endpoint. Here's a more fleshed out example for all all objects in the Sigg Online exhibition with the category of \"Painting\" shown 10 per page.",
+    "exhibitions-3": "Which should give you everything you need to string together showing objects for the exhibition. You will have to do some filtering to match the labels and bios with the exhibition using the \"purpose\" label.",
+    "exhibition-1": "Or you can just get the one we are interested in, <strong>Siggs Online</strong> is Exhibition <code>95</code> this is a minimal example...",
+
+    "makertypes-1": "You can get a list of all the \"Types\" of constituent using the following query. Note, this allows you to filter constituents by a single type"
+
   },
+
+  "sigg": {
+    "getstarted": "How to get started with Exhibitions and so on",
+    "getstarted-1": "If you are trying to work with Sigg Online data, you have a few more graphQL queries at your disposal. You also have concepts which are Artists and Artist Groups, and Exhibitions.",
+    "objectrights": "As a vendor you have access to an extra field on the object that tells you the rights for displaying that object based on who you are. In the future you access to the objects will be filtered by the server, but for now you will have to check the rights here.",
+    "concepts-1": "To get all concepts you used a query such as",
+    "concepts-2": "And to fetch a single concept you can get it by id. Id 5 is that of the \"Cultural Revolution Art\" Artists movement",
+    "concepts-3": "As usual you can get all objects for a concept two ways, you can ask the concept endpoint to incliude object data, and you can pass in the normal filters which will pass through to effect the objects, like this...",
+    "concepts-4": "...or you can ask the objects endpoint to filter on the concept...",
+    "exhibitions-1": "Exhibitions work the same way, you can get all exhibitions...",
+    "exhibitions-2": "Or you can just get the one we are interested in, <strong>Siggs Online</strong> is Exhibition <code>95</code> this is a minimal example...",
+    "exhibitions-3": "Again, you can do this via the objects endpoint. Here's a more fleshed out example for all all objects in the Sigg Online exhibition with the category of \"Painting\" shown 10 per page.",
+    "exhibitions-4": "Which should give you everything you need to string together showing objects for the exhibition. You will have to do some filtering to match the labels and bios with the exhibition using the \"purpose\" label.",
+    "timeline-1": "There is a single call you can make to fetch the timeline related to Sigg. You can filter the language by using the <code class=\"red\">lang</code> parameter, set to either <code>en</code> or <code>zh-hant</code>. The call below includes all the fields, there are no other filters or parameters.",
+    "evolving": "The graphQL endpoints and this documentation will continue to evolve over the next few weeks, hang tight!"
+  },
+
   "aboutapi": {
     "body": "<h2 class=\"title mt-2\">About the M+ API</h1><hr/><h3 class=\"s-title\" id=\"background\">Background<a class=\"anchor\" href=\"#background\" aria-hidden=\"true\">#</a></h3><p>M+ is embracing open access and working towards releasing as much of our collections metadata as possible. Our goal is to unlock the museum’s institutional knowledge and release it into the public domain, driven by M+’s mission as a public institution. Read more about our open access journey <a href=\"https://medium.com/mpluslabs/towards-open-access-at-m-9dcc0ae5dce7\">here</a> and <a href=\"https://medium.com/mpluslabs/open-access-ahead-8dfe9984344d\">here</a>.</p><p>We’ve released an open data set here, but are also sharing our data through a public API to help increase access and encourage creative projects. The M+ API will be available for anyone who’d like to work with it. It’s for developers, designers, artists, creators—anyone who’s curious about telling stories through data.</p><h3 class=\"s-title\" id=\"thedata\">The Data<a class=\"anchor\" href=\"#thedata\" aria-hidden=\"true\">#</a></h3><p>The data made available to you through this API service is a reflection of institutional knowledge developed over time at M+. This data has been created by curators, registrars, researchers, and scholars working in collaboration with M+ to describe, express, and interpret the objects held in the M+ Collections. This data is made available to you, the public, as <a href=\"https://creativecommons.org/publicdomain/zero/1.0/\">CC0 Open Data</a> and through this API service, for use by your websites, applications, and research projects.</p><p>This data is provided ‘as is’ for research purposes and you may use it at your own risk. Documentation of the museum’s collection is an ongoing process and we are continuing to research and enrich our collections data. We will update the dataset with new and revised information on a regular basis. M+ makes no representations or warranties of any kind on this data.</p><h3 class=\"s-title\" id=\"access\">Technical documentation and access<a class=\"anchor\" href=\"#access\" aria-hidden=\"true\">#</a></h3><p>To access this API you must register for an account <a href=\"http://api.mplus.org.hk/login\">here</a>. All calls to the API require an API key, which will be granted to you upon registration of your account.</p><p>For information on making use of this API, please see the technical documentation made available <a href=\"https://api.mplus.org.hk/en/documentation\">here</a>.</p>"
   },
