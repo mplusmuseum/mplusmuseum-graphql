@@ -9,10 +9,6 @@
   <div class="docs-nav">
     <div class="accordion-container">
       <div class="accordion">
-        <label class="accordion-header label-header">{{i18n.general.mplusapi}}</label>
-      </div>
-
-      <div class="accordion">
         <input id="accordion-aboutapi" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "aboutapi"}}checked=checked{{/ifEqual}}>
         <label class="accordion-header content c-hand" for="accordion-aboutapi">{{i18n.documentation.aboutapi}}</label>
@@ -28,6 +24,7 @@
           </ul>
         </div>
       </div>
+
       <div class="accordion">
         <input id="accordion-documentation" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "documentation"}}checked=checked{{/ifEqual}}>
@@ -115,18 +112,23 @@
         <label class="accordion-header c-hand"><a class="terms-of-use"
             href="/en/documentation/termsofuse">{{i18n.documentation.terms-of-use}}</a></label>
       </div>
-    </div>
 
-    <div class="contacts-links">
-      <ul class="menu menu-nav">
-        <li class="menu-item"><a
-            href="https://stories.mplus.org.hk/en/contact-m-stories/">{{i18n.documentation.contact}}</a></li>
-        <li class="menu-item"><a
-            href="https://stories.mplus.org.hk/en/privacy-policy-statement/">{{i18n.documentation.privacy-policy-statement}}</a>
-        </li>
-        <li class="menu-item"><a href="//mplus.org.hk">mplus.org.hk</a></li>
-      </ul>
-      <a href="//westkowloon.hk/en"><img class="footer-logo" src="/images/wk_logo.png" alt=""></a>
+      <div class="accordion  contacts-links">
+        <ul class="menu menu-nav">
+          <li class="menu-item"><a
+              href="https://stories.mplus.org.hk/en/contact-m-stories/">{{i18n.documentation.contact}}</a></li>
+          <li class="menu-item"><a
+              href="https://stories.mplus.org.hk/en/privacy-policy-statement/">{{i18n.documentation.privacy-policy-statement}}</a>
+          </li>
+        </ul>
+        <div class="image-holder">
+          <span class="mplus-icon"><a href="//mplus.org.hk"><img class="footer-logo" src="/images/mplus_logo.png"
+                alt=""></a></span>
+          <span class="westkowloon-icon"><a href="//westkowloon.hk"><img class="footer-logo" src="/images/wk_logo.png"
+                alt=""></a></span>
+        </div>
+      </div>
+
     </div>
 
   </div>

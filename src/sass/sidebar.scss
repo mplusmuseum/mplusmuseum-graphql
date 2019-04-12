@@ -7,8 +7,26 @@
   height: 100%;
   position: fixed;
 
+  bottom: 0;
+
+  .docs-nav {
+    bottom: 0 !important;
+  }
+
   .contacts-links {
-    background-color: $color-accent;
+    .menu-item {
+      padding-left: 0;
+    }
+
+    img.footer-logo {
+      max-width: 6rem;
+      margin-top: 0.5rem;
+    }
+
+    .mplus-icon {
+      float: left;
+      padding-right: 12px;
+    }
   }
 
   .menu {
@@ -66,25 +84,4 @@
     top: 6rem;
   }
 
-  .contacts-links {
-    position: fixed;
-    text-align: left;
-    bottom: 1.75rem;
-    padding: 0;
-    margin: 0;
-
-    a {
-      padding: 0.2rem 0;
-    }
-
-    a:hover {
-      background: inherit;
-      text-decoration: underline;
-    }
-
-    img.footer-logo {
-      max-width: 6rem;
-      margin-top: 0.5rem;
-    }
-  }
 }
