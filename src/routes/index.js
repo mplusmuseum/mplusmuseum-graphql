@@ -174,6 +174,20 @@ router.use(function (req, res, next) {
   }
   req.templateValues.i18n = i18n
 
+  //  Work out what the toggle URL is
+  const urlSplit = req.url.split('/')
+  //  If we have a url that can be toggled
+  if (urlSplit.length >= 2 && validLangs.includes(urlSplit[1])) {
+    //  Swap out the language for a new one
+    if (urlSplit[1] === 'en') {
+      urlSplit[1] = 'tc'
+    } else {
+      urlSplit[1] = 'en'
+    }
+    const toggleURL = urlSplit.join('/')
+    req.templateValues.toggleURL = toggleURL
+  }
+
   next()
 })
 

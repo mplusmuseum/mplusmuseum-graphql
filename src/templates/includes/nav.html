@@ -1,8 +1,12 @@
 <div class="docs-navbar">
   <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar"><i class="icon icon-menu"></i></a>
   <section class="navbar-section">
-    <a href="#" class="btn btn-link">
-      <img src="/images/zh.png" alt="" />
+    <a href="{{toggleURL}}" class="btn btn-link lang-toggle">
+      {{#ifEqual lang 'en'}}
+        <img src="/images/zh.png" alt="" />
+        {{else}}
+          <img src="/images/en.png" alt="" />
+      {{/ifEqual}}
     </a>
     {{#if user}}
       <figure class="avatar avatar-sm">
