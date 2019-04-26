@@ -785,10 +785,20 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete record.scopeNContent
     if (match !== null) record.scopeNContent = match
 
+    //  Get the default value of scopeNContentHTML
+    match = common.getSingleTextFromArrayByLang(record.scopeNContentHTML, args.lang)
+    delete record.scopeNContentHTML
+    if (match !== null) record.scopeNContentHTML = match
+
     //  Get the default value of baselineDescription
     match = common.getSingleTextFromArrayByLang(record.baselineDescription, args.lang)
     delete record.baselineDescription
     if (match !== null) record.baselineDescription = match
+
+    //  Get the default value of baselineDescriptionHTML
+    match = common.getSingleTextFromArrayByLang(record.baselineDescriptionHTML, args.lang)
+    delete record.baselineDescriptionHTML
+    if (match !== null) record.baselineDescriptionHTML = match
 
     //  Get the default value of inscription
     match = common.getSingleTextFromArrayByLang(record.inscription, args.lang)
@@ -1194,6 +1204,13 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   records = records.map((record) => {
     if (Array.isArray(record.baselineDescription)) {
       record.baselineDescription = record.baselineDescription.join('\r\n\r\n')
+    }
+    return record
+  })
+
+  records = records.map((record) => {
+    if (Array.isArray(record.baselineDescriptionHTML)) {
+      record.baselineDescriptionHTML = record.baselineDescriptionHTML.join('\r\n\r\n')
     }
     return record
   })

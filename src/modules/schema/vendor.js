@@ -439,7 +439,9 @@ type LevelOneObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
@@ -484,7 +486,9 @@ type SingleObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
@@ -529,7 +533,9 @@ type LevelTwoObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
@@ -570,7 +576,9 @@ type LevelThreeObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
@@ -614,7 +622,9 @@ type RelatedObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
