@@ -826,6 +826,7 @@ type ExhibitionShort {
 type ExhibitionLabels {
   purpose: String
   text: String
+  html: String
 }
 
 type Classification {
