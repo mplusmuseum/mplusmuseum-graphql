@@ -172,6 +172,9 @@ const root = {
   object: (args, context) => {
     return queries.objects.getObject(args, context, true)
   },
+  updateTags: (args, context) => {
+    return queries.objects.updateTags(args, context, true)
+  },
   constituents: (args, context) => {
     return queries.constituents.getConstituents(args, context, undefined, true)
   },

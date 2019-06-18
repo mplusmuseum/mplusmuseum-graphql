@@ -402,6 +402,13 @@ type Query {
 
 }
 
+type Mutation {
+  updateTags(
+    id: Int!
+    tags: String!
+  ): SingleObject
+}
+
 type LevelOneObject {
   id: Int
   publicAccess: Boolean
@@ -445,6 +452,8 @@ type LevelOneObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -492,8 +501,20 @@ type SingleObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObject]
   _sys: Sys
+}
+
+type Lens {
+  lens: String
+  langs: [LensLangs]
+}
+
+type LensLangs {
+  lang: String
+  tags: [String]
 }
 
 type LevelTwoObject {
@@ -539,6 +560,8 @@ type LevelTwoObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -582,6 +605,8 @@ type LevelThreeObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -628,6 +653,8 @@ type RelatedObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
