@@ -320,6 +320,15 @@ type Query {
     sort_field: String = "id"
   ): [Mediums]
 
+  tags(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Tags]
+
   makertypes(
     lang: String = "en"
   ): [MakerTypes]
@@ -893,6 +902,12 @@ type Names {
 }
 
 type Mediums {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type Tags {
   title: String
   count: Int
   _sys: MiniSys

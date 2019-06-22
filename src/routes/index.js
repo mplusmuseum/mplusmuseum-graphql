@@ -232,6 +232,9 @@ const root = {
   mediums: (args, context) => {
     return queries.common.getMediums(args, context, undefined, true)
   },
+  tags: (args, context) => {
+    return queries.common.getTags(args, context, undefined, true)
+  },
   makertypes: (args, context) => {
     return queries.common.getMakerTypes(args, context, undefined, true)
   },
@@ -293,6 +296,7 @@ const getGrpObj = (isPlayground, isVendor, token) => {
   }
   if (configObj.handshake && configObj.handshake === token) {
     grpObj.context.isSelf = true
+    grpObj.context.noCache = true
   }
   return grpObj
 }
@@ -303,6 +307,7 @@ const getIsVendor = async (token) => {
   const configObj = new Config()
   if (!configObj.dashboard || !configObj.dashboard.host || !configObj.dashboard.handshake) return false
   //  If we have called the api with the dashboards handshake, then we are a vendor
+  if (configObj.handshake === token) return true
   if (configObj.dashboard.handshake === token) return true
 
   //  Now check in the gloabls to see if we have it

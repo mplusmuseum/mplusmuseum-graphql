@@ -155,6 +155,14 @@ type Query {
     sort_field: String = "id"
   ): [Mediums]
 
+  tags(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Tags]
+
   makertypes(
     lang: String = "en"
   ): [MakerTypes]
@@ -374,6 +382,11 @@ type ArchivalLevels {
 }
 
 type Mediums {
+  title: String
+  count: Int
+}
+
+type Tags {
   title: String
   count: Int
 }
