@@ -19,6 +19,7 @@ type Query {
     objectStatus: String
     objectNumber: String
     medium: String
+    tags: [String]
     displayDate: String
     beginDate: Int
     endDate: Int

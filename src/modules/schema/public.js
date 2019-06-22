@@ -18,6 +18,7 @@ type Query {
     beginDate: Int
     endDate: Int
     medium: String
+    tags: [String]
     constituent: Int
     constituents: [Int]
     exhibition: Int
