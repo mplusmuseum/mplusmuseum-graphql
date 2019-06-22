@@ -19,6 +19,7 @@ type Query {
     objectStatus: String
     objectNumber: String
     medium: String
+    tags: [String]
     displayDate: String
     beginDate: Int
     endDate: Int
@@ -320,6 +321,15 @@ type Query {
     sort_field: String = "id"
   ): [Mediums]
 
+  tags(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Tags]
+
   makertypes(
     lang: String = "en"
   ): [MakerTypes]
@@ -402,6 +412,13 @@ type Query {
 
 }
 
+type Mutation {
+  updateTags(
+    id: Int!
+    tags: String!
+  ): SingleObject
+}
+
 type LevelOneObject {
   id: Int
   publicAccess: Boolean
@@ -445,6 +462,8 @@ type LevelOneObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -492,8 +511,20 @@ type SingleObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObject]
   _sys: Sys
+}
+
+type Lens {
+  lens: String
+  langs: [LensLangs]
+}
+
+type LensLangs {
+  lang: String
+  tags: [String]
 }
 
 type LevelTwoObject {
@@ -539,6 +570,8 @@ type LevelTwoObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -582,6 +615,8 @@ type LevelThreeObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -628,6 +663,8 @@ type RelatedObject {
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -866,6 +903,12 @@ type Names {
 }
 
 type Mediums {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type Tags {
   title: String
   count: Int
   _sys: MiniSys

@@ -3,6 +3,7 @@ const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
 const RandomGen = require('random-seed')
+const delay = require('delay')
 
 const addCollectionInformation = async (lang, objects) => {
   const config = new Config()
@@ -142,6 +143,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   let cacheable = true
   //  If we are the dashboard (or ourself) don't use a cached query
   if (context.isSelf || context.isDashboard) cacheable = false
+  if (context.noCache) cacheable = false
 
   if (baseTMS === null) return []
 
@@ -274,6 +276,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         type: 'best_fields',
         fields: ['medium.en.keyword', 'medium.zh-hant.keyword'],
         operator: 'or'
+      }
+    })
+  }
+
+  if ('tags' in args && Array.isArray(args.tags)) {
+    must.push({
+      terms: {
+        'tags.keyword': args.tags
       }
     })
   }
@@ -1215,6 +1225,30 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     return record
   })
 
+  //  Sort out the fullTags
+  records = records.map((record) => {
+    const newFullTags = []
+    if (record.fullTags && record.fullTags.lens) {
+      Object.entries(record.fullTags.lens).forEach((lensKV) => {
+        const thisLens = {
+          lens: lensKV[0],
+          langs: []
+        }
+        if (lensKV[1].lang) {
+          Object.entries(lensKV[1].lang).forEach((langKV) => {
+            thisLens.langs.push({
+              lang: langKV[0],
+              tags: langKV[1]
+            })
+          })
+        }
+        newFullTags.push(thisLens)
+      })
+    }
+    record.fullTags = newFullTags
+    return record
+  })
+
   //  Finally, add the pagination information
   const sys = {
     pagination: {
@@ -1372,6 +1406,58 @@ const getObject = async (args, context, initialCall = false) => {
   return thisObject
 }
 exports.getObject = getObject
+
+const updateTags = async (args, context, initialCall = false) => {
+  // const startTime = new Date().getTime()
+
+  //  Update the popularCount
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `objects_${baseTMS}`
+  const type = 'object'
+
+  const fullTags = JSON.parse(args.tags)
+  const tags = []
+
+  // Grab all the tags for a simple tags array
+  Object.entries(fullTags.tags.lens).forEach((lensKV) => {
+    Object.entries(lensKV[1].lang).forEach((langKV) => {
+      langKV[1].forEach((tag) => {
+        if (!(tag in tags)) tags.push(tag)
+      })
+    })
+  })
+
+  //  Set the tags in the object
+  esclient.update({
+    index,
+    type,
+    id: args.id,
+    body: {
+      doc: {
+        id: args.id,
+        tags,
+        fullTags: fullTags.tags
+      },
+      doc_as_upsert: true
+    }
+  })
+
+  await delay(2000)
+
+  const newArgs = JSON.parse(JSON.stringify(args))
+  delete newArgs.tags
+
+  //  Don't cache this one
+  context.noCache = true
+  const thisObject = await getObject(newArgs, context)
+  return thisObject
+}
+exports.updateTags = updateTags
 
 const queryBibliographies = require('../bibliographies')
 const queryConcepts = require('../concepts')

@@ -18,6 +18,7 @@ type Query {
     beginDate: Int
     endDate: Int
     medium: String
+    tags: [String]
     constituent: Int
     constituents: [Int]
     exhibition: Int
@@ -154,6 +155,14 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
   ): [Mediums]
+
+  tags(
+    page: Int
+    per_page: Int
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Tags]
 
   makertypes(
     lang: String = "en"
@@ -374,6 +383,11 @@ type ArchivalLevels {
 }
 
 type Mediums {
+  title: String
+  count: Int
+}
+
+type Tags {
   title: String
   count: Int
 }

@@ -1,0 +1,17 @@
+{
+  "tags": {
+    "lens": {
+      "general": {
+        "lang": {
+          "en": ["kittens", "tree", "wood"],
+          "fr": ["chatons", "arbre", "bois"]
+        }
+      },
+      "technical": {
+        "lang": {
+          "en": ["science", "moon", "rocket"]
+        }
+      }
+    }
+  }
+}
