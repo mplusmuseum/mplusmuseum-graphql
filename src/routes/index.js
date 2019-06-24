@@ -268,6 +268,9 @@ const root = {
   createLens: (args, context) => {
     return queries.common.createLens(args, context, undefined, true)
   },
+  updateLens: (args, context) => {
+    return queries.common.updateLens(args, context, undefined, true)
+  },
   deleteLens: (args, context) => {
     return queries.common.deleteLens(args, context, undefined, true)
   },

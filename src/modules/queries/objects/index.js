@@ -144,6 +144,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  If we are the dashboard (or ourself) don't use a cached query
   if (context.isSelf || context.isDashboard) cacheable = false
   if (context.noCache) cacheable = false
+  console.log('cacheable: ', cacheable)
 
   if (baseTMS === null) return []
 

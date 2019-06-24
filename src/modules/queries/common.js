@@ -919,7 +919,8 @@ const createLens = async (args, context, initialCall = false) => {
     id,
     slug,
     created: d,
-    title: args.title
+    title: args.title,
+    isActive: true
   }
 
   await esclient.update({
@@ -932,13 +933,58 @@ const createLens = async (args, context, initialCall = false) => {
     }
   })
 
-  await delay(2000)
+  await delay(1000)
 
   //  Return back the values
   const newLenses = await getLenses({}, context)
   return newLenses
 }
 exports.createLens = createLens
+
+const updateLens = async (args, context, initialCall = false) => {
+  const emptyDataSet = {
+    hits: {
+      hits: []
+    }
+  }
+  if (!args.id) return emptyDataSet
+  if (context.isVendor === false && context.isDashboard === false && context.isSelf === false) return emptyDataSet
+
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) {
+    return []
+  }
+
+  const index = `lenses_${baseTMS}`
+  const type = 'lens'
+
+  const updatedLens = {
+    id: args.id
+  }
+
+  if (args.title) updatedLens.title = args.title
+  if ('isActive' in args) updatedLens.isActive = args.isActive
+
+  await esclient.update({
+    index,
+    type,
+    id: args.id,
+    body: {
+      doc: updatedLens,
+      doc_as_upsert: true
+    }
+  })
+
+  await delay(1000)
+
+  //  Return back the values
+  const newLenses = await getLenses({}, context)
+  return newLenses
+}
+exports.updateLens = updateLens
 
 const deleteLens = async (args, context, initialCall = false) => {
   const emptyDataSet = {

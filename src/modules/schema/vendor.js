@@ -421,15 +421,19 @@ type Mutation {
     tags: String!
   ): SingleObject
 
-  createLens(
+  Lens(
     title: String!
-  )
-  : [Lenss]
+  ): [Lenss]
+
+  updateLens(
+    id: String!
+    title: String
+    isActive: Boolean
+  ): [Lenss]
 
   deleteLens(
     id: String!
-  )
-  : [Lenss]
+  ): [Lenss]
 }
 
 type LevelOneObject {
@@ -974,6 +978,7 @@ type Lenss {
   id: String
   slug: String
   title: String
+  isActive: Boolean
   _sys: Sys
 }
 
