@@ -334,7 +334,10 @@ type Query {
     lang: String = "en"
   ): [MakerTypes]
 
-
+  lenses(
+    page: Int
+    per_page: Int
+  ): [Lenss]
   
   conActiveCities(
     publicAccess: Boolean
@@ -417,6 +420,16 @@ type Mutation {
     id: Int!
     tags: String!
   ): SingleObject
+
+  createLens(
+    title: String!
+  )
+  : [Lenss]
+
+  deleteLens(
+    id: String!
+  )
+  : [Lenss]
 }
 
 type LevelOneObject {
@@ -955,6 +968,13 @@ type Styles {
 
 type MakerTypes {
   title: String
+}
+
+type Lenss {
+  id: String
+  slug: String
+  title: String
+  _sys: Sys
 }
 
 type ConActiveCities {

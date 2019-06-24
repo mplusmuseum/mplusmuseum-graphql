@@ -262,6 +262,15 @@ const root = {
   conRoles: (args, context) => {
     return queries.common.getConRoles(args, context, undefined, true)
   },
+  lenses: (args, context) => {
+    return queries.common.getLenses(args, context, undefined, true)
+  },
+  createLens: (args, context) => {
+    return queries.common.createLens(args, context, undefined, true)
+  },
+  deleteLens: (args, context) => {
+    return queries.common.deleteLens(args, context, undefined, true)
+  },
   timeline: (args, context) => {
     return queries.timeline.getTimeline(args, context, undefined, true)
   },
