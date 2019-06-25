@@ -421,8 +421,8 @@ type Mutation {
     tags: String!
   ): SingleObject
 
-  Lens(
-    title: String!
+  createLens(
+    title: String
   ): [Lenss]
 
   updateLens(
