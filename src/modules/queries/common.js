@@ -854,7 +854,7 @@ const getLenses = async (args, context, initialCall = false) => {
     from: page * perPage,
     size: perPage,
     sort: {
-      'title.keyword': {
+      'slug.keyword': {
         order: 'asc'
       }
     }
