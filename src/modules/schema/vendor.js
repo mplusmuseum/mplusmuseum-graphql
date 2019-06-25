@@ -20,6 +20,7 @@ type Query {
     objectNumber: String
     medium: String
     tags: [String]
+    lens: String
     displayDate: String
     beginDate: Int
     endDate: Int

@@ -281,11 +281,30 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('tags' in args && Array.isArray(args.tags)) {
-    must.push({
-      terms: {
-        'tags.keyword': args.tags
-      }
-    })
+    //  If there isn't a lens then we can just go find it
+    if (!args.lens) {
+      must.push({
+        terms: {
+          'tags.keyword': args.tags
+        }
+      })
+    } else {
+      //  We now have to filter by lens
+      const should = []
+      const langs = ['en', 'zh-hant']
+      langs.forEach((lang) => {
+        const term = {}
+        term[`fullTags.lens.${args.lens}.lang.${lang}.keyword`] = args.tags
+        should.push({
+          terms: term
+        })
+      })
+      must.push({
+        bool: {
+          should
+        }
+      })
+    }
   }
 
   if ('objectName' in args && args.objectName !== '') {
@@ -713,6 +732,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       }
     }
   }
+
+  // console.log(JSON.stringify(body, null, 4))
 
   //  Run the search
   const objects = await common.doCacheQuery(cacheable, index, body)
