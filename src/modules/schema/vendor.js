@@ -19,6 +19,8 @@ type Query {
     objectStatus: String
     objectNumber: String
     medium: String
+    tags: [String]
+    lens: String
     displayDate: String
     beginDate: Int
     endDate: Int
@@ -318,11 +320,23 @@ type Query {
     sort_field: String = "id"
   ): [Mediums]
 
+  tags(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [Tags]
+
   makertypes(
     lang: String = "en"
   ): [MakerTypes]
 
-
+  lenses(
+    page: Int
+    per_page: Int
+  ): [Lenss]
   
   conActiveCities(
     publicAccess: Boolean
@@ -400,6 +414,27 @@ type Query {
 
 }
 
+type Mutation {
+  updateTags(
+    id: Int!
+    tags: String!
+  ): SingleObject
+
+  createLens(
+    title: String
+  ): [Lenss]
+
+  updateLens(
+    id: String!
+    title: String
+    isActive: Boolean
+  ): [Lenss]
+
+  deleteLens(
+    id: String!
+  ): [Lenss]
+}
+
 type LevelOneObject {
   id: Int
   publicAccess: Boolean
@@ -437,10 +472,14 @@ type LevelOneObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -482,12 +521,26 @@ type SingleObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObject]
   _sys: Sys
+}
+
+type Lens {
+  lens: String
+  langs: [LensLangs]
+}
+
+type LensLangs {
+  lang: String
+  tags: [String]
 }
 
 type LevelTwoObject {
@@ -527,10 +580,14 @@ type LevelTwoObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -568,10 +625,14 @@ type LevelThreeObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -612,10 +673,14 @@ type RelatedObject {
   collectionName: String
   collection: Collection
   scopeNContent: String
+  scopeNContentHTML: String
   baselineDescription: String
+  baselineDescriptionHTML: String
   isRecommended: Boolean
   recommendedBlurb: String
   blurbExternalUrl: String
+  tags: [String]
+  fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
@@ -814,6 +879,7 @@ type ExhibitionShort {
 type ExhibitionLabels {
   purpose: String
   text: String
+  html: String
 }
 
 type Classification {
@@ -853,6 +919,12 @@ type Names {
 }
 
 type Mediums {
+  title: String
+  count: Int
+  _sys: MiniSys
+}
+
+type Tags {
   title: String
   count: Int
   _sys: MiniSys
@@ -899,6 +971,14 @@ type Styles {
 
 type MakerTypes {
   title: String
+}
+
+type Lenss {
+  id: String
+  slug: String
+  title: String
+  isActive: Boolean
+  _sys: Sys
 }
 
 type ConActiveCities {

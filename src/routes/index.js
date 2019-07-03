@@ -215,6 +215,9 @@ const root = {
   object: (args, context) => {
     return queries.objects.getObject(args, context, true)
   },
+  updateTags: (args, context) => {
+    return queries.objects.updateTags(args, context, true)
+  },
   constituents: (args, context) => {
     return queries.constituents.getConstituents(args, context, undefined, true)
   },
@@ -272,6 +275,9 @@ const root = {
   mediums: (args, context) => {
     return queries.common.getMediums(args, context, undefined, true)
   },
+  tags: (args, context) => {
+    return queries.common.getTags(args, context, undefined, true)
+  },
   makertypes: (args, context) => {
     return queries.common.getMakerTypes(args, context, undefined, true)
   },
@@ -298,6 +304,18 @@ const root = {
   },
   conRoles: (args, context) => {
     return queries.common.getConRoles(args, context, undefined, true)
+  },
+  lenses: (args, context) => {
+    return queries.common.getLenses(args, context, undefined, true)
+  },
+  createLens: (args, context) => {
+    return queries.common.createLens(args, context, undefined, true)
+  },
+  updateLens: (args, context) => {
+    return queries.common.updateLens(args, context, undefined, true)
+  },
+  deleteLens: (args, context) => {
+    return queries.common.deleteLens(args, context, undefined, true)
   },
   timeline: (args, context) => {
     return queries.timeline.getTimeline(args, context, undefined, true)
@@ -333,6 +351,7 @@ const getGrpObj = (isPlayground, isVendor, token) => {
   }
   if (configObj.handshake && configObj.handshake === token) {
     grpObj.context.isSelf = true
+    grpObj.context.noCache = true
   }
   return grpObj
 }
@@ -343,6 +362,7 @@ const getIsVendor = async (token) => {
   const configObj = new Config()
   if (!configObj.dashboard || !configObj.dashboard.host || !configObj.dashboard.handshake) return false
   //  If we have called the api with the dashboards handshake, then we are a vendor
+  if (configObj.handshake === token) return true
   if (configObj.dashboard.handshake === token) return true
 
   //  Now check in the gloabls to see if we have it

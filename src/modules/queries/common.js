@@ -2,6 +2,8 @@ const Config = require('../../classes/config')
 const elasticsearch = require('elasticsearch')
 const logging = require('../logging')
 const crypto = require('crypto')
+const utils = require('../utils')
+const delay = require('delay')
 
 const doCacheQuery = async (cacheable, index, body) => {
   const config = new Config()
@@ -167,9 +169,12 @@ exports.getMakerRoles = async (index) => {
   return {}
 }
 
-const getAggregates = async (args, field, index) => {
+const getAggregates = async (args, context, field, index) => {
   //  Set up the client
-  const cacheable = true
+  let cacheable = true
+  //  If we are the dashboard (or ourself) don't use a cached query
+  if (context.isSelf || context.isDashboard) cacheable = false
+  if (context.noCache) cacheable = false
   const perPage = getAggPerPage(args)
   const body = {}
 
@@ -339,7 +344,7 @@ exports.getAreas = async (args, context, levelDown = 3, initialCall = false) => 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `classification.area.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `classification.area.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Areas query`, {
     method: 'getAreas',
@@ -360,7 +365,7 @@ exports.getCategories = async (args, context, levelDown = 3, initialCall = false
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `classification.category.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `classification.category.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Categories query`, {
     method: 'getCategories',
@@ -381,7 +386,7 @@ exports.getArchivalLevels = async (args, context, levelDown = 3, initialCall = f
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `classification.archivalLevel.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `classification.archivalLevel.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`ArchivalLevels query`, {
     method: 'getArchivalLevels',
@@ -402,10 +407,31 @@ exports.getMediums = async (args, context, levelDown = 3, initialCall = false) =
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `medium.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `medium.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Mediums query`, {
     method: 'getMediums',
+    args,
+    context,
+    levelDown,
+    initialCall,
+    subCall: !initialCall,
+    records: aggs.length,
+    ms: new Date().getTime() - startTime
+  })
+  return aggs
+}
+
+exports.getTags = async (args, context, levelDown = 3, initialCall = false) => {
+  const startTime = new Date().getTime()
+  const config = new Config()
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const aggs = getAggregates(args, context, `tags.keyword`, `objects_${baseTMS}`)
+  const apiLogger = logging.getAPILogger()
+  apiLogger.object(`Tags query`, {
+    method: 'tags',
     args,
     context,
     levelDown,
@@ -423,7 +449,7 @@ exports.getStatuses = async (args, context, levelDown = 3, initialCall = false) 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `objectStatus.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `objectStatus.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`objectStatus query`, {
     method: 'getStatuses',
@@ -444,7 +470,7 @@ exports.getNames = async (args, context, levelDown = 3, initialCall = false) => 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `objectName.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `objectName.${args.lang}.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`objectNames query`, {
     method: 'getNames',
@@ -465,7 +491,7 @@ exports.getCollectionCodes = async (args, context, levelDown = 3, initialCall = 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `collectionCode.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `collectionCode.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`collectionCode query`, {
     method: 'getCollectionCodes',
@@ -486,7 +512,7 @@ exports.getCollectionTypes = async (args, context, levelDown = 3, initialCall = 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `collectionType.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `collectionType.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`collectionType query`, {
     method: 'getCollectionTypes',
@@ -507,7 +533,7 @@ exports.getCollectionNames = async (args, context, levelDown = 3, initialCall = 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `collectionName.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `collectionName.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`collectionName query`, {
     method: 'getCollectionNames',
@@ -528,7 +554,7 @@ exports.getDepartments = async (args, context, levelDown = 3, initialCall = fals
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `department.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `department.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`department query`, {
     method: 'getDepartments',
@@ -549,7 +575,7 @@ exports.getStyles = async (args, context, levelDown = 3, initialCall = false) =>
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, `style.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `style.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`style query`, {
     method: 'getStyles',
@@ -586,7 +612,7 @@ exports.getConActiveCities = async (args, context, levelDown = 3, initialCall = 
   if (args.lang && args.lang === 'zh-hant') {
     field = `activeCity.zh-hant.keyword`
   }
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`activeCity query`, {
     method: 'getConActiveCities',
@@ -611,7 +637,7 @@ exports.getConBirthCities = async (args, context, levelDown = 3, initialCall = f
   if (args.lang && args.lang === 'zh-hant') {
     field = `birthCity.zh-hant.keyword`
   }
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`birthCity query`, {
     method: 'getConBirthCities',
@@ -636,7 +662,7 @@ exports.getConDeathCities = async (args, context, levelDown = 3, initialCall = f
   if (args.lang && args.lang === 'zh-hant') {
     field = `deathCity.zh-hant.keyword`
   }
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`deathCity query`, {
     method: 'getConDeathCities',
@@ -660,7 +686,7 @@ exports.getGenders = async (args, context, levelDown = 3, initialCall = false) =
   if (args.lang && args.lang === 'zh-hant') {
     field = `gender.zh-hant.keyword`
   }
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`gender query`, {
     method: 'getGenders',
@@ -684,7 +710,7 @@ exports.getNationalities = async (args, context, levelDown = 3, initialCall = fa
   if (args.lang && args.lang === 'zh-hant') {
     field = `nationality.zh-hant.keyword`
   }
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`nationality query`, {
     method: 'getNationalities',
@@ -708,7 +734,7 @@ exports.getConRegions = async (args, context, levelDown = 3, initialCall = false
   if (args.lang && args.lang === 'zh-hant') {
     field = `region.zh-hant.keyword`
   }
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`region query`, {
     method: 'getConRegions',
@@ -729,7 +755,7 @@ exports.getConTypes = async (args, context, levelDown = 3, initialCall = false) 
   if (baseTMS === null) return []
 
   let field = `type.keyword`
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`type query`, {
     method: 'getConTypes',
@@ -750,7 +776,7 @@ exports.getConRoles = async (args, context, levelDown = 3, initialCall = false) 
   if (baseTMS === null) return []
 
   let field = `roles.keyword`
-  const aggs = getAggregates(args, field, `constituents_${baseTMS}`)
+  const aggs = getAggregates(args, context, field, `constituents_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`roles query`, {
     method: 'getConRoles',
@@ -791,3 +817,210 @@ exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false
 
   return records
 }
+
+/*
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+
+   LENSES
+
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+*/
+const getLenses = async (args, context, initialCall = false) => {
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `lenses_${baseTMS}`
+
+  const exists = await esclient.indices.exists({
+    index
+  })
+  if (exists === false) {
+    await esclient.indices.create({
+      index
+    })
+  }
+
+  let page = getPage(args)
+  let perPage = getPerPage(args)
+
+  const body = {
+    from: page * perPage,
+    size: perPage,
+    sort: {
+      'slug.keyword': {
+        order: 'asc'
+      }
+    }
+  }
+
+  const lenses = await doCacheQuery(false, index, body)
+  let total = null
+  if (lenses.hits.total) total = lenses.hits.total
+  let records = lenses.hits.hits.map((hit) => hit._source).map((record) => {
+    return record
+  })
+
+  //  Finally, add the pagination information
+  const sys = {
+    pagination: {
+      page,
+      perPage,
+      total
+    }
+  }
+  if (total !== null) {
+    sys.pagination.maxPage = Math.ceil(total / perPage) - 1
+  }
+  if (records.length > 0) {
+    records[0]._sys = sys
+  }
+  return records
+}
+exports.getLenses = getLenses
+
+const createLens = async (args, context, initialCall = false) => {
+  const emptyDataSet = {
+    hits: {
+      hits: []
+    }
+  }
+  if (!args.title) return emptyDataSet
+  if (context.isVendor === false && context.isDashboard === false && context.isSelf === false) return emptyDataSet
+
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) {
+    return []
+  }
+
+  const index = `lenses_${baseTMS}`
+  const type = 'lens'
+
+  //  Convert the title into a slug
+  const slug = utils.slugify(args.title)
+  const slugTail = crypto
+    .createHash('md5')
+    .update(`${Math.random()}`)
+    .digest('hex')
+    .substring(0, 16)
+  const id = `${slug.substring(0, 24)}-${slugTail}`
+
+  const d = new Date()
+  const newLens = {
+    id,
+    slug,
+    created: d,
+    title: args.title,
+    isActive: true
+  }
+
+  await esclient.update({
+    index,
+    type,
+    id,
+    body: {
+      doc: newLens,
+      doc_as_upsert: true
+    }
+  })
+
+  await delay(1000)
+
+  //  Return back the values
+  const newLenses = await getLenses({}, context)
+  return newLenses
+}
+exports.createLens = createLens
+
+const updateLens = async (args, context, initialCall = false) => {
+  const emptyDataSet = {
+    hits: {
+      hits: []
+    }
+  }
+  if (!args.id) return emptyDataSet
+  if (context.isVendor === false && context.isDashboard === false && context.isSelf === false) return emptyDataSet
+
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) {
+    return []
+  }
+
+  const index = `lenses_${baseTMS}`
+  const type = 'lens'
+
+  const updatedLens = {
+    id: args.id
+  }
+
+  if (args.title) updatedLens.title = args.title
+  if ('isActive' in args) updatedLens.isActive = args.isActive
+
+  await esclient.update({
+    index,
+    type,
+    id: args.id,
+    body: {
+      doc: updatedLens,
+      doc_as_upsert: true
+    }
+  })
+
+  await delay(1000)
+
+  //  Return back the values
+  const newLenses = await getLenses({}, context)
+  return newLenses
+}
+exports.updateLens = updateLens
+
+const deleteLens = async (args, context, initialCall = false) => {
+  const emptyDataSet = {
+    hits: {
+      hits: []
+    }
+  }
+  if (!args.id) return emptyDataSet
+  if (context.isVendor === false && context.isDashboard === false && context.isSelf === false) return emptyDataSet
+
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) {
+    return []
+  }
+
+  const index = `lenses_${baseTMS}`
+  const type = 'lens'
+
+  try {
+    await esclient.delete({
+      index,
+      type,
+      id: args.id
+    })
+  } catch (er) {
+    const response = JSON.parse(er.response)
+    console.error(response)
+  }
+
+  await delay(2000)
+
+  //  Return back the values
+  const newLenses = await getLenses({}, context)
+  return newLenses
+}
+exports.deleteLens = deleteLens

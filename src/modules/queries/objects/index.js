@@ -3,6 +3,7 @@ const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
 const RandomGen = require('random-seed')
+const delay = require('delay')
 
 const addCollectionInformation = async (lang, objects) => {
   const config = new Config()
@@ -142,6 +143,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   let cacheable = true
   //  If we are the dashboard (or ourself) don't use a cached query
   if (context.isSelf || context.isDashboard) cacheable = false
+  if (context.noCache) cacheable = false
 
   if (baseTMS === null) return []
 
@@ -276,6 +278,33 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         operator: 'or'
       }
     })
+  }
+
+  if ('tags' in args && Array.isArray(args.tags)) {
+    //  If there isn't a lens then we can just go find it
+    if (!args.lens) {
+      must.push({
+        terms: {
+          'tags.keyword': args.tags
+        }
+      })
+    } else {
+      //  We now have to filter by lens
+      const should = []
+      const langs = ['en', 'zh-hant']
+      langs.forEach((lang) => {
+        const term = {}
+        term[`fullTags.lens.${args.lens}.lang.${lang}.keyword`] = args.tags
+        should.push({
+          terms: term
+        })
+      })
+      must.push({
+        bool: {
+          should
+        }
+      })
+    }
   }
 
   if ('objectName' in args && args.objectName !== '') {
@@ -704,6 +733,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     }
   }
 
+  // console.log(JSON.stringify(body, null, 4))
+
   //  Run the search
   const objects = await common.doCacheQuery(cacheable, index, body)
   let total = null
@@ -785,10 +816,20 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete record.scopeNContent
     if (match !== null) record.scopeNContent = match
 
+    //  Get the default value of scopeNContentHTML
+    match = common.getSingleTextFromArrayByLang(record.scopeNContentHTML, args.lang)
+    delete record.scopeNContentHTML
+    if (match !== null) record.scopeNContentHTML = match
+
     //  Get the default value of baselineDescription
     match = common.getSingleTextFromArrayByLang(record.baselineDescription, args.lang)
     delete record.baselineDescription
     if (match !== null) record.baselineDescription = match
+
+    //  Get the default value of baselineDescriptionHTML
+    match = common.getSingleTextFromArrayByLang(record.baselineDescriptionHTML, args.lang)
+    delete record.baselineDescriptionHTML
+    if (match !== null) record.baselineDescriptionHTML = match
 
     //  Get the default value of inscription
     match = common.getSingleTextFromArrayByLang(record.inscription, args.lang)
@@ -1198,6 +1239,37 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     return record
   })
 
+  records = records.map((record) => {
+    if (Array.isArray(record.baselineDescriptionHTML)) {
+      record.baselineDescriptionHTML = record.baselineDescriptionHTML.join('\r\n\r\n')
+    }
+    return record
+  })
+
+  //  Sort out the fullTags
+  records = records.map((record) => {
+    const newFullTags = []
+    if (record.fullTags && record.fullTags.lens) {
+      Object.entries(record.fullTags.lens).forEach((lensKV) => {
+        const thisLens = {
+          lens: lensKV[0],
+          langs: []
+        }
+        if (lensKV[1].lang) {
+          Object.entries(lensKV[1].lang).forEach((langKV) => {
+            thisLens.langs.push({
+              lang: langKV[0],
+              tags: langKV[1]
+            })
+          })
+        }
+        newFullTags.push(thisLens)
+      })
+    }
+    record.fullTags = newFullTags
+    return record
+  })
+
   //  Finally, add the pagination information
   const sys = {
     pagination: {
@@ -1355,6 +1427,58 @@ const getObject = async (args, context, initialCall = false) => {
   return thisObject
 }
 exports.getObject = getObject
+
+const updateTags = async (args, context, initialCall = false) => {
+  // const startTime = new Date().getTime()
+
+  //  Update the popularCount
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `objects_${baseTMS}`
+  const type = 'object'
+
+  const fullTags = JSON.parse(args.tags)
+  const tags = []
+
+  // Grab all the tags for a simple tags array
+  Object.entries(fullTags.tags.lens).forEach((lensKV) => {
+    Object.entries(lensKV[1].lang).forEach((langKV) => {
+      langKV[1].forEach((tag) => {
+        if (!(tag in tags)) tags.push(tag)
+      })
+    })
+  })
+
+  //  Set the tags in the object
+  esclient.update({
+    index,
+    type,
+    id: args.id,
+    body: {
+      doc: {
+        id: args.id,
+        tags,
+        fullTags: fullTags.tags
+      },
+      doc_as_upsert: true
+    }
+  })
+
+  await delay(2000)
+
+  const newArgs = JSON.parse(JSON.stringify(args))
+  delete newArgs.tags
+
+  //  Don't cache this one
+  context.noCache = true
+  const thisObject = await getObject(newArgs, context)
+  return thisObject
+}
+exports.updateTags = updateTags
 
 const queryBibliographies = require('../bibliographies')
 const queryConcepts = require('../concepts')
