@@ -61,7 +61,8 @@ type Query {
   ): [LevelOneObject]
 
   object(
-    id: Int!
+    id: Int
+    objectNumber: String
     lang: String = "en"
     publicAccess: Boolean
   ): SingleObject
