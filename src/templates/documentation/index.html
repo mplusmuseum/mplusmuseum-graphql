@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>M+</title>
+  <title>{{i18n.documentation.title}}</title>
   {{> head}}
   <link href="/css/prism.css" rel="stylesheet" />
 </head>
@@ -17,7 +17,7 @@
       <div class="docs-content" id="content">
         <div class="container" id="welcome">
           <h2 class="title mt-2">{{i18n.documentation.title}}</h2>
-
+          <br />
           {{!---
             ###################################################################################
             ###################################################################################
@@ -97,6 +97,29 @@
           {{!---
             ###################################################################################
 
+            Playground
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="playground">{{i18n.documentation.graphql-playground}}</h4>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-5}}}
+            <a href="{{config.graphql.host}}/playground">{{config.graphql.host}}/playground</a>
+          </p>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-6}}}
+            <a
+              href='{{exploreQuery queries.objectsMedium "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+
+          <hr class="my-4">
+
+          {{!---
+            ###################################################################################
+
             Communicating with graphQL
 
             ###################################################################################            
@@ -130,29 +153,6 @@
           </p>
           <pre class="query language-javascript">{{{nodeQuery queries.hello '' config.graphql.host user.apitoken}}}
           </pre>
-
-          {{!---
-            ###################################################################################
-
-            Playground
-
-            ###################################################################################            
-          ---}}
-
-          <h4 id="playground">{{i18n.documentation.graphql-playground}}</h4>
-
-          <p>
-            {{{i18n.documentation.graphql-communicating-5}}}
-            <a href="{{config.graphql.host}}/playground">{{config.graphql.host}}/playground</a>
-          </p>
-
-          <p>
-            {{{i18n.documentation.graphql-communicating-6}}}
-            <a
-              href='{{exploreQuery queries.objectsMedium "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
-          </p>
-
-          <hr class="my-4">
 
           {{!---
             ###################################################################################

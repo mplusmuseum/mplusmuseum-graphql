@@ -6,7 +6,7 @@
   },
   "documentation": {
     "title": "API Documentation",
-    "aboutapi": "About the M+ API",
+    "aboutapi": "M+公共應用程式介面簡介",
     "background": "Background",
     "thedata": "The Data",
     "access": "Access",
@@ -45,7 +45,7 @@
     "exhibitions": "Exhibitions",
     "exhibition": "Exhibition",
     "timeline": "Timeline",
-    "terms-of-use": "Terms of Use",
+    "terms-of-use": "使用條款",
     "contact": "Contact",
     "privacy-policy-statement": "Privacy Policy Statement",
     "nesting": "把物件嵌套在構成要素內，以及把構成要素嵌套在物件內",
