@@ -68,6 +68,14 @@
 
   .menu-item {
     font-size: .8rem;
+
+    li {
+      list-style: none;
+
+      .menu-item {
+        padding-left: 0;
+      }
+    }
   }
 
   .docs-brand {

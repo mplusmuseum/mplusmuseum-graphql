@@ -90,9 +90,6 @@
           <p>
             {{{i18n.documentation.graphql-about-2}}}
           </p>
-          <p>
-            {{i18n.documentation.graphql-about-3}}
-          </p>
 
           {{!---
             ###################################################################################
@@ -154,6 +151,8 @@
           <pre class="query language-javascript">{{{nodeQuery queries.hello '' config.graphql.host user.apitoken}}}
           </pre>
 
+          <hr />
+
           {{!---
             ###################################################################################
             ###################################################################################
@@ -195,6 +194,20 @@
           {{!---
             ###################################################################################
 
+            Filtering the Queries
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="filtering">{{i18n.documentation.filteringthequeries}}</h4>
+          <p>
+            {{{i18n.documentation.filteringthequeries-1}}}
+          </p>
+
+
+          {{!---
+            ###################################################################################
+
             Objects
 
             ###################################################################################            
@@ -202,15 +215,17 @@
 
           <h4 id="objects">{{i18n.documentation.objects}}</h4>
 
-          <p>
-            {{{i18n.documentation.graphql-objects-1}}}
-          </p>
+          {{{i18n.documentation.graphql-objects-1}}}
 
           <p>{{{i18n.documentation.graphql-objects-2}}}
           </p>
 
           <p>
             {{{i18n.documentation.graphql-objects-3}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.graphql-objects-4}}}
           </p>
 
           <p>
@@ -237,6 +252,45 @@
           </p>
           <pre
             class="query language-javascript">{{{nodeQuery queries.objectsMini '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5>{{i18n.documentation.fetchingbyids}}</h5>
+
+          <p>
+            {{{i18n.documentation.object-by-ids-example}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsMedium "(ids:[1, 4, 6, 7])" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectsMedium '(ids:[1, 4, 6, 7])'}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+
+          <h5 id="object">{{i18n.documentation.object}}</h5>
+
+          <p>
+            {{{i18n.documentation.object-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectLarge "(id: 3000)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectLarge '(id: 3000)'}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.objectLarge '(id: 3000)' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.objectLarge '(id: 3000)' config.graphql.host user.apitoken}}}
           </pre>
 
 
@@ -293,20 +347,6 @@
             class="query language-javascript">{{{nodeQuery queries.objectsLarge '(sort_field: "sortNumber", sort: "asc")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5>{{i18n.documentation.fetchingbyids}}</h5>
-
-          <p>
-            {{{i18n.documentation.object-by-ids-example}}}
-          </p>
-
-          <p class="runinexplore no-bottom">
-            <a
-              href='{{exploreQuery queries.objectsMedium "(ids:[1, 4, 6, 7])" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
-          </p>
-          <pre class="query language-graphql">{{{graphQLQuery queries.objectsMedium '(ids:[1, 4, 6, 7])'}}}</pre>
-
-          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
-          </p>
           <pre
             class="query language-bash">{{{curlQuery queries.objectsMedium '(ids:[1, 4, 6, 7])' config.graphql.host user.apitoken}}}
           </pre>
@@ -379,38 +419,6 @@
           </p>
           <pre
             class="query language-graphql">{{{graphQLQuery queries.objectsColor '(color: "orange", color_threshold: 70.0, color_source: "google")' user.apitoken}}}
-          </pre>
-
-          {{!---
-            ###################################################################################
-
-            Object
-
-            ###################################################################################            
-          ---}}
-
-          <h4 id="object">{{i18n.documentation.object}}</h4>
-
-          <p>
-            {{{i18n.documentation.object-1}}}
-          </p>
-
-          <p class="runinexplore no-bottom">
-            <a
-              href='{{exploreQuery queries.objectLarge "(id: 3000)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
-          </p>
-          <pre class="query language-graphql">{{{graphQLQuery queries.objectLarge '(id: 3000)'}}}</pre>
-
-          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
-          </p>
-          <pre
-            class="query language-bash">{{{curlQuery queries.objectLarge '(id: 3000)' config.graphql.host user.apitoken}}}
-          </pre>
-
-          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
-          </p>
-          <pre
-            class="query language-javascript">{{{nodeQuery queries.objectLarge '(id: 3000)' config.graphql.host user.apitoken}}}
           </pre>
 
           {{!---
