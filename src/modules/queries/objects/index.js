@@ -369,6 +369,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if ('fonds' in args && args.fonds !== '') {
+    must.push({
+      match: {
+        'collectionCode': args.fonds
+      }
+    })
+  }
+
   if ('collectionName' in args && args.collectionName !== '') {
     must.push({
       match: {
@@ -1267,6 +1275,12 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       })
     }
     record.fullTags = newFullTags
+    return record
+  })
+
+  //  Turn collectionCode into fonds
+  records = records.map((record) => {
+    record.fonds = record.collectionCode
     return record
   })
 
