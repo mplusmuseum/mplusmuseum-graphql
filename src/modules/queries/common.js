@@ -204,6 +204,13 @@ const getAggregates = async (args, context, field, index) => {
       }
     })
   }
+  if ('fonds' in args && args.fonds !== '') {
+    must.push({
+      match: {
+        'collectionCode': args.fonds
+      }
+    })
+  }
 
   if ('collectionType' in args && args.collectionType !== '') {
     must.push({

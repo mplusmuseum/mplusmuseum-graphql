@@ -15,6 +15,7 @@ type Query {
     archivalLevel: String
     collectionType: String
     collectionCode: String
+    fonds: String
     objectName: String
     objectStatus: String
     objectNumber: String
@@ -219,6 +220,7 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
     collectionCode: String
+    fonds: String
     collectionType: String
     collectionName: String
     department: String
@@ -236,6 +238,7 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
     collectionCode: String
+    fonds: String
     collectionType: String
     collectionName: String
     department: String
@@ -282,6 +285,15 @@ type Query {
   ): [CollectionTypes]
 
   collectionCodes(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionCodes]
+
+  fonds(
     page: Int
     per_page: Int
     publicAccess: Boolean
@@ -472,6 +484,7 @@ type LevelOneObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  fonds: String
   collectionName: String
   collection: Collection
   scopeNContent: String
@@ -521,6 +534,7 @@ type SingleObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  fonds: String
   collectionName: String
   collection: Collection
   scopeNContent: String
@@ -580,6 +594,7 @@ type LevelTwoObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  fonds: String
   collectionName: String
   collection: Collection
   scopeNContent: String
@@ -625,6 +640,7 @@ type LevelThreeObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  fonds: String
   collectionName: String
   collection: Collection
   scopeNContent: String
@@ -673,6 +689,7 @@ type RelatedObject {
   objectName: String
   collectionType: String
   collectionCode: String
+  fonds: String
   collectionName: String
   collection: Collection
   scopeNContent: String
