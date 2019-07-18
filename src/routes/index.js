@@ -263,6 +263,9 @@ const root = {
   collectionCodes: (args, context) => {
     return queries.common.getCollectionCodes(args, context, undefined, true)
   },
+  fonds: (args, context) => {
+    return queries.common.getCollectionCodes(args, context, undefined, true)
+  },
   collectionNames: (args, context) => {
     return queries.common.getCollectionNames(args, context, undefined, true)
   },
