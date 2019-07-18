@@ -6,9 +6,9 @@
     </a>
   </div>
 
-  <div class="docs-nav">
-    <div class="accordion-container">
-      <div class="accordion">
+  <div id="doc-nav" class="docs-nav">
+    <div id="accordCont" class="accordion-container">
+      <div id="accordAbout" class="accordion">
         <input id="accordion-aboutapi" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "aboutapi"}}checked=checked{{/ifEqual}}>
         <label class="accordion-header content c-hand" for="accordion-aboutapi">{{i18n.documentation.aboutapi}}</label>
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="accordion">
+      <div id="accordDoc" class="accordion">
         <input id="accordion-documentation" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "documentation"}}checked=checked{{/ifEqual}}>
         <label class="accordion-header content c-hand"
@@ -105,7 +105,7 @@
         </div>
       </div>
       {{#if user.roles.isVendor}}
-        <div class="accordion">
+        <div id="accordExtra" class="accordion">
           <input id="accordion-siggonline" type="checkbox" name="docs-accordion-checkbox" hidden=""
             {{#ifEqual navOpen "siggonline"}}checked=checked{{/ifEqual}}>
           <label class="accordion-header content c-hand"
@@ -129,16 +129,19 @@
             </ul>
           </div>
         </div>
+      {{else}}
+        <div id="accordExtra"></div>
       {{/if}}
 
-      <div class="accordion">
+
+      <div id="overlap" class="accordion">
         <input id="accordion-elements" type="checkbox" name="docs-accordion-checkbox" hidden=""
           {{#ifEqual navOpen "termsofuse"}}checked=checked{{/ifEqual}}>
         <label class="accordion-header c-hand"><a class="terms-of-use"
             href="/{{lang}}/documentation/termsofuse">{{i18n.documentation.terms-of-use}}</a></label>
       </div>
 
-      <div class="accordion contacts-links">
+      <div id="footerDiv" class="accordion contacts-links isAbsolute" style="width: 240px">
         <ul class="menu menu-nav">
           <li class="menu-item"><a
               href="https://stories.mplus.org.hk/{{lang}}/contact-m-stories/">{{i18n.documentation.contact}}</a></li>
@@ -159,3 +162,26 @@
   </div>
 </div>
 <a class="off-canvas-overlay" href="#close"></a>
+
+<script>
+  var footer = document.getElementById('footerDiv');
+  var el1 = document.getElementById('accordAbout');
+  var el2 = document.getElementById('accordDoc');
+  var el3 = document.getElementById('accordExtra');
+  var el4 = document.getElementById('overlap');
+
+  function checkPositions() {
+    const bottom = el1.clientHeight + el2.clientHeight + el3.clientHeight + el4.clientHeight;
+
+    if (bottom > 450) {
+      footer.classList.remove('isAbsolute')
+    } else {
+      footer.classList.add('isAbsolute')
+    }
+  }
+
+  setInterval(function () {
+    checkPositions()
+  }, 16)
+  checkPositions();
+</script>

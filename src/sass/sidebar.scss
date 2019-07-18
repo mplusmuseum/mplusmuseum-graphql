@@ -13,9 +13,14 @@
     bottom: 0 !important;
   }
 
+  .isAbsolute {
+    position: absolute;
+  }
+
   .contacts-links {
 
-    margin-top: 8rem;
+    bottom: 0;
+    margin-top: 0;
 
     .menu-item {
       padding-left: 0;
