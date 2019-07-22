@@ -266,6 +266,13 @@ class Queries {
     objectCount
   }
 }`
+
+    this.constituentsId = `query {
+  constituents[[]] {
+    id
+  }
+}`
+
     this.constituent = `query {
   constituent[[]] {
     id
@@ -321,6 +328,13 @@ class Queries {
 
     this.archivalLevels = `query {
   archivalLevels[[]] {
+    title
+    count
+  }
+}`
+
+    this.fonds = `query {
+  fonds[[]] {
     title
     count
   }
@@ -425,6 +439,50 @@ class Queries {
     objects {
       id
       title
+    }
+  }
+}`
+
+    this.exhibitionPurpose = `query {
+    exhibition[[]] {
+      objects {
+        id
+        title
+          exhibitions {
+          labels {
+            purpose
+          }
+        }
+      }
+    }
+}`
+
+    this.exhibitionDescription = `query {
+  exhibition[[]] {
+    objects {
+      id
+      title
+      exhibitions {
+        labels {
+          purpose
+          text
+        }
+      }
+    }
+  }
+}`
+
+    this.exhibitionBiographies = `query {
+  exhibition[[]] {
+    objects {
+      id
+      title
+      constituents {
+        exhibitionBios {
+          purpose
+          text
+        }
+      }
     }
   }
 }`

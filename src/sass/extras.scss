@@ -57,3 +57,8 @@ div.docs-content {
     position: inherit !important;
   }
 }
+
+.accordion input:checked~.accordion-body,
+.accordion[open] .accordion-body {
+  max-height: 100rem;
+}

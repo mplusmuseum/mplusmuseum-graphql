@@ -50,6 +50,9 @@
                 <ul class="menu menu-nav">
                   <li class="menu-item"><a
                       href="/{{lang}}/documentation#introspection">{{i18n.documentation.introspection}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#filteringthequeries">{{i18n.documentation.filteringthequeries}}</a>
+                  </li>
                   <li class="menu-item"><a href="/{{lang}}/documentation#objects">{{i18n.documentation.objects}}</a>
                     <ul>
                       <li class="menu-item"><a
@@ -62,46 +65,69 @@
                       </li>
                       <li class="menu-item"><a
                           href="/{{lang}}/documentation#objects_sorting">{{i18n.documentation.sorting}}</a></li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#objects_bycolour">{{i18n.documentation.bycolour}}</a></li>
                     </ul>
-                  <li class="menu-item"><a
-                      href="/{{lang}}/documentation#objects_bycolour">{{i18n.documentation.bycolour}}</a></li>
-                </ul>
-              </li>
-              <li class="menu-item"><a
-                  href="/{{lang}}/documentation#constituents">{{i18n.documentation.constituents}}</a>
-                <ul>
-                  <li class="menu-item"><a
-                      href="/{{lang}}/documentation#constituents_paginationandfilter">{{i18n.documentation.paginationandfilter}}</a>
+                  </li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#areas">{{i18n.documentation.areas}}</a>
                   </li>
                   <li class="menu-item"><a
-                      href="/{{lang}}/documentation#constituents_sorting">{{i18n.documentation.sorting}}</a></li>
+                      href="/{{lang}}/documentation#categories">{{i18n.documentation.categories}}</a>
+                  </li>
+
                   <li class="menu-item"><a
-                      href="/{{lang}}/documentation#constituents_fetchingbyids">{{i18n.documentation.fetchingbyids}}</a>
+                      href="/{{lang}}/documentation#archivallevels">{{i18n.documentation.archivallevels}}</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#fonds">{{i18n.documentation.fonds}}</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#mediums">{{i18n.documentation.mediums}}</a>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#constituents">{{i18n.documentation.constituents}}</a>
+                    <ul>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents_fetchingbyids">{{i18n.documentation.fetchingbyids}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituent-roles-title">{{i18n.documentation.constituent-roles-title}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents-by-roles">{{i18n.documentation.constituents-by-roles}}</a>
+                      </li>
+
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents_paginationandfilter">{{i18n.documentation.paginationandfilter}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents_sorting">{{i18n.documentation.sorting}}</a></li>
+                    </ul>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#constituent">{{i18n.documentation.constituent}}</a>
+                    <ul>
+                      <li class="menu-item"><a href="/{{lang}}/documentation#nesting">{{i18n.documentation.nesting}}</a>
+                      </li>
+                    </ul>
+                    <ul>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#objects-connected-constituent">{{i18n.documentation.objects-connected-constituent}}</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#exhibitions">{{i18n.documentation.exhibitions}}</a>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#exhibition">{{i18n.documentation.exhibition}}</a>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#makertypes">{{i18n.documentation.makertypes}}</a>
                   </li>
                 </ul>
               </li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#constituent">{{i18n.documentation.constituent}}</a>
+            {{else}}
+              <li class="menu-item"><a href="/login">{{i18n.documentation.must-be-logged-in}}</a>
               </li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#exhibitions">{{i18n.documentation.exhibitions}}</a>
-              </li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#exhibition">{{i18n.documentation.exhibition}}</a>
-              </li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#areas">{{i18n.documentation.areas}}</a></li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#categories">{{i18n.documentation.categories}}</a>
-              </li>
-              <li class="menu-item"><a
-                  href="/{{lang}}/documentation#archivallevels">{{i18n.documentation.archivallevels}}</a></li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#mediums">{{i18n.documentation.mediums}}</a>
-              </li>
-              <li class="menu-item"><a href="/{{lang}}/documentation#makertypes">{{i18n.documentation.makertypes}}</a>
-              </li>
-          </ul>
-          </li>
-          {{else}}
-            <li class="menu-item"><a href="/login">{{i18n.documentation.must-be-logged-in}}</a>
-            </li>
             {{/if}}
-            </ul>
+          </ul>
         </div>
       </div>
       {{#if user.roles.isVendor}}
@@ -109,7 +135,7 @@
           <input id="accordion-siggonline" type="checkbox" name="docs-accordion-checkbox" hidden=""
             {{#ifEqual navOpen "siggonline"}}checked=checked{{/ifEqual}}>
           <label class="accordion-header content c-hand"
-            for="accordion-siggonline">{{i18n.documentation.sigg-online}}</label>
+            for="accordion-siggonline">{{{i18n.documentation.sigg-online-short}}}</label>
           <div class="accordion-body">
             <ul class="menu menu-nav">
               <li class="menu-item"><a

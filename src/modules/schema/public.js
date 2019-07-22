@@ -13,6 +13,7 @@ type Query {
     category: String
     area: String
     archivalLevel: String
+    fonds: String
     title: String
     displayDate: String
     beginDate: Int
@@ -126,9 +127,19 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    fonds: String
     area: String
     category: String
   ): [Area]
+
+  fonds(
+    page: Int
+    per_page: Int
+    publicAccess: Boolean
+    lang: String = "en"
+    sort: String = "asc"
+    sort_field: String = "id"
+  ): [CollectionCodes]
   
   categories(
     page: Int
@@ -136,6 +147,7 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    fonds: String
     area: String
     category: String
   ): [Categories]
@@ -185,6 +197,7 @@ type LevelOneObject {
   endDate: Int
   dimension: String
   dimensionDetails: [DimensionDetails]
+  fonds: String
   medium: String
   creditLine: String
   constituents: [LevelTwoConstituent]
@@ -207,6 +220,7 @@ type SingleObject {
   endDate: Int
   dimension: String
   dimensionDetails: [DimensionDetails]
+  fonds: String
   medium: String
   creditLine: String
   constituents: [LevelTwoConstituent]
@@ -229,6 +243,7 @@ type LevelTwoObject {
   endDate: Int
   dimension: String
   dimensionDetails: [DimensionDetails]
+  fonds: String
   medium: String
   constituents: [LevelThreeConstituent]
   images: [Image]
@@ -250,6 +265,7 @@ type LevelThreeObject {
   endDate: Int
   dimension: String
   dimensionDetails: [DimensionDetails]
+  fonds: String
   medium: String
   creditLine: String
   images: [Image]
@@ -271,6 +287,7 @@ type RelatedObject {
   endDate: Int
   dimension: String
   dimensionDetails: [DimensionDetails]
+  fonds: String
   medium: String
   creditLine: String
   images: [Image]
@@ -371,6 +388,12 @@ type Classification {
 type Area {
   title: String
   count: Int
+}
+
+type CollectionCodes {
+  title: String
+  count: Int
+  _sys: MiniSys
 }
 
 type Categories {
