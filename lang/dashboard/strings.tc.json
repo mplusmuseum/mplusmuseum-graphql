@@ -35,11 +35,13 @@
     "categories": "類別",
     "mediums": "媒材",
     "archivallevels": "Archival Levels",
+    "fonds": "Fonds",
     "constituents": "相關各方",
     "constituent": "相關各方",
     "makertypes": "Maker Types",
     "must-be-logged-in": "You must be logged in to see the documentation",
     "sigg-online": "Sigg Online",
+    "sigg-online-short": "Sigg Online",
     "getting-started": "Getting Started",
     "object-rights": "Object Rights",
     "concepts": "Concepts",
@@ -92,9 +94,17 @@
     "aggs-filters": "有效的篩選器為 <code class=\"red\">per_page</code>（每頁結果）、<code class=\"red\">lang</code>（語言）、<code class=\"red\">sort</code>（排序）和 <code class=\"red\">sort_field</code>（字段排序）。",
     "aggs-sort": "<code class=\"red\">sort_field</code>（字段排序）的有效值為 <code>title</code>（標題）和 <code>count</code>（數目）。<code>sort</code>（排序）的有效值為 <code>asc</code>（遞增）和 <code>desc</code>（遞減）。",
     "aggs-per-page": "以<code class=\"red\">per_page</code>（每頁結果）篩選可限制查詢結果的數目。舉個例說，輸入<code>(per_page: 10)</code>的話，就只會回傳10項紀錄。與查詢物件不同，此數據集不能分頁。",
+    "filter-by-area-title": "Filtering Objects by Area",
+    "filter-by-area": "To filter objects by area, run an object query with <code>(area: \"XXX\")</code> where ‘XXX’ is a specific area id.",
+    "filter-by-category-title": "Filtering Objects by Category",
+    "filter-by-category": "To filter objects by category, run an object query with <code>(category: \"XXX\")</code> where ‘XXX’ is a specific category id.",
     "category-1": "你可以擷取所有有效類別，用以篩選物件。舉個例說，運行以下查詢的話，便會回傳數個類別，接著，你可以採用 <code>(category: \"xxxxxxxx\")</code> ，即以類別查詢物件。當中的\"xxxxxxxx\" 就是上述查詢回傳的類別之一。",
     "medium-1": "你可以擷取所有有效媒介，用以篩選物件。舉個例說，運行以下查詢的話，便會回傳數個媒介，接著你可以採用 <code>(medium: \"xxxxxxxx\")</code>查詢物件，當中的 \"xxxxxxxx\" 就是上述查詢回傳的範圍之一。",
+    "filter-by-medium-title": "Filtering Objects by Medium",
+    "filter-by-medium": "To filter objects by medium, run an object query with <code>(medium: \"XXX\")</code> where ‘XXX’ is a specific medium id.",
     "archivalLevel-1": "You can fetch all the valid archival levels which you can then use to filter objects by. For example running the query below will return a handful of levels, which you would then use in an Object query with <code>(archivalLevel: \"xxxxxxxx\")</code> where \"xxxxxxxx\" is one of the level returned by this query.",
+    "fonds-1": "Fonds are used to query fonds-level archival records within the M+ Collection Archives. To fetch all valid fonds, run the following query.",
+    "fonds-2": "Below is an example of a query that is calling all of the objects that fall under a specific collection code.",
     "constituents-1": "構成要素就是與物件有關的人物和機構，如藝術家、賣家或買家，亦可能是策展人或展示物件的機構。",
     "constituents-2": "這項查詢選擇所有構成要素，並能夠透過以下字段進行篩選。備註：篩選屬累加性質而非任擇其一，篩選兩個字段的話，只會回傳同時吻合兩者的數據。",
     "constituents-filters": "有效的篩選為：<code class=\"red\">page</code>（頁數）、<code class=\"red\">per_page</code>（每頁結果）、<code class=\"red\">sort_field</code>（字段排序）、<code class=\"red\">sort</code>（排序）、<code class=\"red\">[ids]</code>、<code class=\"red\">gender</code>（性別）、<code class=\"red\">beginDate</code>（開始日期）、<code class=\"red\">endDate</code>（結束日期）、<code class=\"red\">nationality</code>（國籍）和 <code class=\"red\">lang</code>（語言)",
@@ -103,7 +113,8 @@
     "constituents-more-info": "以下我們稍為增加查詢資訊量，請留意我們可以用<code class=\"red\">per_page</code>（每頁結果）篩選，以限制查詢結果的數目",
     "constituents-sorting": "以下是使用<code>alphaSortName</code>（字母排序名稱）進行排序分類的例子。",
     "constituents-by-ids-example": "你亦可以透過輸入一系列 <code class=\"red\">ids</code>，查詢特定的構成要素。",
-
+    "constituent-roles-title": "Constituent Roles",
+    "constituent-roles-1": "‘Roles’ refers to the types of constituents that are within the dataset. You can get a list of all the constituent roles using the <code>makertypes</code> query. Note: this data will allow you to filter constituents by a single type in a constituent query. ",
     "constituents-by-roles": "Fetching by roles example",
     "constituents-by-roles-1": "If you wanted to find all the \"Artists\" constituents ordered by the ones who had the most objects in the <em>whole</em> system, then you can do it with the following query.",
 
@@ -112,14 +123,21 @@
     "nesting-2": "若你請求單一物件，你可獲取稍多有關構成要素的資訊，例子如下：",
     "nesting-3": "超過首兩層後，你不能繼續嵌套物件和構成要素，因為兩者只會不斷互相嵌套",
     "nesting-4": "你亦可在物件內嵌套構成要素，但同樣地，回傳的資訊有限，亦只限於兩層。",
+
     "connected-1": "要尋找與構成要素有關聯的物件，有兩個方法。如果想尋找所有由某位藝術家創造的物件，可以運行查詢，找出藝術家，亦在該項查詢內請求與該藝術家有關的物件，例子如下：",
     "connected-2": "你亦可以構成要素ID篩選，用以搜尋物件。第二個方式的好處是，你可以進一步篩選結果。以下的查詢顯示一位用戶以某種媒介編整的全部物件。",
 
     "exhibitions-1": "Exhibitions work the same way, you can get all exhibitions...",
     "exhibitions-2": "Again, you can do this via the objects endpoint. Here's a more fleshed out example for all all objects in the Sigg Online exhibition with the category of \"Painting\" shown 10 per page.",
     "exhibitions-3": "Which should give you everything you need to string together showing objects for the exhibition. You will have to do some filtering to match the labels and bios with the exhibition using the \"purpose\" label.",
+
     "exhibition-1": "Or you can just get the one we are interested in, <strong>Siggs Online</strong> is Exhibition <code>95</code> this is a minimal example...",
 
+    "text-entries": "Text Entries",
+    "text-entries-1": "Text entries refer to supplemental information about objects and exhibitions including purpose, object description, and artist biographies.",
+    "text-entries-2": "To fetch all valid purpose entries, run the following query.",
+    "text-entries-3": "To fetch all valid object descriptions, run the following query. ",
+    "text-entries-4": "To fetch all available artist biographies, run the following query.",
     "makertypes-1": "You can get a list of all the \"Types\" of constituent using the following query. Note, this allows you to filter constituents by a single type"
 
   },
