@@ -20,6 +20,7 @@ const request = require('request-promise')
 
 // Break out all the seperate parts of the site
 /* eslint-disable import/no-unresolved */
+const admin = require('./admin')
 const config = require('./config')
 const documentation = require('./documentation')
 const main = require('./main')
@@ -448,6 +449,8 @@ router.use('/:token/playground', bodyParser.json(), expressGraphql(async (req) =
 // ############################################################################
 
 router.get('/', main.index)
+router.get('/admin/translation', ensureLoggedIn, admin.translation)
+router.post('/admin/translation', ensureLoggedIn, admin.translation)
 router.get('/config', ensureLoggedIn, config.index)
 router.post('/config', ensureLoggedIn, config.index)
 router.get('/status', ensureLoggedIn, status.index)

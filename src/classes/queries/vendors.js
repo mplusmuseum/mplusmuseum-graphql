@@ -612,6 +612,20 @@ class Queries {
     imagesTitle
   }
 }`
+
+    this.bibliographies = `query {
+  {
+    bibliographies[[]] {
+      id
+      title
+      subTitle
+      format
+      yearPublished
+      placePublished
+    }
+  }
+}`
+
     this.exhibitionPurpose = `query {
   exhibition[[]] {
     objects {

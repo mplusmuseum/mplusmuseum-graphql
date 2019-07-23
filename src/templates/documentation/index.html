@@ -253,7 +253,7 @@
             class="query language-javascript">{{{nodeQuery queries.objectsMini '' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5>{{i18n.documentation.fetchingbyids}}</h5>
+          <h5 id="objects_fetchingbyids">{{i18n.documentation.fetchingbyids}}</h5>
 
           <p>
             {{{i18n.documentation.object-by-ids-example}}}
@@ -293,7 +293,7 @@
           </pre>
 
 
-          <h5>{{i18n.documentation.paginationandfilter}}</h5>
+          <h5 id="objects_paginationandfilter">{{i18n.documentation.paginationandfilter}}</h5>
 
           <p>
             {{{i18n.documentation.object-pagination}}}
@@ -320,7 +320,7 @@
             class="query language-javascript">{{{nodeQuery queries.objectsMedium '(page:0, per_page: 5, area: "Moving Image")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5>{{i18n.documentation.sorting}}</h5>
+          <h5 id="objects_sorting">{{i18n.documentation.sorting}}</h5>
 
           <p>
             {{{i18n.documentation.object-sort-example}}}
@@ -346,7 +346,7 @@
             class="query language-javascript">{{{nodeQuery queries.objectsLarge '(sort_field: "sortNumber", sort: "asc")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5>{{i18n.documentation.filter-by-colours}}</h5>
+          <h5 id="objects_bycolour">{{i18n.documentation.filter-by-colours}}</h5>
 
           <p>
             {{{i18n.documentation.filter-by-colours-1}}}
@@ -457,7 +457,7 @@
             class="query language-javascript">{{{nodeQuery queries.categories '(lang: "zh-hant", sort_field: "count", sort: "desc")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5><a id="filter-by-category-title">{{i18n.documentation.filter-by-category-title}}</a></h5>
+          <h5 id="filter-by-category-title">{{i18n.documentation.filter-by-category-title}}</h5>
 
           <p>
             {{{i18n.documentation.filter-by-category}}}
@@ -562,7 +562,7 @@
           <pre class="query language-javascript">{{{nodeQuery queries.mediums '' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5><a id="filter-by-medium-title">{{i18n.documentation.filter-by-medium-title}}</a></h5>
+          <h5 id="filter-by-medium-title">{{i18n.documentation.filter-by-medium-title}}</h5>
 
           <p>
             {{{i18n.documentation.filter-by-medium}}}
@@ -576,7 +576,7 @@
             ###################################################################################            
           ---}}
 
-          <h4 id="introspection">{{i18n.documentation.constituents}}</h4>
+          <h4 id="constituents">{{i18n.documentation.constituents}}</h4>
 
           <p>
             {{{i18n.documentation.constituents-1}}}
@@ -613,7 +613,7 @@
             class="query language-javascript">{{{nodeQuery queries.constituentsId '' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5>{{i18n.documentation.fetchingbyids}}</h5>
+          <h5 id="constituents_fetchingbyids">{{i18n.documentation.fetchingbyids}}</h5>
           <p>
             {{{i18n.documentation.constituents-by-ids-example}}}
           </p>
@@ -638,7 +638,7 @@
             class="query language-javascript">{{{nodeQuery queries.constituents '(ids:[238, 382, 459, 608], lang: "zh-hant")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5><a id="constituent-roles-title">{{i18n.documentation.constituent-roles-title}}</a></h5>
+          <h5 id="constituent-roles-title">{{i18n.documentation.constituent-roles-title}}</h5>
 
           <p>
             {{{i18n.documentation.constituent-roles-1}}}
@@ -661,7 +661,7 @@
             class="query language-javascript">{{{nodeQuery queries.constituentTypes '' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5><a id="constituents-by-roles">{{i18n.documentation.constituents-by-roles}}</a></h5>
+          <h5 id="constituents-by-roles">{{i18n.documentation.constituents-by-roles}}</h5>
 
           <p>
             {{{i18n.documentation.constituents-by-roles-1}}}
@@ -687,7 +687,7 @@
             class="query language-javascript">{{{nodeQuery queries.constituents '(role:"Artist", isMaker:true, sort_field: "objectCount", sort:"desc")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5>{{{i18n.documentation.paginationandfilter}}}</h5>
+          <h5 id="constituents_paginationandfilter">{{{i18n.documentation.paginationandfilter}}}</h5>
 
           <p>
             {{{i18n.documentation.constituents-more-info}}}
@@ -713,7 +713,7 @@
             class="query language-javascript">{{{nodeQuery queries.constituents '(page:3, per_page: 5, gender: "Female")' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5>{{{i18n.documentation.sorting}}}</h5>
+          <h5 id="constituents_sorting">{{{i18n.documentation.sorting}}}</h5>
 
           <p>
             {{{i18n.documentation.constituents-sorting}}}
@@ -747,7 +747,7 @@
             ###################################################################################            
           ---}}
 
-          <h4 id="introspection">{{i18n.documentation.constituent}}</h4>
+          <h4 id="constituent">{{i18n.documentation.constituent}}</h4>
 
           <p>
             {{{i18n.documentation.constituent-1}}}
@@ -783,7 +783,7 @@
             class="query language-javascript">{{{nodeQuery queries.constituent '(id: 238)' config.graphql.host user.apitoken}}}
           </pre>
 
-          <h5><a id="nesting">{{i18n.documentation.nesting}}</a></h5>
+          <h5 id="nesting">{{i18n.documentation.nesting}}</h5>
 
           <p>
             {{{i18n.documentation.nesting-1}}}
@@ -813,7 +813,7 @@
             {{i18n.documentation.nesting-4}}
           </p>
 
-          <h5><a id="objects-connected-constituent">{{i18n.documentation.objects-connected-constituent}}</a></h5>
+          <h5 id="objects-connected-constituent">{{i18n.documentation.objects-connected-constituent}}</h5>
 
           {{{i18n.documentation.connected-1}}}
 
@@ -935,7 +935,7 @@
           ---}}
 
           {{#if user.roles.isVendor}}
-            <h3 id="apitoken">{{{i18n.documentation.sigg-online}}}</h3>
+            <h3 id="sigg-graphQL">{{{i18n.documentation.sigg-online}}}</h3>
 
             <p>
               {{{i18n.sigg.getstarted}}}
@@ -1028,6 +1028,24 @@
                 href='{{exploreQuery queries.timeline "(lang:\"en\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
             <pre class="query language-graphql">{{{graphQLQuery queries.timeline '(lang:"en")'}}}</pre>
+
+            {{!---
+              ###################################################################################
+  
+              Bibliographies
+  
+              ###################################################################################            
+            ---}}
+            <h4 id="sigg-bibliographies">{{i18n.documentation.bibliographies}}</h4>
+
+            <p>
+              {{{i18n.sigg.bibliographies-1}}}
+            </p>
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.bibliographies "(lang:\"en\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre class="query language-graphql">{{{graphQLQuery queries.bibliographies '(lang:"en")'}}}</pre>
 
           {{/if}}
         </div>

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+  <title>M+ Translation</title>
+  {{> head}}
+</head>
+
+<body>
+
+  <div class="container grid-lg">
+    <div class="columns">
+      <div class="column">
+        <h1>Do all the translations here</h1>
+        <form method="POST" action="/admin/translation">
+          {{#each masterTranslations}}
+            <h2>{{@key}}</h2>
+            {{#each @this}}
+              <br /><br />
+              <h5>{{@key}}</h5>
+              <div class="columns">
+                <div class="col-6">
+                  <textarea class="form-input input-sm" rows="8" style="width: 95%"
+                    name="{{@../key}}.{{@key}}.en">{{en}}</textarea>
+                </div>
+                <div class="col-6">
+                  <textarea class="form-input input-sm" rows="8" style="width: 95%; float: right"
+                    name="{{@../key}}.{{@key}}.tc">{{tc}}</textarea>
+                </div>
+              </div>
+            {{/each}}
+            <hr />
+          {{/each}}
+          <button name="action" value="updateTranslations">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
