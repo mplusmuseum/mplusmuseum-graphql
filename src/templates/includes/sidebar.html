@@ -1,0 +1,205 @@
+<div class="docs-sidebar off-canvas-sidebar" id="sidebar">
+
+  <div class="docs-brand">
+    <a class="docs-logo" href="/">
+      <img src="/images/logo_{{lang}}.png" alt="" />
+    </a>
+  </div>
+
+  <div id="doc-nav" class="docs-nav">
+    <div id="accordCont" class="accordion-container">
+      <div id="accordAbout" class="accordion">
+        <input id="accordion-aboutapi" type="checkbox" name="docs-accordion-checkbox" hidden=""
+          {{#ifEqual navOpen "aboutapi"}}checked=checked{{/ifEqual}}>
+        <label class="accordion-header content c-hand" for="accordion-aboutapi">{{i18n.documentation.aboutapi}}</label>
+        <div class="accordion-body">
+          <ul class="menu menu-nav">
+            <li class="menu-item"><a
+                href="/{{lang}}/documentation/about#background">{{i18n.documentation.background}}</a>
+            </li>
+            <li class="menu-item"><a href="/{{lang}}/documentation/about#thedata">{{i18n.documentation.thedata}}</a>
+            </li>
+            <li class="menu-item"><a href="/{{lang}}/documentation/about#access">{{i18n.documentation.access}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="accordDoc" class="accordion">
+        <input id="accordion-documentation" type="checkbox" name="docs-accordion-checkbox" hidden=""
+          {{#ifEqual navOpen "documentation"}}checked=checked{{/ifEqual}}>
+        <label class="accordion-header content c-hand"
+          for="accordion-documentation">{{i18n.documentation.title}}</label>
+        <div class="accordion-body">
+          <ul class="menu menu-nav">
+            {{#if user}}
+              <li class="menu-item"><a href="/{{lang}}/documentation#apitoken">{{i18n.documentation.yourapitoken}}</a>
+              </li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#endpoint">{{i18n.documentation.endpoint}}</a></li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#graphQL">{{i18n.documentation.about-graphql}}</a>
+                <ul class="menu menu-nav">
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#playground">{{i18n.documentation.graphql-playground}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#communicatingwithgraphql">{{i18n.documentation.communicating-with-graphql}}</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item"><a
+                  href="/{{lang}}/documentation#graphQLqueries">{{i18n.documentation.graphql-queries}}</a>
+                <ul class="menu menu-nav">
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#introspection">{{i18n.documentation.introspection}}</a></li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#filteringthequeries">{{i18n.documentation.filteringthequeries}}</a>
+                  </li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#objects">{{i18n.documentation.objects}}</a>
+                    <ul>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#objects_fetchingbyids">{{i18n.documentation.fetchingbyids}}</a>
+                      </li>
+                      <li class="menu-item"><a href="/{{lang}}/documentation#object">{{i18n.documentation.object}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#objects_paginationandfilter">{{i18n.documentation.paginationandfilter}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#objects_sorting">{{i18n.documentation.sorting}}</a></li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#objects_bycolour">{{i18n.documentation.bycolour}}</a></li>
+                    </ul>
+                  </li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#areas">{{i18n.documentation.areas}}</a>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#categories">{{i18n.documentation.categories}}</a>
+                  </li>
+
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#archivallevels">{{i18n.documentation.archivallevels}}</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#fonds">{{i18n.documentation.fonds}}</a></li>
+                  <li class="menu-item"><a href="/{{lang}}/documentation#mediums">{{i18n.documentation.mediums}}</a>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#constituents">{{i18n.documentation.constituents}}</a>
+                    <ul>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents_fetchingbyids">{{i18n.documentation.fetchingbyids}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituent-roles-title">{{i18n.documentation.constituent-roles-title}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents-by-roles">{{i18n.documentation.constituents-by-roles}}</a>
+                      </li>
+
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents_paginationandfilter">{{i18n.documentation.paginationandfilter}}</a>
+                      </li>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#constituents_sorting">{{i18n.documentation.sorting}}</a></li>
+                    </ul>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#constituent">{{i18n.documentation.constituent}}</a>
+                    <ul>
+                      <li class="menu-item"><a href="/{{lang}}/documentation#nesting">{{i18n.documentation.nesting}}</a>
+                      </li>
+                    </ul>
+                    <ul>
+                      <li class="menu-item"><a
+                          href="/{{lang}}/documentation#objects-connected-constituent">{{i18n.documentation.objects-connected-constituent}}</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#exhibitions">{{i18n.documentation.exhibitions}}</a>
+                  </li>
+                  <li class="menu-item"><a
+                      href="/{{lang}}/documentation#exhibition">{{i18n.documentation.exhibition}}</a>
+                  </li>
+                </ul>
+              </li>
+            {{else}}
+              <li class="menu-item"><a href="/login">{{i18n.documentation.must-be-logged-in}}</a>
+              </li>
+            {{/if}}
+          </ul>
+        </div>
+      </div>
+      {{#if user.roles.isVendor}}
+        <div id="accordExtra" class="accordion">
+          <input id="accordion-siggonline" type="checkbox" name="docs-accordion-checkbox" hidden=""
+            {{#ifEqual navOpen "siggonline"}}checked=checked{{/ifEqual}}>
+          <label class="accordion-header content c-hand"
+            for="accordion-siggonline">{{{i18n.documentation.sigg-online}}}</label>
+          <div class="accordion-body">
+            <ul class="menu menu-nav">
+              <li class="menu-item"><a
+                  href="/{{lang}}/documentation#sigg-objectrights">{{i18n.documentation.object-rights}}</a>
+              </li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#sigg-concepts">{{i18n.documentation.concepts}}</a>
+              </li>
+              <li class="menu-item"><a href="/{{lang}}/documentation#sigg-timeline">{{i18n.documentation.timeline}}</a>
+              </li>
+              <li class="menu-item"><a
+                  href="/{{lang}}/documentation#sigg-bibliographies">{{i18n.documentation.bibliographies}}</a></li>
+            </ul>
+          </div>
+        </div>
+      {{else}}
+        <div id="accordExtra"></div>
+      {{/if}}
+
+
+      <div id="overlap" class="accordion">
+        <input id="accordion-elements" type="checkbox" name="docs-accordion-checkbox" hidden=""
+          {{#ifEqual navOpen "termsofuse"}}checked=checked{{/ifEqual}}>
+        <label class="accordion-header c-hand"><a class="terms-of-use"
+            href="/{{lang}}/documentation/termsofuse">{{i18n.documentation.terms-of-use}}</a></label>
+      </div>
+
+      <div id="footerDiv" class="accordion contacts-links isAbsolute" style="width: 240px">
+        <ul class="menu menu-nav">
+          <li class="menu-item"><a
+              href="https://stories.mplus.org.hk/{{lang}}/contact-m-stories/">{{i18n.documentation.contact}}</a></li>
+          <li class="menu-item"><a
+              href="https://stories.mplus.org.hk/{{lang}}/privacy-policy-statement/">{{i18n.documentation.privacy-policy-statement}}</a>
+          </li>
+        </ul>
+        <div class="image-holder">
+          <span class="mplus-icon"><a href="//mplus.org.hk"><img class="footer-logo" src="/images/mplus_logo.png"
+                alt=""></a></span>
+          <span class="westkowloon-icon"><a href="//westkowloon.hk"><img class="footer-logo" src="/images/wk_logo.png"
+                alt=""></a></span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<a class="off-canvas-overlay" href="#close"></a>
+
+<script>
+  var footer = document.getElementById('footerDiv');
+  var el1 = document.getElementById('accordAbout');
+  var el2 = document.getElementById('accordDoc');
+  var el3 = document.getElementById('accordExtra');
+  var el4 = document.getElementById('overlap');
+
+  function checkPositions() {
+    const bottom = el1.clientHeight + el2.clientHeight + el3.clientHeight + el4.clientHeight;
+
+    if (bottom > 450) {
+      footer.classList.remove('isAbsolute')
+    } else {
+      footer.classList.add('isAbsolute')
+    }
+  }
+
+  setInterval(function () {
+    checkPositions()
+  }, 16)
+  checkPositions();
+</script>

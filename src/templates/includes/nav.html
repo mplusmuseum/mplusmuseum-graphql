@@ -1,48 +1,20 @@
-<nav id="navbar" class="navbar has-background-light" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    {{#if loggedIn}}
-      <a class="navbar-item" href="/">
-        M+
-      </a>
+<div class="docs-navbar">
+  <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar"><i class="icon icon-menu"></i></a>
+  <section class="navbar-section">
+    <a href="{{toggleURL}}" class="btn btn-link lang-toggle">
+      {{#ifEqual lang 'en'}}
+        <img src="/images/zh.png" alt="" />
+        {{else}}
+          <img src="/images/en.png" alt="" />
+      {{/ifEqual}}
+    </a>
+    {{#if user}}
+      <figure class="avatar avatar-sm">
+        <img src="{{user.picture}}" alt="User avatar">
+      </figure>
+      <a href="/logout" class="btn btn-link pad-right">{{i18n.general.logout}}</a>
+    {{else}}
+      <a href="/login" class="btn btn-link pad-right">{{i18n.general.login}}</a>
     {{/if}}
-    <div class="navbar-burger burger" onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </div>
-  </div>
-
-  <div class="navbar-menu">
-    <div class="navbar-start capitalise">
-      {{#if user}}
-        {{#if user.roles.isAdmin}}
-          <a class="navbar-item" href="/status">
-            Status
-          </a>
-          <a class="navbar-item" href="/config">
-            Config
-          </a>
-        {{/if}}
-      {{/if}}
-    </div>
-
-    <div class="navbar-end">
-      {{#if user}}
-        <a class="navbar-item" href="/settings">
-          <figure class="image is-32x32">
-            <img class="avatar" src="{{user.picture}}" />
-          </figure>&nbsp;{{user.nickname}}
-        </a>
-        </a>
-        <a class="navbar-item capitalise" href="/logout">
-          {{i18n.nav.logout}}
-        </a>
-      {{else}}
-        <a class="navbar-item capitalise" href="/login">
-          {{i18n.nav.login}}
-        </a>
-      {{/if}}
-    </div>
-  </div>
-</nav>
-{{> connections}}
+  </section>
+</div>

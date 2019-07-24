@@ -163,8 +163,6 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
     conceptUse: String
-    beginDate: Int
-    endDate: Int
     title: String
     keyword: String
   ): [LevelThreeConcept]
@@ -814,8 +812,8 @@ type LevelOneConcept {
   title: String
   description: String
   displayDate: String
-  beginDate: Int
-  endDate: Int
+  beginDate: String
+  endDate: String
   conceptUse: String
   objects: [LevelOneObject]
   _sys: Sys
@@ -828,8 +826,8 @@ type LevelTwoConcept {
   title: String
   description: String
   displayDate: String
-  beginDate: Int
-  endDate: Int
+  beginDate: String
+  endDate: String
   conceptUse: String
   objects: [LevelTwoObject]
   _sys: Sys
@@ -842,8 +840,8 @@ type LevelThreeConcept {
   title: String
   description: String
   displayDate: String
-  beginDate: Int
-  endDate: Int
+  beginDate: String
+  endDate: String
   conceptUse: String
   _sys: Sys
 }

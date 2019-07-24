@@ -1,0 +1,108 @@
+@import "./variables";
+
+#sidebar {
+  background-color: $color-accent;
+  width: 15rem;
+  padding-top: 1rem;
+  height: 100%;
+  position: fixed;
+
+  bottom: 0;
+
+  .docs-nav {
+    bottom: 0 !important;
+  }
+
+  .isAbsolute {
+    position: absolute;
+  }
+
+  .contacts-links {
+
+    bottom: 0;
+    margin-top: 0;
+
+    .menu-item {
+      padding-left: 0;
+    }
+
+    img.footer-logo {
+      max-width: 6rem;
+      margin-top: 0.5rem;
+    }
+
+    .mplus-icon {
+      float: left;
+      padding-right: 12px;
+      margin-top: 0.25rem;
+    }
+
+    .westkowloon-icon {
+      float: right;
+    }
+  }
+
+  .menu {
+    padding: 0.4rem 0;
+  }
+
+  a,
+  .label-header {
+    font-size: .7rem;
+  }
+
+  a.terms-of-use {
+    font-size: 1rem;
+    font-weight: lighter;
+  }
+
+  label,
+  a {
+    color: white !important;
+    font-weight: lighter;
+  }
+
+  .accordion .accordion-header {
+    padding: 0;
+  }
+
+  label.content::after {
+    content: "\2304";
+    font-size: 1.4rem;
+  }
+
+  .menu-item {
+    font-size: .8rem;
+
+    li {
+      list-style: none;
+
+      .menu-item {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .docs-brand {
+    top: 1.5rem;
+  }
+
+  .docs-brand .docs-logo img {
+    width: 100%;
+  }
+
+  .accordion {
+    margin-bottom: 0;
+  }
+
+  label.c-hand {
+    font-size: 1rem;
+    text-transform: none;
+  }
+
+  .docs-nav {
+    width: inherit;
+    top: 6rem;
+  }
+
+}

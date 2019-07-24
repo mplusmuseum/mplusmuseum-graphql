@@ -1,0 +1,20 @@
+.docs-navbar {
+  width: 100%;
+
+  .navbar-section {
+    position: fixed;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  .pad-right {
+    padding-right: 1rem;
+  }
+
+  .lang-toggle {
+    img {
+      width: 25px;
+      height: 25px;
+    }
+  }
+}

@@ -1,8 +1,11 @@
+const fs = require('fs')
+const path = require('path')
 const express = require('express')
 const passport = require('passport')
 const router = express.Router()
 const User = require('../classes/user')
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
+const langDir = path.join(__dirname, '../../lang/dashboard')
 const Config = require('../classes/config')
 const expressGraphql = require('express-graphql')
 const bodyParser = require('body-parser')
@@ -17,7 +20,9 @@ const request = require('request-promise')
 
 // Break out all the seperate parts of the site
 /* eslint-disable import/no-unresolved */
+const admin = require('./admin')
 const config = require('./config')
+const documentation = require('./documentation')
 const main = require('./main')
 const status = require('./status')
 
@@ -81,22 +86,22 @@ router.use(function (req, res, next) {
   req.templateValues.config = req.config
   req.templateValues.NODE_ENV = process.env.NODE_ENV
 
-  if (req.user === undefined) {
-    req.user = null
+  if (!req.session || !req.session.user) {
+    req.templateValues.user = null
   } else {
     //  Shortcut the roles
-    if ('user_metadata' in req.user && 'roles' in req.user.user_metadata) {
-      req.user.roles = req.user.user_metadata.roles
-      req.user.apitoken = req.user.user_metadata.apitoken
+    if ('user_metadata' in req.session.user && 'roles' in req.session.user.user_metadata) {
+      req.session.user.roles = req.session.user.user_metadata.roles
+      req.session.user.apitoken = req.session.user.user_metadata.apitoken
     } else {
-      req.user.roles = {
+      req.session.user.roles = {
         isAdmin: false,
         isDeveloper: false,
         isStaff: false
       }
     }
+    req.templateValues.user = req.session.user
   }
-  req.templateValues.user = req.user
 
   //  If there is no Auth0 setting in config then we _must_
   //  check to see if we are setting Auth0 settings and if
@@ -145,6 +150,45 @@ router.use(function (req, res, next) {
     req.templateValues.NODE_ENV = process.env.NODE_ENV
     return res.render('config/auth0', req.templateValues)
   }
+
+  //  Grab the language
+  const defaultLang = 'en'
+  let selectedLang = defaultLang
+  const potentialLang = req.url.split('?')[0].split('/')[1]
+  const validLangs = ['en', 'tc']
+
+  if (validLangs.includes(potentialLang)) {
+    selectedLang = potentialLang
+  }
+  req.templateValues.lang = selectedLang
+
+  //  Read in the correct language
+  const i18n = JSON.parse(fs.readFileSync(path.join(langDir, `strings.${defaultLang}.json`)))
+  if (selectedLang !== defaultLang) {
+    const selectedi18n = JSON.parse(fs.readFileSync(path.join(langDir, `strings.${selectedLang}.json`)))
+    Object.entries(selectedi18n).forEach((branch) => {
+      const key = branch[0]
+      const values = branch[1]
+      if (!(key in i18n)) i18n[key] = {}
+      Object.assign(i18n[key], values)
+    })
+  }
+  req.templateValues.i18n = i18n
+
+  //  Work out what the toggle URL is
+  const urlSplit = req.url.split('/')
+  //  If we have a url that can be toggled
+  if (urlSplit.length >= 2 && validLangs.includes(urlSplit[1])) {
+    //  Swap out the language for a new one
+    if (urlSplit[1] === 'en') {
+      urlSplit[1] = 'tc'
+    } else {
+      urlSplit[1] = 'en'
+    }
+    const toggleURL = urlSplit.join('/')
+    req.templateValues.toggleURL = toggleURL
+  }
+
   next()
 })
 
@@ -405,11 +449,17 @@ router.use('/:token/playground', bodyParser.json(), expressGraphql(async (req) =
 // ############################################################################
 
 router.get('/', main.index)
+router.get('/admin/translation', ensureLoggedIn, admin.translation)
+router.post('/admin/translation', ensureLoggedIn, admin.translation)
 router.get('/config', ensureLoggedIn, config.index)
 router.post('/config', ensureLoggedIn, config.index)
 router.get('/status', ensureLoggedIn, status.index)
 router.get('/status/elasticsearch', ensureLoggedIn, status.elasticsearch)
 router.get('/wait', main.wait)
+
+router.get('/:lang/documentation', documentation.index)
+router.get('/:lang/documentation/about', documentation.about)
+router.get('/:lang/documentation/termsofuse', documentation.termsofuse)
 
 // ############################################################################
 //
@@ -438,7 +488,27 @@ if (configObj.get('auth0') !== null) {
   // Perform session logout and redirect to homepage
   router.get('/logout', (req, res) => {
     req.logout()
-    res.redirect('/')
+    if (req.session.passport) {
+      req.session.passport.user = null
+      delete req.session.passport.user
+    }
+    delete req.session.passport
+
+    req.session.user = null
+    delete req.session.user
+
+    req.session.save()
+    req.session.destroy(function (err) {
+      res.clearCookie('connect.sid')
+      setTimeout(() => {
+        res.redirect(307, '/')
+      }, 1000)
+      if (err) {
+        setTimeout(() => {
+          res.redirect(307, '/')
+        }, 1000)
+      }
+    })
   })
 
   // Perform the final stage of authentication and redirect to '/user'
@@ -450,7 +520,17 @@ if (configObj.get('auth0') !== null) {
     async function (req, res) {
       //  Update the user with extra information
       req.session.passport.user = await new User().get(req.user)
-      res.redirect(req.session.returnTo || '/')
+      req.session.user = await new User().get(req.user)
+      req.session.save()
+      let pow = JSON.stringify(req.session.user)
+      pow = JSON.parse(pow)
+      req.session.save()
+      return setTimeout(() => {
+        req.session.save()
+        console.log(`Logging in >> ${pow.user_id}`)
+        req.session.save()
+        res.redirect(307, '/en/documentation')
+      }, 2500)
     }
   )
 }

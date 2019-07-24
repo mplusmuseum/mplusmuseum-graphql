@@ -1,0 +1,1062 @@
+<html>
+
+<head>
+  <title>{{i18n.documentation.title}}</title>
+  {{> head}}
+  <link href="/css/prism.css" rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+        <div class="container" id="welcome">
+          <h2 class="title mt-2">{{i18n.documentation.title}}</h2>
+          <br />
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            API TOKEN
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 id="apitoken">{{i18n.documentation.yourapitoken}}</h3>
+          <p>
+            {{i18n.documentation.belowtoken}}
+          </p>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title h1 text-center">{{i18n.documentation.apitoken}}</div>
+              <div class="card-body h4 text-center">{{user.apitoken}}</div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            M+ ENDPOINT
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 id="endpoint">{{i18n.documentation.endpoint}}</h3>
+
+          <p>
+            {{i18n.documentation.belowendpoint}}
+          </p>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title h1 text-center">{{i18n.documentation.graphqlendpoint}}</div>
+              <div class="card-body h4 text-center"><code>{{config.graphql.host}}/graphql</code></div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            ABOUT GRAPHQL
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 id="graphQL">{{i18n.documentation.about-graphql}}</h3>
+
+          <p>
+            {{{i18n.documentation.graphql-about-1}}}
+          </p>
+          <p>
+            {{{i18n.documentation.graphql-about-2}}}
+          </p>
+
+
+          {{!---
+            ###################################################################################
+
+            Playground
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="playground">{{i18n.documentation.graphql-playground}}</h4>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-5}}}
+            <a href="{{config.graphql.host}}/playground">{{config.graphql.host}}/playground</a>
+          </p>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-6}}}
+            <a
+              href='{{exploreQuery queries.objectsMedium "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+
+          {{!---
+            ###################################################################################
+
+            Communicating with graphQL
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="communicatingwithgraphql">{{i18n.documentation.communicating-with-graphql}}<a class="anchor"
+              href="#communicatingwithgraphql" aria-hidden="true">#</a></h4>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-1}}}
+          </p>
+          <p>
+            <code>{{config.graphql.host}}/graphql</code>
+          </p>
+          <p>
+            {{{i18n.documentation.graphql-communicating-2}}}
+          </p>
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.hello "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+
+          <pre class="query language-graphql">{{{graphQLQuery queries.hello ''}}}</pre>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-3}}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.hello '' config.graphql.host user.apitoken}}}</pre>
+          <p>
+            {{{i18n.documentation.graphql-communicating-4}}}
+          </p>
+          <pre class="query language-javascript">{{{nodeQuery queries.hello '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <hr class="my-4">
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            GRAPHQL QUERIES
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          <h3 id="graphQLqueries">{{i18n.documentation.graphql-queries}}</h3>
+
+          <p>
+            {{{i18n.documentation.graphql-communicating-7}}}
+          </p>
+
+          {{!---
+            ###################################################################################
+
+            Introspection
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="introspection">{{i18n.documentation.introspection}}</h4>
+          <p>
+            {{{i18n.documentation.graphql-introspection-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.schema "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+
+          <pre class="query language-graphql">{{{graphQLQuery queries.schema}}}</pre>
+
+          {{!---
+            ###################################################################################
+
+            Filtering the Queries
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="filteringthequeries">{{i18n.documentation.filteringthequeries}}</h4>
+          <p>
+            {{{i18n.documentation.filteringthequeries-1}}}
+          </p>
+
+
+          {{!---
+            ###################################################################################
+
+            Objects
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="objects">{{i18n.documentation.objects}}</h4>
+
+          {{{i18n.documentation.graphql-objects-1}}}
+
+          <p>{{{i18n.documentation.graphql-objects-2}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.graphql-objects-3}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.graphql-objects-4}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.valid-lang}}}
+          </p>
+
+          <h5>
+            {{{i18n.documentation.graphql-objects-5}}}
+          </h5>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsMini "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectsMini ''}}}</pre>
+
+          <p class="subtitle is-5 no-bottom">
+            {{i18n.documentation.curl}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.objectsMini '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.objectsMini '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="objects_fetchingbyids">{{i18n.documentation.fetchingbyids}}</h5>
+
+          <p>
+            {{{i18n.documentation.object-by-ids-example}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsMedium "(ids:[1, 4, 6, 7])" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectsMedium '(ids:[1, 4, 6, 7])'}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+
+          <h5 id="object">{{i18n.documentation.object}}</h5>
+
+          <p>
+            {{{i18n.documentation.object-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectLarge "(id: 3000)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectLarge '(id: 3000)'}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.objectLarge '(id: 3000)' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.objectLarge '(id: 3000)' config.graphql.host user.apitoken}}}
+          </pre>
+
+
+          <h5 id="objects_paginationandfilter">{{i18n.documentation.paginationandfilter}}</h5>
+
+          <p>
+            {{{i18n.documentation.object-pagination}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsMedium "(page:0, per_page: 5, area: \"Moving Image\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.objectsMedium '(page:0, per_page: 5, area: "Moving Image")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom">
+            {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.objectsMedium '(page:0, per_page: 5, area: \\\"Moving Image\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.objectsMedium '(page:0, per_page: 5, area: "Moving Image")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="objects_sorting">{{i18n.documentation.sorting}}</h5>
+
+          <p>
+            {{{i18n.documentation.object-sort-example}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsLarge "(sort_field: \"sortNumber\", sort: \"asc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.objectsLarge '(sort_field: "sortNumber", sort: "asc")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.objectsLarge '(sort_field: \\\"sortNumber\\\", sort: \\\"asc\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.objectsLarge '(sort_field: "sortNumber", sort: "asc")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="objects_bycolour">{{i18n.documentation.filter-by-colours}}</h5>
+
+          <p>
+            {{{i18n.documentation.filter-by-colours-1}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.filter-by-colours-2}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.filter-by-colours-3}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.filter-by-colours-4}}}
+          </p>
+          <p>
+            {{{i18n.documentation.filter-by-colours-5}}}
+          </p>
+
+          <p class="runinexplore">
+            <a
+              href='{{exploreQuery queries.objectsColor "(color: \"orange\", color_threshold: 70.0, color_source: \"google\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.objectsColor '(color: "orange", color_threshold: 70.0, color_source: "google")' user.apitoken}}}
+          </pre>
+
+          {{!---
+            ###################################################################################
+
+            Areas
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="areas">{{i18n.documentation.areas}}</h4>
+
+          <p>
+            {{{i18n.documentation.areas-1}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.aggs-filters}}}
+            {{{i18n.documentation.aggs-sort}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.aggs-per-page}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.areas "(lang: \"zh-hant\", sort_field: \"count\", sort: \"asc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.areas '(lang: "zh-hant", sort_field: "count", sort: "asc")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.areas '(lang: \\\"zh-hant\\\", sort_field: \\\"count\\\", sort: \\\"asc\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.areas '(lang: "zh-hant", sort_field: "count", sort: "asc")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5>{{i18n.documentation.filter-by-area-title}}</h5>
+
+          <p>
+            {{{i18n.documentation.filter-by-area}}}
+          </p>
+          {{!---
+            ###################################################################################
+
+            Categories
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="categories">{{i18n.documentation.categories}}</h4>
+
+          <p>
+            {{{i18n.documentation.category-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.categories "(lang: \"zh-hant\", sort_field: \"count\", sort: \"desc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.categories '(lang: "zh-hant", sort_field: "count", sort: "desc")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.categories '(lang: \\\"zh-hant\\\", sort_field: \\\"count\\\", sort: \\\"desc\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.categories '(lang: "zh-hant", sort_field: "count", sort: "desc")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="filter-by-category-title">{{i18n.documentation.filter-by-category-title}}</h5>
+
+          <p>
+            {{{i18n.documentation.filter-by-category}}}
+          </p>
+
+          {{!---
+            ###################################################################################
+
+            Archival Levels
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="archivallevels">{{i18n.documentation.archivallevels}}</h4>
+
+          <p>
+            {{{i18n.documentation.archivalLevels-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.archivalLevels "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.archivalLevels ''}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.archivalLevels '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.archivalLevels '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          {{!---
+            ###################################################################################
+
+            Fonds
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="fonds">{{i18n.documentation.fonds}}</h4>
+
+          <p>
+            {{{i18n.documentation.fonds-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.fonds "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.fonds ''}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.fonds '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre class="query language-javascript">{{{nodeQuery queries.fonds '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p>
+            {{{i18n.documentation.fonds-2}}}
+          </p>
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsMedium "(fonds:\"CA1\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectsMedium '(fonds: "CA1")'}}}</pre>
+
+          {{!---
+            ###################################################################################
+
+            Mediums
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="mediums">{{i18n.documentation.mediums}}</h4>
+
+          <p>
+            {{{i18n.documentation.medium-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.mediums "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.mediums ''}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.mediums '' config.graphql.host user.apitoken}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre class="query language-javascript">{{{nodeQuery queries.mediums '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="filter-by-medium-title">{{i18n.documentation.filter-by-medium-title}}</h5>
+
+          <p>
+            {{{i18n.documentation.filter-by-medium}}}
+          </p>
+
+          {{!---
+            ###################################################################################
+
+            Constituents
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="constituents">{{i18n.documentation.constituents}}</h4>
+
+          <p>
+            {{{i18n.documentation.constituents-1}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.constituents-2}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.constituents-filters}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.constituents-sorts}}}
+          </p>
+
+          <h5>{{i18n.documentation.constituents-call-for-ids}}</h5>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituentsId "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.constituentsId ''}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.constituentsId '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.constituentsId '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="constituents_fetchingbyids">{{i18n.documentation.fetchingbyids}}</h5>
+          <p>
+            {{{i18n.documentation.constituents-by-ids-example}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituents "(ids:[238, 382, 459, 608], lang: \"zh-hant\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.constituents '(ids:[238, 382, 459, 608], lang: "zh-hant")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.constituents '(ids:[238, 382, 459, 608], lang: \\\"zh-hant\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.constituents '(ids:[238, 382, 459, 608], lang: "zh-hant")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="constituent-roles-title">{{i18n.documentation.constituent-roles-title}}</h5>
+
+          <p>
+            {{{i18n.documentation.constituent-roles-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituentTypes "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.constituentTypes ''}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre class="query language-bash">{{{curlQuery queries.constituentTypes '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.constituentTypes '' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="constituents-by-roles">{{i18n.documentation.constituents-by-roles}}</h5>
+
+          <p>
+            {{{i18n.documentation.constituents-by-roles-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituents "(role:\"Artist\", isMaker:true, sort_field: \"objectCount\", sort:\"desc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.constituents '(role:"Artist", isMaker:true, sort_field: "objectCount", sort:"desc")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.constituents '(role:\\\"Artist\\\", isMaker:true, sort_field: \\\"objectCount\\\", sort:\\\"desc\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.constituents '(role:"Artist", isMaker:true, sort_field: "objectCount", sort:"desc")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="constituents_paginationandfilter">{{{i18n.documentation.paginationandfilter}}}</h5>
+
+          <p>
+            {{{i18n.documentation.constituents-more-info}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituents "(page:3, per_page: 5, gender: \"Female\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.constituents '(page:3, per_page: 5, gender: "Female")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.constituents '(page:3, per_page: 5, gender: \\\"Female\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.constituents '(page:3, per_page: 5, gender: "Female")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="constituents_sorting">{{{i18n.documentation.sorting}}}</h5>
+
+          <p>
+            {{{i18n.documentation.constituents-sorting}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituents "(sort_field: \"alphaSortName\", sort: \"asc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.constituents '(sort_field: "alphaSortName", sort: "asc")'}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.constituents '(sort_field: \\\"alphaSortName\\\", sort: \\\"asc\\\")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.constituents '(sort_field: "alphaSortName", sort: "asc")' config.graphql.host user.apitoken}}}
+          </pre>
+
+          {{!---
+            ###################################################################################
+
+            Constituent
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="constituent">{{i18n.documentation.constituent}}</h4>
+
+          <p>
+            {{{i18n.documentation.constituent-1}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.constituent-2}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.constituent-filters}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.constituent-sorts}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituent "(id: 238)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.constituent '(id: 238)'}}}</pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
+          </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.constituent '(id: 238)' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
+          </p>
+          <pre
+            class="query language-javascript">{{{nodeQuery queries.constituent '(id: 238)' config.graphql.host user.apitoken}}}
+          </pre>
+
+          <h5 id="nesting">{{i18n.documentation.nesting}}</h5>
+
+          <p>
+            {{{i18n.documentation.nesting-1}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsConstituent "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectsConstituent ''}}}</pre>
+
+          <p>
+            {{i18n.documentation.nesting-2}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectConstituent "(id: 238)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectConstituent '(id: 119)'}}}</pre>
+
+          <p>
+            {{i18n.documentation.nesting-3}}
+          </p>
+
+          <p>
+            {{i18n.documentation.nesting-4}}
+          </p>
+
+          <h5 id="objects-connected-constituent">{{i18n.documentation.objects-connected-constituent}}</h5>
+
+          {{{i18n.documentation.connected-1}}}
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.constituent "(id: 478)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.constituent '(id: 478)'}}}</pre>
+
+          {{{i18n.documentation.connected-2}}}
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsConstituentMini "(constituent: 478)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.objectsConstituentMini '(constituent: 478)'}}}
+          </pre>
+
+          {{!---
+            ###################################################################################
+
+            Exhibitions
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="exhibitions">{{i18n.documentation.exhibitions}}</h4>
+
+          <p>
+            {{i18n.documentation.exhibitions-1}}
+          </p>
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.exhibitions "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.exhibitions ''}}}</pre>
+
+          <p>
+            {{i18n.documentation.exhibitions-2}}
+          </p>
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.objectsLargeWithExhibitions "(exhibition:95, per_page:10, page:0, category:\"Painting\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre
+            class="query language-graphql">{{{graphQLQuery queries.objectsLargeWithExhibitions '(exhibition:95, per_page:10, page:0, category:"Painting")'}}}
+          </pre>
+
+          <p>
+            {{i18n.documentation.exhibitions-3}}
+          </p>
+
+          {{!---
+            ###################################################################################
+
+            Exhibition
+
+            ###################################################################################            
+          ---}}
+
+          <h4 id="exhibition">{{i18n.documentation.exhibition}}</h4>
+
+          <p>
+            {{{i18n.documentation.exhibition-1}}}
+          </p>
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.exhibition "(id:95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.exhibition '(id:95)'}}}</pre>
+
+
+          <h5>{{i18n.documentation.text-entries}}</h5>
+
+          <p>
+            {{{i18n.documentation.text-entries-1}}}
+          </p>
+
+          <p>
+            {{{i18n.documentation.text-entries-2}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.exhibitionPurpose "(id: 95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.exhibitionPurpose '(id: 95)'}}}</pre>
+
+          <p>
+            {{{i18n.documentation.text-entries-3}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.exhibitionDescription "(id: 95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.exhibitionDescription '(id: 95)'}}}</pre>
+
+          <p>
+            {{{i18n.documentation.text-entries-4}}}
+          </p>
+
+          <p class="runinexplore no-bottom">
+            <a
+              href='{{exploreQuery queries.exhibitionBiographies "(id: 95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+          </p>
+          <pre class="query language-graphql">{{{graphQLQuery queries.exhibitionBiographies '(id: 95)'}}}</pre>
+
+          {{!---
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################
+
+            Sigg Online
+
+            ###################################################################################
+            ###################################################################################
+            ###################################################################################            
+          ---}}
+
+          {{#if user.roles.isVendor}}
+            <hr />
+
+            <h3 id="sigg-graphQL">{{{i18n.documentation.sigg-online}}}</h3>
+
+            <p>
+              {{{i18n.sigg.getstarted}}}
+            </p>
+
+            {{!---
+              ###################################################################################
+  
+              Object Rights
+  
+              ###################################################################################            
+            ---}}
+
+            <h4 id="sigg-objectrights">{{i18n.documentation.object-rights}}</h4>
+
+            <p>
+              {{i18n.sigg.objectrights}}
+            </p>
+
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.objectsRights "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre class="query language-graphql">{{{graphQLQuery queries.objectsRights ''}}}</pre>
+
+            {{!---
+              ###################################################################################
+  
+              Concepts
+  
+              ###################################################################################            
+            ---}}
+
+            <h4 id="sigg-concepts">{{i18n.documentation.concepts}}</h4>
+
+            <p>{{i18n.sigg.concepts-1}}</p>
+
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.concepts "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre class="query language-graphql">{{{graphQLQuery queries.concepts ''}}}</pre>
+
+            <p>{{i18n.sigg.concepts-2}}</p>
+
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.conceptNoObjects "(id: 5)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre class="query language-graphql">{{{graphQLQuery queries.conceptNoObjects '(id: 5)'}}}</pre>
+
+            <p>
+              {{{i18n.sigg.concepts-3}}}
+            </p>
+
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.conceptWithObjects "(id: 5, per_page:2, page:0)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre
+              class="query language-graphql">{{{graphQLQuery queries.conceptWithObjects '(id: 5, per_page:2, page:0)'}}}
+            </pre>
+
+            <p>
+              {{i18n.sigg.concepts-4}}
+            </p>
+
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.objectsMediumWithConcepts "(concept: 5, per_page:2, page:0)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre
+              class="query language-graphql">{{{graphQLQuery queries.objectsMediumWithConcepts '(concept: 5, per_page:2, page:0)'}}}
+            </pre>
+
+            {{!---
+              ###################################################################################
+  
+              Timeline
+  
+              ###################################################################################            
+            ---}}
+            <h4 id="sigg-timeline">{{i18n.documentation.timeline}}</h4>
+
+            <p>
+              {{{i18n.sigg.timeline-1}}}
+            </p>
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.timeline "(lang:\"en\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre class="query language-graphql">{{{graphQLQuery queries.timeline '(lang:"en")'}}}</pre>
+
+            {{!---
+              ###################################################################################
+  
+              Bibliographies
+  
+              ###################################################################################            
+            ---}}
+            <h4 id="sigg-bibliographies">{{i18n.documentation.bibliographies}}</h4>
+
+            <p>
+              {{{i18n.sigg.bibliographies-1}}}
+            </p>
+            <p class="runinexplore no-bottom">
+              <a
+                href='{{exploreQuery queries.bibliographies "(lang:\"en\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            </p>
+            <pre class="query language-graphql">{{{graphQLQuery queries.bibliographies '(lang:"en")'}}}</pre>
+
+          {{/if}}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
