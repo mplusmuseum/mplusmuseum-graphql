@@ -25,7 +25,7 @@
         "graphql-queries": "M+ API Queries",
         "introspection": "Introspection",
         "objects": "Objects",
-        "paginationandfilter": "Pagination and filter",
+        "paginationandfilter": "Pagination and filtering",
         "sorting": "Sorting",
         "bycolour": "Filtering/Searching by Colour",
         "fetchingbyids": "Fetching by ids",
