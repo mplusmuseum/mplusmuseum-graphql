@@ -83,7 +83,7 @@
         "object-sort-example": "Here is an example of sorting by <code>sortNumber</code>.",
         "object-by-ids-example": "You can also ask for specific objects by passing in an array of <code>ids</code>.",
         "object-1": "You can get a single object by passing in the <code>id</code> parameter. Here we are showing all the fields possible.",
-        "filter-by-colours": "Filtering/Searching by Color",
+        "filter-by-colours": "Filtering/Searching by Colour",
         "filter-by-colours-1": "If you wish to search for objects by colour, you can do that with the following filters: <code class=\"red\">color</code>, <code class=\"red\">color_threshold</code> &amp; <code class=\"red\">color_source</code>.",
         "filter-by-colours-2": "There are two colour sources: <code>google</code> and <code>cloudinary</code>. The default colour source is Google and includes the following values: <code>gray</code>, <code>black</code>, <code>orange</code>, <code>brown</code>, <code>white</code>, <code>yellow</code>, <code>teal</code>, <code>blue</code>, <code>green</code>, <code>red</code>, <code>pink</code> &amp; <code>purple</code>.",
         "filter-by-colours-3": "Cloudinary offers a slightly different range of colours, including some more specific values such as: <code>gray</code>, <code>black</code>, <code>orange</code>, <code>brown</code>, <code>white</code>, <code>yellow</code>, <code>teal</code>, <code>blue</code>, <code>green</code>, <code>red</code>, <code>pink</code>, <code>purple</code>, <code>lightblue</code>, <code>olive</code>, <code>lime</code> &amp; <code>cyan</code>. To use the Cloudinary values, please specify <code>cloudinary</code> as your <code>color_source</code>.",
