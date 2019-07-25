@@ -1,7 +1,11 @@
 exports.index = (req, res) => {
   req.templateValues.navOpen = 'documentation'
   if (!req.user) {
-    return res.render('documentation/pleaselogin', req.templateValues)
+    let lang = 'en'
+    if (req.params.lang) lang = req.params.lang
+    console.log('here')
+    console.log(`/${lang}/documentation/about`)
+    return res.redirect(`/${lang}/documentation/about`)
   }
 
   let isVendor = false

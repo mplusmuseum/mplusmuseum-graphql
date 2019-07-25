@@ -457,6 +457,7 @@ router.get('/status', ensureLoggedIn, status.index)
 router.get('/status/elasticsearch', ensureLoggedIn, status.elasticsearch)
 router.get('/wait', main.wait)
 
+router.get('/documentation', documentation.index)
 router.get('/:lang/documentation', documentation.index)
 router.get('/:lang/documentation/about', documentation.about)
 router.get('/:lang/documentation/termsofuse', documentation.termsofuse)
