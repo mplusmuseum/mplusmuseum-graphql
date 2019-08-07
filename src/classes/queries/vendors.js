@@ -614,7 +614,6 @@ class Queries {
 }`
 
     this.bibliographies = `query {
-  {
     bibliographies[[]] {
       id
       title
@@ -622,7 +621,6 @@ class Queries {
       format
       yearPublished
       placePublished
-    }
   }
 }`
 

@@ -59,7 +59,7 @@
         "belowtoken": "Below is your API developer token, this is the token you'll use to sign all your API calls. Always try to keep your token private and out of public GitHub repositories.",
         "belowendpoint": "Below is the GraphQL endpoint which you'll be making your API calls against. See below for more details on how to structure calls.",
         "graphql-about-1": "The M+ API is built on <a href=\"https://graphql.org/\">GraphQL</a>, an open-source data query language. You'll use GraphQL to request information from the M+ data set. ",
-        "graphql-about-2": "Traditionally GraphQL allows two types of operations: queries and mutations. These can be thought of as read and write operations.There is also one more operation called <a href=\"https://api.mplus.org.hk/en/documentation#introspection\">introspection</a>, which allows you to ask the GraphQL endpoint about itself.",
+        "graphql-about-2": "Traditionally GraphQL allows two types of operations: queries and mutations. These can be thought of as read and write operations. There is also one more operation called <a href=\"#introspection\">introspection</a>, which allows you to ask the GraphQL endpoint about itself.",
         "graphql-about-3": "Below you will find examples of various calls to can make to the GraphQL endpoint.",
         "graphql-communicating-1": "Here, you will find examples of various calls that you can make to the GraphQL endpoint. The single endpoint for all API calls is...",
         "graphql-communicating-2": "GraphQL operations consist of multiline JSON. An example ‘Hello World’ GraphQL query is shown below:",
