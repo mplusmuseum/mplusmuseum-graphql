@@ -104,12 +104,13 @@
 
           <p>
             {{{i18n.documentation.graphql-communicating-5}}}
-            <a href="{{config.graphql.host}}/playground">{{config.graphql.host}}/playground</a>
+            <a
+              href="{{config.graphql.host}}/{{user.apitoken}}/playground">{{config.graphql.host}}/{{user.apitoken}}/playground</a>
           </p>
 
           <p>
             {{{i18n.documentation.graphql-communicating-6}}}
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsMedium "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
 
@@ -134,7 +135,7 @@
             {{{i18n.documentation.graphql-communicating-2}}}
           </p>
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.hello "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
 
@@ -184,7 +185,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.schema "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
 
@@ -236,7 +237,7 @@
           </h5>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsMini "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.objectsMini ''}}}</pre>
@@ -260,13 +261,16 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsMedium "(ids:[1, 4, 6, 7])" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.objectsMedium '(ids:[1, 4, 6, 7])'}}}</pre>
 
           <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
           </p>
+          <pre
+            class="query language-bash">{{{curlQuery queries.objectsMedium '(ids:[1, 4, 6, 7])' config.graphql.host user.apitoken}}}
+          </pre>
 
           <h5 id="object">{{i18n.documentation.object}}</h5>
 
@@ -275,7 +279,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectLarge "(id: 3000)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.objectLarge '(id: 3000)'}}}</pre>
@@ -300,7 +304,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsMedium "(page:0, per_page: 5, area: \"Moving Image\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -327,7 +331,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsLarge "(sort_field: \"sortNumber\", sort: \"asc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -368,7 +372,7 @@
           </p>
 
           <p class="runinexplore">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsColor "(color: \"orange\", color_threshold: 70.0, color_source: \"google\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -399,7 +403,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.areas "(lang: \"zh-hant\", sort_field: \"count\", sort: \"asc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -438,7 +442,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.categories "(lang: \"zh-hant\", sort_field: \"count\", sort: \"desc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -478,7 +482,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.archivalLevels "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.archivalLevels ''}}}</pre>
@@ -509,7 +513,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.fonds "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.fonds ''}}}</pre>
@@ -528,7 +532,7 @@
             {{{i18n.documentation.fonds-2}}}
           </p>
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsMedium "(fonds:\"CA1\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.objectsMedium '(fonds: "CA1")'}}}</pre>
@@ -548,7 +552,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.mediums "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.mediums ''}}}</pre>
@@ -597,7 +601,7 @@
           <h5>{{i18n.documentation.constituents-call-for-ids}}</h5>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituentsId "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.constituentsId ''}}}</pre>
@@ -619,7 +623,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituents "(ids:[238, 382, 459, 608], lang: \"zh-hant\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -645,7 +649,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituentTypes "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.constituentTypes ''}}}</pre>
@@ -668,7 +672,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituents "(role:\"Artist\", isMaker:true, sort_field: \"objectCount\", sort:\"desc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -694,7 +698,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituents "(page:3, per_page: 5, gender: \"Female\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -720,7 +724,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituents "(sort_field: \"alphaSortName\", sort: \"asc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -766,7 +770,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituent "(id: 238)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.constituent '(id: 238)'}}}</pre>
@@ -790,7 +794,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsConstituent "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.objectsConstituent ''}}}</pre>
@@ -800,8 +804,8 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
-              href='{{exploreQuery queries.objectConstituent "(id: 238)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+            <a target='_blank'
+              href='{{exploreQuery queries.objectConstituent "(id: 119)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.objectConstituent '(id: 119)'}}}</pre>
 
@@ -818,7 +822,7 @@
           {{{i18n.documentation.connected-1}}}
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.constituent "(id: 478)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.constituent '(id: 478)'}}}</pre>
@@ -826,7 +830,7 @@
           {{{i18n.documentation.connected-2}}}
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsConstituentMini "(constituent: 478)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.objectsConstituentMini '(constituent: 478)'}}}
@@ -846,7 +850,7 @@
             {{i18n.documentation.exhibitions-1}}
           </p>
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.exhibitions "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.exhibitions ''}}}</pre>
@@ -855,7 +859,7 @@
             {{i18n.documentation.exhibitions-2}}
           </p>
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.objectsLargeWithExhibitions "(exhibition:95, per_page:10, page:0, category:\"Painting\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
@@ -880,7 +884,7 @@
             {{{i18n.documentation.exhibition-1}}}
           </p>
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.exhibition "(id:95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.exhibition '(id:95)'}}}</pre>
@@ -897,7 +901,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.exhibitionPurpose "(id: 95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.exhibitionPurpose '(id: 95)'}}}</pre>
@@ -907,7 +911,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.exhibitionDescription "(id: 95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.exhibitionDescription '(id: 95)'}}}</pre>
@@ -917,7 +921,7 @@
           </p>
 
           <p class="runinexplore no-bottom">
-            <a
+            <a target='_blank'
               href='{{exploreQuery queries.exhibitionBiographies "(id: 95)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre class="query language-graphql">{{{graphQLQuery queries.exhibitionBiographies '(id: 95)'}}}</pre>
@@ -958,7 +962,7 @@
             </p>
 
             <p class="runinexplore no-bottom">
-              <a
+              <a target='_blank'
                 href='{{exploreQuery queries.objectsRights "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
             <pre class="query language-graphql">{{{graphQLQuery queries.objectsRights ''}}}</pre>
@@ -976,15 +980,15 @@
             <p>{{i18n.sigg.concepts-1}}</p>
 
             <p class="runinexplore no-bottom">
-              <a
+              <a target='_blank'
                 href='{{exploreQuery queries.concepts "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
             <pre class="query language-graphql">{{{graphQLQuery queries.concepts ''}}}</pre>
 
-            <p>{{i18n.sigg.concepts-2}}</p>
+            <p>{{{i18n.sigg.concepts-2}}}</p>
 
             <p class="runinexplore no-bottom">
-              <a
+              <a target='_blank'
                 href='{{exploreQuery queries.conceptNoObjects "(id: 5)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
             <pre class="query language-graphql">{{{graphQLQuery queries.conceptNoObjects '(id: 5)'}}}</pre>
@@ -994,7 +998,7 @@
             </p>
 
             <p class="runinexplore no-bottom">
-              <a
+              <a target='_blank'
                 href='{{exploreQuery queries.conceptWithObjects "(id: 5, per_page:2, page:0)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
             <pre
@@ -1006,7 +1010,7 @@
             </p>
 
             <p class="runinexplore no-bottom">
-              <a
+              <a target='_blank'
                 href='{{exploreQuery queries.objectsMediumWithConcepts "(concept: 5, per_page:2, page:0)" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
             <pre
@@ -1026,7 +1030,7 @@
               {{{i18n.sigg.timeline-1}}}
             </p>
             <p class="runinexplore no-bottom">
-              <a
+              <a target='_blank'
                 href='{{exploreQuery queries.timeline "(lang:\"en\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
             <pre class="query language-graphql">{{{graphQLQuery queries.timeline '(lang:"en")'}}}</pre>
@@ -1044,10 +1048,10 @@
               {{{i18n.sigg.bibliographies-1}}}
             </p>
             <p class="runinexplore no-bottom">
-              <a
-                href='{{exploreQuery queries.bibliographies "(lang:\"en\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+              <a target='_blank'
+                href='{{exploreQuery queries.bibliographies "" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
             </p>
-            <pre class="query language-graphql">{{{graphQLQuery queries.bibliographies '(lang:"en")'}}}</pre>
+            <pre class="query language-graphql">{{{graphQLQuery queries.bibliographies ''}}}</pre>
 
           {{/if}}
         </div>
