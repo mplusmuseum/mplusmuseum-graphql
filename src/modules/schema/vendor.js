@@ -425,6 +425,10 @@ type Query {
     keyword: String
     ): [Factoids]
 
+    randoms(
+      page: Int
+      per_page: Int
+    ): [Randoms]
 }
 
 type Mutation {
@@ -1126,6 +1130,12 @@ type Factoids {
   isMain: Boolean
   isPopular: Boolean
   keyword: [String]
+}
+
+type Randoms {
+  id: String
+  text: String
+  textTC: String
 }
 
 type Sys {

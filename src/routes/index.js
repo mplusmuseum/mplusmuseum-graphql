@@ -326,6 +326,9 @@ const root = {
   },
   factoids: (args, context) => {
     return queries.factoids.getFactoids(args, context, undefined, true)
+  },
+  randoms: (args, context) => {
+    return queries.randoms.getRandoms(args, context, undefined, true)
   }
 }
 
