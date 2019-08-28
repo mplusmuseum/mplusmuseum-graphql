@@ -40,6 +40,7 @@ type Query {
     color_source: String = "google"
     missingPrimaryImage: Boolean
     hasImage: Boolean
+    prioritiseImages: Boolean
     hue: [Int]
     luminosity: [Int]
     saturation: [Int]
@@ -498,6 +499,7 @@ type LevelOneObject {
   blurbExternalUrl: String
   tags: [String]
   fullTags: [Lens]
+  imageSortScore: Int
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }

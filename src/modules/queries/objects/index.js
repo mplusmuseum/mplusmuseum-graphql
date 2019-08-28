@@ -198,6 +198,16 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     }]
   }
 
+  //  If we have been told to prioritse Images, then we add that to the sort now
+  if ('prioritiseImages' in args && args.prioritiseImages === true) {
+    if (!body.sort) body.sort = []
+    body.sort.unshift({
+      imageSortScore: {
+        order: 'desc'
+      }
+    })
+  }
+
   const must = []
 
   // Do the publicAccess toggle
@@ -577,28 +587,28 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       const colourSearch = {
         bool: {
           must: [{
-            range: {
-              'colorHSLInt.h': {
-                gte: hue - 30,
-                lte: hue + 30
+              range: {
+                'colorHSLInt.h': {
+                  gte: hue - 30,
+                  lte: hue + 30
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.l': {
+                  gte: thisLum - 25,
+                  lte: thisLum + 25
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.s': {
+                  gte: thisSat
+                }
               }
             }
-          },
-          {
-            range: {
-              'colorHSLInt.l': {
-                gte: thisLum - 25,
-                lte: thisLum + 25
-              }
-            }
-          },
-          {
-            range: {
-              'colorHSLInt.s': {
-                gte: thisSat
-              }
-            }
-          }
           ]
         }
       }
@@ -650,40 +660,36 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       must.push({
         bool: {
           must: [{
-            match: {
-              'remote.status': 'ok'
+              match: {
+                'remote.status': 'ok'
+              }
+            },
+            {
+              exists: {
+                field: 'color.predominant'
+              }
             }
-          },
-          {
-            exists: {
-              field: 'color.predominant'
-            }
-          }
           ]
         }
       })
     }
   }
 
+  if ('exhibition' in args && args.exhibition !== '') {
+    must.push({
+      match: {
+        'exhibition.ids': args.exhibition
+      }
+    })
+  }
+
   //  Check to see if we have missing images or not
   if ('hasImage' in args) {
-    if (args.hasImage === true) {
-      must.push({
-        exists: {
-          field: 'remote.status'
-        }
-      })
-    } else {
-      must.push({
-        bool: {
-          must_not: {
-            exists: {
-              field: 'remote.status'
-            }
-          }
-        }
-      })
-    }
+    must.push({
+      match: {
+        'withImage': args.hasImage
+      }
+    })
   }
 
   if (args.withBlurb) {
@@ -741,7 +747,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     }
   }
 
-  // console.log(JSON.stringify(body, null, 4))
+  // console.log(JSON.stringify(body.sort, null, 4))
 
   //  Run the search
   const objects = await common.doCacheQuery(cacheable, index, body)
