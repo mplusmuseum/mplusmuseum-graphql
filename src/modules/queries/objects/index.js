@@ -208,6 +208,16 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  //  If we have been told to prioritse Archives, then we add that to the sort now
+  if ('prioritiseArchives' in args && args.prioritiseArchives === true) {
+    if (!body.sort) body.sort = []
+    body.sort.unshift({
+      archivalLevelScore: {
+        order: 'desc'
+      }
+    })
+  }
+
   const must = []
 
   // Do the publicAccess toggle
@@ -587,28 +597,28 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       const colourSearch = {
         bool: {
           must: [{
-              range: {
-                'colorHSLInt.h': {
-                  gte: hue - 30,
-                  lte: hue + 30
-                }
-              }
-            },
-            {
-              range: {
-                'colorHSLInt.l': {
-                  gte: thisLum - 25,
-                  lte: thisLum + 25
-                }
-              }
-            },
-            {
-              range: {
-                'colorHSLInt.s': {
-                  gte: thisSat
-                }
+            range: {
+              'colorHSLInt.h': {
+                gte: hue - 30,
+                lte: hue + 30
               }
             }
+          },
+          {
+            range: {
+              'colorHSLInt.l': {
+                gte: thisLum - 25,
+                lte: thisLum + 25
+              }
+            }
+          },
+          {
+            range: {
+              'colorHSLInt.s': {
+                gte: thisSat
+              }
+            }
+          }
           ]
         }
       }
@@ -660,15 +670,15 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       must.push({
         bool: {
           must: [{
-              match: {
-                'remote.status': 'ok'
-              }
-            },
-            {
-              exists: {
-                field: 'color.predominant'
-              }
+            match: {
+              'remote.status': 'ok'
             }
+          },
+          {
+            exists: {
+              field: 'color.predominant'
+            }
+          }
           ]
         }
       })

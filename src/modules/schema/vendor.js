@@ -41,6 +41,7 @@ type Query {
     missingPrimaryImage: Boolean
     hasImage: Boolean
     prioritiseImages: Boolean
+    prioritiseArchives: Boolean
     hue: [Int]
     luminosity: [Int]
     saturation: [Int]
@@ -116,6 +117,8 @@ type Query {
     luminosity: [Int]
     saturation: [Int]
     hsl_range: Int = 30
+    prioritiseImages: Boolean
+    prioritiseArchives: Boolean
   ): LevelOneConstituent
 
   exhibitions(
@@ -154,6 +157,8 @@ type Query {
     luminosity: [Int]
     saturation: [Int]
     hsl_range: Int = 30
+    prioritiseImages: Boolean
+    prioritiseArchives: Boolean
   ): LevelOneExhibition
 
   concepts(
@@ -192,6 +197,8 @@ type Query {
     luminosity: [Int]
     saturation: [Int]
     hsl_range: Int = 30
+    prioritiseImages: Boolean
+    prioritiseArchives: Boolean
   ): LevelOneConcept
 
   bibliographies(
@@ -500,6 +507,7 @@ type LevelOneObject {
   tags: [String]
   fullTags: [Lens]
   imageSortScore: Int
+  archivalLevelScore: Int
   relatedObjects: [RelatedObjectShort]
   _sys: Sys
 }
