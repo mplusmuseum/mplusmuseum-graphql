@@ -1,11 +1,15 @@
 exports.index = (req, res) => {
   req.templateValues.navOpen = 'documentation'
-  if (!req.user) {
+
+  //  If we don't have a lang in the parameters then we need to redirect
+  if (!req.params.lang) {
+    //  If we have a logged in user then use what they have as their
+    //  default language, otherwise...
     let lang = 'en'
-    if (req.params.lang) lang = req.params.lang
-    console.log('here')
-    console.log(`/${lang}/documentation/about`)
-    return res.redirect(`/${lang}/documentation/about`)
+    if (req.templateValues.user && req.templateValues.user.user_metadata && req.templateValues.user.user_metadata.lang) {
+      lang = req.templateValues.user.user_metadata.lang
+    }
+    return res.redirect(`/${lang}${req.path}`)
   }
 
   let isVendor = false
