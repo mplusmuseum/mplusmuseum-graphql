@@ -1,3 +1,5 @@
+const url = require('url')
+
 exports.index = (req, res) => {
   req.templateValues.navOpen = 'documentation'
 
@@ -8,6 +10,16 @@ exports.index = (req, res) => {
     let lang = 'en'
     if (req.templateValues.user && req.templateValues.user.user_metadata && req.templateValues.user.user_metadata.lang) {
       lang = req.templateValues.user.user_metadata.lang
+    } else {
+      //  Check to see if we have been referred from an url that already have the language in
+      const thisUrl = url.parse(req.get('Referrer'))
+      if (thisUrl.path) {
+        const pathSplit = thisUrl.path.split('/')
+        if (pathSplit.length >= 2) {
+          if (pathSplit[1] === 'en') lang = 'en'
+          if (pathSplit[1] === 'tc') lang = 'tc'
+        }
+      }
     }
     return res.redirect(`/${lang}${req.path}`)
   }
