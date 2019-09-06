@@ -25,6 +25,9 @@ type Query {
     displayDate: String
     beginDate: Int
     endDate: Int
+    minDate: Int
+    maxDate: Int
+    inDate: String
     collectionName: String
     style: String
     department: String

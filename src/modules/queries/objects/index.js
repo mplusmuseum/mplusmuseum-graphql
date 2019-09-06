@@ -373,6 +373,59 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  let inDate = 'both'
+  if (args.inDate && (args.inDate === 'begin' || args.inDate === 'end')) {
+    inDate = args.inDate
+  }
+
+  //  Min
+  if ('minDate' in args) {
+    //  If we need the start date to be within the range, then we check that
+    if (inDate === 'both' || inDate === 'begin') {
+      must.push({
+        range: {
+          'beginDate': {
+            gte: args.minDate
+          }
+        }
+      })
+    }
+    //  If we need the end date to be within the range, then we check that
+    if (inDate === 'both' || inDate === 'end') {
+      must.push({
+        range: {
+          'endDate': {
+            gte: args.minDate
+          }
+        }
+      })
+    }
+  }
+
+  //  Min
+  if ('maxDate' in args) {
+    //  If we need the start date to be within the range, then we check that
+    if (inDate === 'both' || inDate === 'begin') {
+      must.push({
+        range: {
+          'beginDate': {
+            lte: args.maxDate
+          }
+        }
+      })
+    }
+    //  If we need the end date to be within the range, then we check that
+    if (inDate === 'both' || inDate === 'end') {
+      must.push({
+        range: {
+          'endDate': {
+            lte: args.maxDate
+          }
+        }
+      })
+    }
+  }
+
   if ('collectionType' in args && args.collectionType !== '') {
     must.push({
       match: {
