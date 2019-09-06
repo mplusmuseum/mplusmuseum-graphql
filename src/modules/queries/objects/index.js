@@ -535,7 +535,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
-  if ('keyword' in args && args.title !== '') {
+  if ('keyword' in args && args.keyword !== '') {
     //  Don't cache when doing keyword searches
     cacheable = false
     must.push({

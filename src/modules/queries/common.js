@@ -285,6 +285,19 @@ const getAggregates = async (args, context, field, index) => {
     })
   }
 
+  if ('keyword' in args && args.keyword !== '') {
+    //  Don't cache when doing keyword searches
+    cacheable = false
+    must.push({
+      multi_match: {
+        query: args.keyword,
+        type: 'best_fields',
+        fields: ['title.en', 'title.zh-hant', 'baselineDescription.en', 'baselineDescription.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'classification.archivalLevel.areacat.en', 'classification.archivalLevel.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectNumber', 'objectNumber.keyword', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant'],
+        operator: 'or'
+      }
+    })
+  }
+
   if (must.length > 0) {
     body.query = {
       bool: {

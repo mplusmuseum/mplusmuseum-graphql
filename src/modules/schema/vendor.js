@@ -237,6 +237,7 @@ type Query {
     constituent: Int
     area: String
     category: String
+    keyword: String
   ): [Area]
   
   categories(
@@ -255,6 +256,7 @@ type Query {
     constituent: Int
     area: String
     category: String
+    keyword: String
   ): [Categories]
 
   archivalLevels(
@@ -264,6 +266,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [ArchivalLevels]
 
   statuses(
@@ -273,6 +285,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [Statuses]
 
   names(
@@ -282,6 +304,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [Names]
 
   collectionTypes(
@@ -291,6 +323,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [CollectionTypes]
 
   collectionCodes(
@@ -300,6 +342,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [CollectionCodes]
 
   fonds(
@@ -309,6 +361,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [CollectionCodes]
 
   collectionNames(
@@ -317,6 +379,16 @@ type Query {
     publicAccess: Boolean
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [CollectionNames]
 
   departments(
@@ -325,6 +397,16 @@ type Query {
     publicAccess: Boolean
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [Departments]
 
   styles(
@@ -333,6 +415,16 @@ type Query {
     publicAccess: Boolean
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [Styles]
 
   mediums(
@@ -351,6 +443,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [Tags]
 
   makertypes(
@@ -367,6 +469,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [ConActiveCities]
 
   conBirthCities(
@@ -374,6 +486,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [ConBirthCities]
 
   conDeathCities(
@@ -381,6 +503,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [ConDeathCities]
 
   genders(
@@ -388,6 +520,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [Genders]
 
   nationalities(
@@ -395,6 +537,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [Nationalities]
 
   conRegions(
@@ -402,6 +554,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [ConRegions]
 
   conTypes(
@@ -409,6 +571,16 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [ConTypes]
 
   conRoles(
@@ -416,9 +588,17 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
+    collectionCode: String
+    fonds: String
+    collectionType: String
+    collectionName: String
+    department: String
+    style: String
+    constituent: Int
+    area: String
+    category: String
+    keyword: String
   ): [ConRoles]
-
-
 
   factoids(
     page: Int
