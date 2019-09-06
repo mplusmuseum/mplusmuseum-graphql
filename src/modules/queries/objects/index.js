@@ -170,7 +170,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
   const keywordFields = ['objectnumber', 'displaydate', 'sortnumber']
-  const validFields = ['id', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'classification.area', 'classification.category', 'classification.archivalLevel']
+  const validFields = ['id', 'artint', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'classification.area', 'classification.category', 'classification.archivalLevel']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
