@@ -152,15 +152,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Set up the client
   let page = common.getPage(args)
   let perPage = common.getPerPage(args)
-  const originalPage = common.getPage(args)
-  const originalPerPage = common.getPerPage(args)
-
-  //  If we have been told to shuffle the objects then we need to
-  //  override the pages and then set them back afterwards
-  if (args.shuffle && args.shuffle === true) {
-    page = 0
-    perPage = 500
-  }
 
   const body = {
     from: page * perPage,
@@ -810,7 +801,26 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     }
   }
 
-  // console.log(JSON.stringify(body.sort, null, 4))
+  //  If we are supposed to shuffle, then do that and set up the seed here
+  if ('shuffle' in args && args.shuffle === true) {
+    let gen = new RandomGen()
+    if (args.shuffleSeed) {
+      gen = new RandomGen(args.shuffleSeed)
+    }
+    const seed = gen.random().toString()
+    body.query = {
+      function_score: {
+        query: body.query,
+        random_score: {
+          seed,
+          field: 'popularCount'
+        }
+      }
+    }
+    delete body.sort
+  }
+
+  // console.log(JSON.stringify(body, null, 4))
 
   //  Run the search
   const objects = await common.doCacheQuery(cacheable, index, body)
@@ -819,23 +829,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
     return record
   })
-
-  //  If we were told to shuffle, then we need to do that here
-  //  and the slice back down to the original perPage request
-  if ('shuffle' in args && args.shuffle === true) {
-    let gen = new RandomGen()
-    if (args.shuffleSeed) {
-      gen = new RandomGen(args.shuffleSeed)
-    }
-    records = records
-      .map((a) => {
-        return [gen.random(), a]
-      })
-      .sort((a, b) => a[0] - b[0])
-      .map(a => a[1])
-      .splice((originalPage * originalPerPage), originalPerPage)
-    perPage = originalPerPage
-  }
 
   //  Grab the language specific stuff
   records = records.map((record) => {
