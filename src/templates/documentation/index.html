@@ -673,22 +673,22 @@
 
           <p class="runinexplore no-bottom">
             <a target='_blank'
-              href='{{exploreQuery queries.constituents "(role:\"Artist\", isMaker:true, sort_field: \"objectCount\", sort:\"desc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
+              href='{{exploreQuery queries.constituents "(role:\"Artist\", isMaker:true, sort_field: \"objectCountPublic\", sort:\"desc\")" config.graphql.host user.apitoken}}'>{{i18n.documentation.run-in-playground}}</a>
           </p>
           <pre
-            class="query language-graphql">{{{graphQLQuery queries.constituents '(role:"Artist", isMaker:true, sort_field: "objectCount", sort:"desc")'}}}
+            class="query language-graphql">{{{graphQLQuery queries.constituents '(role:"Artist", isMaker:true, sort_field: "objectCountPublic", sort:"desc")'}}}
           </pre>
 
           <p class="subtitle is-5 no-bottom"> {{i18n.documentation.curl}}
           </p>
           <pre
-            class="query language-bash">{{{curlQuery queries.constituents '(role:\\\"Artist\\\", isMaker:true, sort_field: \\\"objectCount\\\", sort:\\\"desc\\\")' config.graphql.host user.apitoken}}}
+            class="query language-bash">{{{curlQuery queries.constituents '(role:\\\"Artist\\\", isMaker:true, sort_field: \\\"objectCountPublic\\\", sort:\\\"desc\\\")' config.graphql.host user.apitoken}}}
           </pre>
 
           <p class="subtitle is-5 no-bottom"> {{i18n.documentation.nodejs}}
           </p>
           <pre
-            class="query language-javascript">{{{nodeQuery queries.constituents '(role:"Artist", isMaker:true, sort_field: "objectCount", sort:"desc")' config.graphql.host user.apitoken}}}
+            class="query language-javascript">{{{nodeQuery queries.constituents '(role:"Artist", isMaker:true, sort_field: "objectCountPublic", sort:"desc")' config.graphql.host user.apitoken}}}
           </pre>
 
           <h5 id="constituents_paginationandfilter">{{{i18n.documentation.paginationandfilter}}}</h5>

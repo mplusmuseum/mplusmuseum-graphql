@@ -927,6 +927,7 @@ type LevelOneConstituent {
   isMaker: Boolean
   roles: [String]
   objectCount: Int
+  objectCountPublic: Int
   exhibitionBios: [ExhibitionLabels]
   objects: [LevelOneObject]
   activeCity: String
@@ -955,6 +956,7 @@ type LevelTwoConstituent {
   role: String
   isMakerOfObject: Boolean
   objectCount: Int
+  objectCountPublic: Int
   exhibitionBios: [ExhibitionLabels]
   objects: [LevelTwoObject]
   activeCity: String
@@ -980,6 +982,7 @@ type LevelThreeConstituent {
   isMaker: Boolean
   roles: [String]
   objectCount: Int
+  objectCountPublic: Int
   exhibitionBios: [ExhibitionLabels]
   _sys: Sys
 }

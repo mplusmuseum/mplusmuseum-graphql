@@ -33,7 +33,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
   const keywordFields = ['activeCity', 'birthCity', 'deathCity', 'gender', 'nationality', 'region', 'type']
-  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'activecity', 'birthcity', 'deathcity', 'type', 'nationality', 'region', 'objectcount']
+  const validFields = ['id', 'name', 'alphasortname', 'gender', 'begindate', 'enddate', 'activecity', 'birthcity', 'deathcity', 'type', 'nationality', 'region', 'objectcount', 'objectcountpublic']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
@@ -328,7 +328,6 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
       await callback(array[index], index, array)
     }
   }
-
   if (levelDown <= 2) {
     const newRecords = []
     const start = async () => {
@@ -336,7 +335,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
         const newArgs = {
           lang: args.lang,
           constituent: record.id,
-          per_page: 500
+          per_page: 999
         }
         //  Did we have any filters that needed to be passed on from the
         //  single constituent to the objects query
@@ -345,6 +344,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
         if (args.object_category) newArgs.category = args.object_category
         if (args.object_area) newArgs.area = args.object_area
         if (args.object_medium) newArgs.medium = args.object_medium
+        if (args.publicAccess) newArgs.publicAccess = args.publicAccess
         record.roles = []
         record.objects = await queryObjects.getObjects(newArgs, context, levelDown + 1)
         record.objects.forEach((object) => {
