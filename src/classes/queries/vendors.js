@@ -332,6 +332,7 @@ class Queries {
     roles
     isMaker
     objectCount
+    objectCountPublic
   }
 }`
 

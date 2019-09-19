@@ -317,7 +317,7 @@ type LevelOneConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
-  objectCount: Int
+  objectCountPublic: Int
   objects: [LevelOneObject]
   _sys: Sys
 }
@@ -338,7 +338,7 @@ type LevelTwoConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
-  objectCount: Int
+  objectCountPublic: Int
   objects: [LevelTwoObject]
   _sys: Sys
 }
@@ -357,7 +357,7 @@ type LevelThreeConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
-  objectCount: Int
+  objectCountPublic: Int
   _sys: Sys
 }
 
