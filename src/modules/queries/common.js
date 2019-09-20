@@ -253,35 +253,26 @@ const getAggregates = async (args, context, field, index) => {
   }
 
   if ('area' in args && args.area !== '') {
+    const match = {}
+    match[`areas.lang.${args.lang}.title.keyword`] = args.area
     must.push({
-      multi_match: {
-        query: args.area,
-        type: 'best_fields',
-        fields: ['classification.area.areacat.en.keyword', 'classification.area.areacat.zh-hant.keyword'],
-        operator: 'or'
-      }
+      match
     })
   }
 
   if ('category' in args && args.category !== '') {
+    const match = {}
+    match[`category.lang.${args.lang}.title.keyword`] = args.category
     must.push({
-      multi_match: {
-        query: args.category,
-        type: 'best_fields',
-        fields: ['classification.category.areacat.en.keyword', 'classification.category.areacat.zh-hant.keyword'],
-        operator: 'or'
-      }
+      match
     })
   }
 
   if ('archivalLevel' in args && args.archivalLevel !== '') {
+    const match = {}
+    match[`archivalLevel.lang.${args.lang}.title.keyword`] = args.archivalLevel
     must.push({
-      multi_match: {
-        query: args.archivalLevel,
-        type: 'best_fields',
-        fields: ['classification.archivalLevel.areacat.en.keyword', 'classification.archivalLevel.areacat.zh-hant.keyword'],
-        operator: 'or'
-      }
+      match
     })
   }
 
@@ -292,7 +283,7 @@ const getAggregates = async (args, context, field, index) => {
       multi_match: {
         query: args.keyword,
         type: 'best_fields',
-        fields: ['title.en', 'title.zh-hant', 'baselineDescription.en', 'baselineDescription.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'classification.archivalLevel.areacat.en', 'classification.archivalLevel.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectNumber', 'objectNumber.keyword', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant'],
+        fields: ['title.en', 'title.zh-hant', 'baselineDescription.en', 'baselineDescription.zh-hant', 'areas.lang.en.title', 'areas.lang.zh-hant.title', 'category.lang.en.title', 'category.lang.zh-hant.title', 'archivalLevel.lang.en.title', 'archivalLevel.lang.zh-hant.title', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectNumber', 'objectNumber.keyword', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant'],
         operator: 'or'
       }
     })
@@ -364,7 +355,7 @@ exports.getAreas = async (args, context, levelDown = 3, initialCall = false) => 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, context, `classification.area.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `areas.lang.${args.lang}.title.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Areas query`, {
     method: 'getAreas',
@@ -385,7 +376,7 @@ exports.getCategories = async (args, context, levelDown = 3, initialCall = false
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, context, `classification.category.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `category.lang.${args.lang}.title.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Categories query`, {
     method: 'getCategories',
@@ -406,7 +397,7 @@ exports.getArchivalLevels = async (args, context, levelDown = 3, initialCall = f
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, context, `classification.archivalLevel.areacat.${args.lang}.keyword`, `objects_${baseTMS}`)
+  const aggs = getAggregates(args, context, `archivalLevel.lang.${args.lang}.title.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`ArchivalLevels query`, {
     method: 'getArchivalLevels',
