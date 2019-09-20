@@ -240,6 +240,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('title' in args && args.title !== '') {
+    cacheable = false
     must.push({
       multi_match: {
         query: args.title,
@@ -523,19 +524,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     must.push({
       match: {
         'relatedConceptIds': args.concept
-      }
-    })
-  }
-
-  if ('title' in args && args.title !== '') {
-    //  Don't cache when doing string searches
-    cacheable = false
-    must.push({
-      multi_match: {
-        query: args.title,
-        type: 'best_fields',
-        fields: ['title.en', 'title.zh-hant'],
-        operator: 'or'
       }
     })
   }
