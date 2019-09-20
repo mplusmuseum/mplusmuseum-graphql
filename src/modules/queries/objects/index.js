@@ -161,7 +161,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  Check to see if we have been passed valid sort fields values, if we have
   //  then use that for a sort. Otherwise use a default one
   const keywordFields = ['objectnumber', 'displaydate', 'sortnumber']
-  const validFields = ['id', 'artint', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'classification.area', 'classification.category', 'classification.archivalLevel']
+  const validFields = ['id', 'artint', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'area', 'category', 'archivalLevel']
   const validSorts = ['asc', 'desc']
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
@@ -171,9 +171,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     //  Special cases
     if (sortField === 'title') sortField = `title.${args.lang}.keyword`
     if (sortField === 'medium') sortField = `medium.${args.lang}.keyword`
-    if (sortField === 'classification.area') sortField = `classification.area.areacat.${args.lang}.keyword`
-    if (sortField === 'classification.category') sortField = `classification.category.areacat.${args.lang}.keyword`
-    if (sortField === 'classification.archivalLevel') sortField = `classification.archivalLevel.areacat.${args.lang}.keyword`
+    if (sortField === 'area') sortField = `areas.lang.${args.lang}.title.keyword`
+    if (sortField === 'category') sortField = `category.lang.${args.lang}.title.keyword`
+    if (sortField === 'archivalLevel') sortField = `archivalLevel.lang.${args.lang}.title.keyword`
 
     //  For objects we want to actually want to sort by the _id
     const sortObj = {}
@@ -239,10 +239,24 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if ('title' in args && args.title !== '') {
+    must.push({
+      multi_match: {
+        query: args.title,
+        type: 'best_fields',
+        fields: [`title.${args.lang}.keyword`, `titleSlug.${args.lang}.keyword`],
+        operator: 'or'
+      }
+    })
+  }
+
   if ('objectNumber' in args && args.objectNumber !== '') {
     must.push({
-      term: {
-        'objectNumber.keyword': args.objectNumber
+      multi_match: {
+        query: args.objectNumber,
+        type: 'best_fields',
+        fields: [`objectNumber.keyword`, `objectNumberSlug.keyword`],
+        operator: 'or'
       }
     })
   }
@@ -252,7 +266,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.area,
         type: 'best_fields',
-        fields: ['classification.area.areacat.en.keyword', 'classification.area.areacat.zh-hant.keyword'],
+        fields: [`areas.lang.${args.lang}.title.keyword`, `areas.lang.${args.lang}.slug.keyword`],
         operator: 'or'
       }
     })
@@ -263,7 +277,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.category,
         type: 'best_fields',
-        fields: ['classification.category.areacat.en.keyword', 'classification.category.areacat.zh-hant.keyword'],
+        fields: [`category.lang.${args.lang}.title.keyword`, `category.lang.${args.lang}.slug.keyword`],
         operator: 'or'
       }
     })
@@ -274,7 +288,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.archivalLevel,
         type: 'best_fields',
-        fields: ['classification.archivalLevel.areacat.en.keyword', 'classification.archivalLevel.areacat.zh-hant.keyword'],
+        fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`],
         operator: 'or'
       }
     })
@@ -285,7 +299,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.medium,
         type: 'best_fields',
-        fields: ['medium.en.keyword', 'medium.zh-hant.keyword'],
+        fields: [`medium.${args.lang}.keyword`, `mediumSlug.${args.lang}.keyword`],
         operator: 'or'
       }
     })
@@ -321,9 +335,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   if ('objectName' in args && args.objectName !== '') {
     must.push({
       multi_match: {
-        query: args.objectName,
+        query: args.objectNumber,
         type: 'best_fields',
-        fields: ['objectName.en.keyword', 'objectName.zh-hant.keyword'],
+        fields: [`objectName.${args.lang}.keyword`, `objectNameSlug.${args.lang}.keyword`],
         operator: 'or'
       }
     })
