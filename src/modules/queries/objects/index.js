@@ -924,7 +924,10 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       const classification = {}
       classFields.forEach((field) => {
         if (field in record.classification) {
-          if (!(field in classification)) classification[field] = common.getSingleTextFromArrayByLang(record.classification[field].areacat, args.lang)
+          if (!(field in classification)) classification[field] = []
+          record.classification[field].forEach((thing) => {
+            classification[field].push(common.getSingleTextFromArrayByLang(thing.areacat, args.lang))
+          })
         }
       })
       record.classification = classification

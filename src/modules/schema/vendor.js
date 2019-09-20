@@ -1106,9 +1106,9 @@ type ExhibitionLabels {
 }
 
 type Classification {
-  area: String
-  category: String
-  archivalLevel: String
+  area: [String]
+  category: [String]
+  archivalLevel: [String]
 }
 
 type Area {
