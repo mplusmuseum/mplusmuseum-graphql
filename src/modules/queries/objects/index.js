@@ -245,7 +245,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.title,
         type: 'best_fields',
-        fields: [`title.${args.lang}.keyword`, `titleSlug.${args.lang}.keyword`],
+        fields: [`title.en.keyword`, `titleSlug.en.keyword`, `title.zh-hant.keyword`, `titleSlug.zh-hant.keyword`],
         operator: 'or'
       }
     })
