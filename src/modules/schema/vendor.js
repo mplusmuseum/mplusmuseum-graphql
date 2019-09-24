@@ -693,6 +693,14 @@ type LevelOneObject {
   imageSortScore: Int
   archivalLevelScore: Int
   relatedObjects: [RelatedObjectShort]
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNameSlug: String
+  objectNumberSlug: String
+  objectStatusSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -744,6 +752,14 @@ type SingleObject {
   tags: [String]
   fullTags: [Lens]
   relatedObjects: [RelatedObject]
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNameSlug: String
+  objectNumberSlug: String
+  objectStatusSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -805,6 +821,14 @@ type LevelTwoObject {
   tags: [String]
   fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNameSlug: String
+  objectNumberSlug: String
+  objectStatusSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -852,6 +876,14 @@ type LevelThreeObject {
   tags: [String]
   fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNameSlug: String
+  objectNumberSlug: String
+  objectStatusSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -902,6 +934,14 @@ type RelatedObject {
   tags: [String]
   fullTags: [Lens]
   relatedObjects: [RelatedObjectShort]
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNameSlug: String
+  objectNumberSlug: String
+  objectStatusSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -984,6 +1024,11 @@ type LevelThreeConstituent {
   objectCount: Int
   objectCountPublic: Int
   exhibitionBios: [ExhibitionLabels]
+  activeCity: String
+  birthCity: String
+  deathCity: String
+  artInt: Int
+  region: String
   _sys: Sys
 }
 

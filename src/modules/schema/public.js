@@ -203,6 +203,12 @@ type LevelOneObject {
   constituents: [LevelTwoConstituent]
   images: [Image]
   color: ColorInfo
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNumberSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -226,6 +232,12 @@ type SingleObject {
   constituents: [LevelTwoConstituent]
   images: [Image]
   color: ColorInfo
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNumberSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -248,6 +260,12 @@ type LevelTwoObject {
   constituents: [LevelThreeConstituent]
   images: [Image]
   color: ColorInfo
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNumberSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -270,6 +288,12 @@ type LevelThreeObject {
   creditLine: String
   images: [Image]
   color: ColorInfo
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNumberSlug: String
+  titleSlug: String
   _sys: Sys
 }
 
@@ -294,6 +318,12 @@ type RelatedObject {
   color: ColorInfo
   relatedType: String
   selfType: String
+  archivalLevelSlugs: String
+  areasSlugs: String
+  categorySlugs: String
+  mediumSlug: String
+  objectNumberSlug: String
+  titleSlug: String
   _sys: Sys
 }
 

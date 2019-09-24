@@ -2,6 +2,7 @@ const Config = require('../../../classes/config')
 const elasticsearch = require('elasticsearch')
 const common = require('../common.js')
 const logging = require('../../logging')
+const utils = require('../../utils')
 const RandomGen = require('random-seed')
 const delay = require('delay')
 
@@ -829,6 +830,66 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   let total = null
   if (objects.hits.total) total = objects.hits.total
   let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
+    return record
+  })
+
+  //  Slug all the slugs
+  records = records.map((record) => {
+    // area
+    // category
+    if (record.classification) {
+      //  area
+      if (record.classification.area) {
+        const areasSlugs = {}
+        record.classification.area.forEach((thing) => {
+          if (thing.areacat && thing.areacat.en) {
+            areasSlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
+          }
+        })
+        record.areasSlugs = JSON.stringify(areasSlugs)
+      }
+      //  category
+      if (record.classification.category) {
+        const categorySlugs = {}
+        record.classification.category.forEach((thing) => {
+          if (thing.areacat && thing.areacat.en) {
+            categorySlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
+          }
+        })
+        record.categorySlugs = JSON.stringify(categorySlugs)
+      }
+      //  archivalLevel
+      if (record.classification.archivalLevel) {
+        const archivalLevelSlugs = {}
+        record.classification.archivalLevel.forEach((thing) => {
+          if (thing.areacat && thing.areacat.en) {
+            archivalLevelSlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
+          }
+        })
+        record.archivalLevelSlugs = JSON.stringify(archivalLevelSlugs)
+      }
+    }
+
+    if (record.mediumSlug && record.mediumSlug.en) {
+      record.mediumSlug = record.mediumSlug.en
+    } else {
+      delete record.mediumSlug
+    }
+    if (record.objectNameSlug && record.objectNameSlug.en) {
+      record.objectNameSlug = record.objectNameSlug.en
+    } else {
+      delete record.objectNameSlug
+    }
+    if (record.objectStatusSlug && record.objectStatusSlug.en) {
+      record.objectStatusSlug = record.objectStatusSlug.en
+    } else {
+      delete record.objectStatusSlug
+    }
+    if (record.titleSlug && record.titleSlug.en) {
+      record.titleSlug = record.titleSlug.en
+    } else {
+      delete record.titleSlug
+    }
     return record
   })
 
