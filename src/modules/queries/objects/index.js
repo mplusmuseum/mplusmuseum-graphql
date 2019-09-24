@@ -841,7 +841,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       //  area
       if (record.classification.area) {
         const areasSlugs = {}
-        record.classification.area.forEach((thing) => {
+        let thingLooper = record.classification.area
+        if (!Array.isArray(thingLooper)) thingLooper = [thingLooper]
+        thingLooper.forEach((thing) => {
           if (thing.areacat && thing.areacat.en) {
             areasSlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
           }
@@ -851,7 +853,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       //  category
       if (record.classification.category) {
         const categorySlugs = {}
-        record.classification.category.forEach((thing) => {
+        let thingLooper = record.classification.category
+        if (!Array.isArray(thingLooper)) thingLooper = [thingLooper]
+        thingLooper.forEach((thing) => {
           if (thing.areacat && thing.areacat.en) {
             categorySlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
           }
@@ -861,7 +865,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       //  archivalLevel
       if (record.classification.archivalLevel) {
         const archivalLevelSlugs = {}
-        record.classification.archivalLevel.forEach((thing) => {
+        let thingLooper = record.classification.archivalLevel
+        if (!Array.isArray(thingLooper)) thingLooper = [thingLooper]
+        thingLooper.forEach((thing) => {
           if (thing.areacat && thing.areacat.en) {
             archivalLevelSlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
           }
