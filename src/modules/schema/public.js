@@ -61,7 +61,8 @@ type Query {
   ): [LevelThreeConstituent]
   
   constituent(
-    id: Int!
+    id: Int
+    slug: String
     lang: String = "en"
     page: Int
     per_page: Int
@@ -342,6 +343,7 @@ type RelatedObjectShort {
 
 type LevelOneConstituent {
   id: Int
+  slug: String
   publicAccess: Boolean
   name: String
   nameOther: String
@@ -360,6 +362,7 @@ type LevelOneConstituent {
 
 type LevelTwoConstituent {
   id: Int
+  slug: String
   publicAccess: Boolean
   name: String
   nameOther: String
@@ -381,6 +384,7 @@ type LevelTwoConstituent {
 
 type LevelThreeConstituent {
   id: Int
+  slug: String
   publicAccess: Boolean
   name: String
   nameOther: String

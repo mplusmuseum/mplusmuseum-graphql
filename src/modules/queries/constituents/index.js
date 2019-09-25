@@ -94,6 +94,14 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     })
   }
 
+  if ('slug' in args) {
+    must.push({
+      match: {
+        slug: args.slug
+      }
+    })
+  }
+
   if ('isMaker' in args) {
     must.push({
       match: {
@@ -428,7 +436,8 @@ exports.getConstituents = getConstituents
 
 exports.getConstituent = async (args, context, initialCall = false) => {
   const startTime = new Date().getTime()
-  args.ids = [args.id]
+  if (args.id) args.ids = [args.id]
+  if (args.slug) args.slug = args.slug
   if (args.per_page) args.object_per_page = args.per_page
   if (args.page) args.object_page = args.page
   if (args.category) args.object_category = args.category
