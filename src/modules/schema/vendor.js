@@ -68,6 +68,7 @@ type Query {
 
   object(
     id: Int
+    slug: String
     objectNumber: String
     lang: String = "en"
     publicAccess: Boolean

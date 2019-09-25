@@ -1493,6 +1493,7 @@ const getObject = async (args, context, initialCall = false) => {
   const startTime = new Date().getTime()
   if (args.id) args.ids = [args.id]
   if (args.objectNumber) args.objectNumber = args.objectNumber
+  if (args.slug) args.title = args.slug
   const objectArray = await getObjects(args, context, 2)
 
   const apiLogger = logging.getAPILogger()
