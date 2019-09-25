@@ -646,6 +646,7 @@ type Mutation {
 
 type LevelOneObject {
   id: Int
+  slug: String
   artInt: Int
   publicAccess: Boolean
   objectNumber: String
@@ -707,6 +708,7 @@ type LevelOneObject {
 
 type SingleObject {
   id: Int
+  slug: String
   artInt: Int
   publicAccess: Boolean
   objectNumber: String
@@ -776,6 +778,7 @@ type LensLangs {
 
 type LevelTwoObject {
   id: Int
+  slug: String
   artInt: Int
   publicAccess: Boolean
   objectNumber: String
@@ -835,6 +838,7 @@ type LevelTwoObject {
 
 type LevelThreeObject {
   id: Int
+  slug: String
   artInt: Int
   publicAccess: Boolean
   objectNumber: String
@@ -890,6 +894,7 @@ type LevelThreeObject {
 
 type RelatedObject {
   id: Int
+  slug: String
   artInt: Int
   relatedType: String
   selfType: String

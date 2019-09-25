@@ -186,6 +186,7 @@ type Query {
 
 type LevelOneObject {
   id: Int
+  slug: String
   sortNumber: String
   publicAccess: Boolean
   objectNumber: String
@@ -215,6 +216,7 @@ type LevelOneObject {
 
 type SingleObject {
   id: Int
+  slug: String
   sortNumber: String
   publicAccess: Boolean
   objectNumber: String
@@ -244,6 +246,7 @@ type SingleObject {
 
 type LevelTwoObject {
   id: Int
+  slug: String
   sortNumber: String
   publicAccess: Boolean
   objectNumber: String
@@ -272,6 +275,7 @@ type LevelTwoObject {
 
 type LevelThreeObject {
   id: Int
+  slug: String
   sortNumber: String
   publicAccess: Boolean
   objectNumber: String
@@ -300,6 +304,7 @@ type LevelThreeObject {
 
 type RelatedObject {
   id: Int
+  slug: String
   sortNumber: String
   publicAccess: Boolean
   objectNumber: String
