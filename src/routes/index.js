@@ -321,6 +321,9 @@ const root = {
   deleteLens: (args, context) => {
     return queries.common.deleteLens(args, context, undefined, true)
   },
+  lookup: (args, context) => {
+    return queries.common.getLookup(args, context, undefined, true)
+  },
   timeline: (args, context) => {
     return queries.timeline.getTimeline(args, context, undefined, true)
   },

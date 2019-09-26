@@ -853,7 +853,6 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       }
       //  category
       if (record.classification.category) {
-        console.log(record.classification.category)
         const categorySlugs = {}
         let thingLooper = record.classification.category
         if (!Array.isArray(thingLooper)) thingLooper = [thingLooper]

@@ -834,6 +834,61 @@ exports.getMakerTypes = async (args, context, levelDown = 3, initialCall = false
    ===================================================================================
    ===================================================================================
 
+   LOOKUPS
+
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+*/
+const getLookup = async (args, context, initialCall = false) => {
+  const config = new Config()
+  const elasticsearchConfig = config.get('elasticsearch')
+  const esclient = new elasticsearch.Client(elasticsearchConfig)
+  const baseTMS = config.get('baseTMS')
+  if (baseTMS === null) return []
+
+  const index = `lookups_${baseTMS}`
+
+  const exists = await esclient.indices.exists({
+    index
+  })
+  if (exists === false) {
+    await esclient.indices.create({
+      index
+    })
+  }
+
+  let page = getPage(args)
+  let perPage = getPerPage(args)
+
+  const body = {
+    from: page * perPage,
+    size: perPage,
+    query: {
+      bool: {
+        must: [{
+          match: {
+            id: args.id
+          }
+        }]
+      }
+    }
+  }
+
+  const lookup = await doCacheQuery(false, index, body)
+  let record = null
+  if (lookup.hits && lookup.hits.hits && lookup.hits.hits.length === 1) {
+    record = lookup.hits.hits[0]._source
+  }
+  return record
+}
+exports.getLookup = getLookup
+
+/*
+   ===================================================================================
+   ===================================================================================
+   ===================================================================================
+
    LENSES
 
    ===================================================================================

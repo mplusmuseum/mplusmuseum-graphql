@@ -618,10 +618,14 @@ type Query {
     keyword: String
     ): [Factoids]
 
-    randoms(
-      page: Int
-      per_page: Int
-    ): [Randoms]
+  randoms(
+    page: Int
+    per_page: Int
+  ): [Randoms]
+
+  lookup(
+    id: String!
+  ): Lookup
 }
 
 type Mutation {
@@ -1417,5 +1421,10 @@ type DimensionDetails {
   width: Float
   height: Float
   depth: Float
+}
+
+type Lookup {
+  id: String
+  data: String
 }
 `
