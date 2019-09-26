@@ -355,7 +355,32 @@ exports.getAreas = async (args, context, levelDown = 3, initialCall = false) => 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, context, `areas.lang.${args.lang}.title.keyword`, `objects_${baseTMS}`)
+  //  Grab the autocomplete record, so we can work out what the lookups are
+  const areaSlugs = {}
+  const autocomplete = await getLookup({
+    id: 'autocomplete',
+    context,
+    levelDown,
+    initialCall
+  })
+  if (autocomplete.data) {
+    const data = JSON.parse(autocomplete.data)
+    if (data.areas) {
+      // Make the lookup table
+      if (!Array.isArray(data.areas)) data.areas = [data.areas]
+      data.areas.forEach((cat) => {
+        const catSplit = cat.split(':')
+        areaSlugs[catSplit[0]] = catSplit[1]
+      })
+    }
+  }
+
+  let aggs = await getAggregates(args, context, `areas.lang.${args.lang}.title.keyword`, `objects_${baseTMS}`)
+  aggs = aggs.map((agg) => {
+    if (agg.title && areaSlugs[agg.title]) agg.slug = areaSlugs[agg.title]
+    return agg
+  })
+
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Areas query`, {
     method: 'getAreas',
@@ -376,7 +401,32 @@ exports.getCategories = async (args, context, levelDown = 3, initialCall = false
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  const aggs = getAggregates(args, context, `category.lang.${args.lang}.title.keyword`, `objects_${baseTMS}`)
+  //  Grab the autocomplete record, so we can work out what the lookups are
+  const categorySlugs = {}
+  const autocomplete = await getLookup({
+    id: 'autocomplete',
+    context,
+    levelDown,
+    initialCall
+  })
+  if (autocomplete.data) {
+    const data = JSON.parse(autocomplete.data)
+    if (data.categories) {
+      // Make the lookup table
+      if (!Array.isArray(data.categories)) data.categories = [data.categories]
+      data.categories.forEach((cat) => {
+        const catSplit = cat.split(':')
+        categorySlugs[catSplit[0]] = catSplit[1]
+      })
+    }
+  }
+
+  let aggs = await getAggregates(args, context, `category.lang.${args.lang}.title.keyword`, `objects_${baseTMS}`)
+  aggs = aggs.map((agg) => {
+    if (agg.title && categorySlugs[agg.title]) agg.slug = categorySlugs[agg.title]
+    return agg
+  })
+
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`Categories query`, {
     method: 'getCategories',
@@ -875,7 +925,7 @@ const getLookup = async (args, context, initialCall = false) => {
     }
   }
 
-  const lookup = await doCacheQuery(false, index, body)
+  const lookup = await doCacheQuery(true, index, body)
   let record = null
   if (lookup.hits && lookup.hits.hits && lookup.hits.hits.length === 1) {
     record = lookup.hits.hits[0]._source

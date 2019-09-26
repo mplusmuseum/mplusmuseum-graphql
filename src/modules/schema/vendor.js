@@ -1176,12 +1176,14 @@ type Classification {
 type Area {
   title: String
   count: Int
+  slug: String
   _sys: MiniSys
 }
 
 type Categories {
   title: String
   count: Int
+  slug: String
   _sys: MiniSys
 }
 
