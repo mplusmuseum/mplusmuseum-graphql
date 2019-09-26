@@ -987,6 +987,7 @@ type LevelOneConstituent {
   deathCity: String
   artInt: Int
   region: String
+  storyUrl: String
   _sys: Sys
 }
 
@@ -1017,6 +1018,7 @@ type LevelTwoConstituent {
   deathCity: String
   artInt: Int
   region: String
+  storyUrl: String
   _sys: Sys
 }
 
@@ -1043,6 +1045,7 @@ type LevelThreeConstituent {
   deathCity: String
   artInt: Int
   region: String
+  storyUrl: String
   _sys: Sys
 }
 
