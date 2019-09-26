@@ -845,19 +845,22 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         if (!Array.isArray(thingLooper)) thingLooper = [thingLooper]
         thingLooper.forEach((thing) => {
           if (thing.areacat && thing.areacat.en) {
-            areasSlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
+            areasSlugs[thing.areacat['en']] = utils.slugify(thing.areacat.en)
+            areasSlugs[thing.areacat['zh-hant']] = utils.slugify(thing.areacat.en)
           }
         })
         record.areasSlugs = JSON.stringify(areasSlugs)
       }
       //  category
       if (record.classification.category) {
+        console.log(record.classification.category)
         const categorySlugs = {}
         let thingLooper = record.classification.category
         if (!Array.isArray(thingLooper)) thingLooper = [thingLooper]
         thingLooper.forEach((thing) => {
           if (thing.areacat && thing.areacat.en) {
-            categorySlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
+            categorySlugs[thing.areacat['en']] = utils.slugify(thing.areacat.en)
+            categorySlugs[thing.areacat['zh-hant']] = utils.slugify(thing.areacat.en)
           }
         })
         record.categorySlugs = JSON.stringify(categorySlugs)
@@ -869,7 +872,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         if (!Array.isArray(thingLooper)) thingLooper = [thingLooper]
         thingLooper.forEach((thing) => {
           if (thing.areacat && thing.areacat.en) {
-            archivalLevelSlugs[thing.areacat.en] = utils.slugify(thing.areacat.en)
+            archivalLevelSlugs[thing.areacat['en']] = utils.slugify(thing.areacat.en)
+            archivalLevelSlugs[thing.areacat['zh-hant']] = utils.slugify(thing.areacat.en)
           }
         })
         record.archivalLevelSlugs = JSON.stringify(archivalLevelSlugs)
