@@ -276,7 +276,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.area,
         type: 'best_fields',
-        fields: [`areas.lang.${args.lang}.title.keyword`, `areas.lang.${args.lang}.slug.keyword`],
+        fields: [`areas.lang.${args.lang}.title.keyword`, `areas.lang.${args.lang}.slug.keyword`, `areas.lang.en.slug.keyword`],
         operator: 'or'
       }
     })
@@ -287,7 +287,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.category,
         type: 'best_fields',
-        fields: [`category.lang.${args.lang}.title.keyword`, `category.lang.${args.lang}.slug.keyword`],
+        fields: [`category.lang.${args.lang}.title.keyword`, `category.lang.${args.lang}.slug.keyword`, `category.lang.en.slug.keyword`],
         operator: 'or'
       }
     })
@@ -298,7 +298,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.archivalLevel,
         type: 'best_fields',
-        fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`],
+        fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`, `archivalLevel.lang.en.slug.keyword`],
         operator: 'or'
       }
     })
@@ -309,7 +309,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.medium,
         type: 'best_fields',
-        fields: [`medium.${args.lang}.keyword`, `mediumSlug.${args.lang}.keyword`],
+        fields: [`medium.${args.lang}.keyword`, `mediumSlug.${args.lang}.keyword`, `mediumSlug.en.keyword`],
         operator: 'or'
       }
     })
@@ -347,7 +347,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       multi_match: {
         query: args.objectNumber,
         type: 'best_fields',
-        fields: [`objectName.${args.lang}.keyword`, `objectNameSlug.${args.lang}.keyword`],
+        fields: [`objectName.${args.lang}.keyword`, `objectNameSlug.${args.lang}.keyword`, `objectNameSlug.en.keyword`],
         operator: 'or'
       }
     })
@@ -652,28 +652,28 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       const colourSearch = {
         bool: {
           must: [{
-            range: {
-              'colorHSLInt.h': {
-                gte: hue - 30,
-                lte: hue + 30
+              range: {
+                'colorHSLInt.h': {
+                  gte: hue - 30,
+                  lte: hue + 30
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.l': {
+                  gte: thisLum - 25,
+                  lte: thisLum + 25
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.s': {
+                  gte: thisSat
+                }
               }
             }
-          },
-          {
-            range: {
-              'colorHSLInt.l': {
-                gte: thisLum - 25,
-                lte: thisLum + 25
-              }
-            }
-          },
-          {
-            range: {
-              'colorHSLInt.s': {
-                gte: thisSat
-              }
-            }
-          }
           ]
         }
       }
@@ -725,15 +725,15 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       must.push({
         bool: {
           must: [{
-            match: {
-              'remote.status': 'ok'
+              match: {
+                'remote.status': 'ok'
+              }
+            },
+            {
+              exists: {
+                field: 'color.predominant'
+              }
             }
-          },
-          {
-            exists: {
-              field: 'color.predominant'
-            }
-          }
           ]
         }
       })
