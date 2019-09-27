@@ -240,6 +240,14 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if ('slug' in args && args.slug !== '') {
+    must.push({
+      match: {
+        'slug.keyword': args.slug
+      }
+    })
+  }
+
   if ('title' in args && args.title !== '') {
     cacheable = false
     must.push({
