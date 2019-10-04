@@ -97,7 +97,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
   if ('slug' in args) {
     must.push({
       match: {
-        slug: args.slug
+        'slug.keyword': args.slug
       }
     })
   }
@@ -248,6 +248,8 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
       }
     }
   }
+
+  // console.log(JSON.stringify(body, null, 4))
 
   //  Run the search
   const results = await common.doCacheQuery(cacheable, index, body)
