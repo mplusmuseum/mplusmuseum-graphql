@@ -272,12 +272,21 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('area' in args && args.area !== '') {
+    if (!Array.isArray(args.area)) args.area = [args.area]
+    const should = []
+    args.area.forEach((area) => {
+      should.push({
+        multi_match: {
+          query: area,
+          type: 'best_fields',
+          fields: [`areas.lang.${args.lang}.title.keyword`, `areas.lang.${args.lang}.slug.keyword`, `areas.lang.en.slug.keyword`],
+          operator: 'or'
+        }
+      })
+    })
     must.push({
-      multi_match: {
-        query: args.area,
-        type: 'best_fields',
-        fields: [`areas.lang.${args.lang}.title.keyword`, `areas.lang.${args.lang}.slug.keyword`, `areas.lang.en.slug.keyword`],
-        operator: 'or'
+      bool: {
+        should
       }
     })
   }
@@ -303,12 +312,21 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('archivalLevel' in args && args.archivalLevel !== '') {
+    if (!Array.isArray(args.archivalLevel)) args.archivalLevel = [args.archivalLevel]
+    const should = []
+    args.archivalLevel.forEach((archivalLevel) => {
+      should.push({
+        multi_match: {
+          query: archivalLevel,
+          type: 'best_fields',
+          fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`, `archivalLevel.lang.en.slug.keyword`],
+          operator: 'or'
+        }
+      })
+    })
     must.push({
-      multi_match: {
-        query: args.archivalLevel,
-        type: 'best_fields',
-        fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`, `archivalLevel.lang.en.slug.keyword`],
-        operator: 'or'
+      bool: {
+        should
       }
     })
   }
