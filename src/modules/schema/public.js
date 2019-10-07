@@ -10,9 +10,9 @@ type Query {
     sort_field: String = "id"
     publicAccess: Boolean
     objectNumber: String
-    category: String
-    area: String
-    archivalLevel: String
+    category: [String]
+    area: [String]
+    archivalLevel: [String]
     fonds: String
     title: String
     displayDate: String
@@ -66,9 +66,9 @@ type Query {
     lang: String = "en"
     page: Int
     per_page: Int
-    category: String
-    area: String
-    title: String
+    category: [String]
+    area: [String]
+    title: [String]
     displayDate: String
     beginDate: Int
     endDate: Int
@@ -103,9 +103,9 @@ type Query {
     lang: String = "en"
     page: Int
     per_page: Int
-    category: String
-    area: String
-    title: String
+    category: [String]
+    area: [String]
+    title: [String]
     displayDate: String
     beginDate: Int
     endDate: Int
@@ -130,8 +130,8 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
     fonds: String
-    area: String
-    category: String
+    area: [String]
+    category: [String]
   ): [Area]
 
   fonds(
@@ -150,8 +150,8 @@ type Query {
     sort: String = "asc"
     sort_field: String = "id"
     fonds: String
-    area: String
-    category: String
+    area: [String]
+    category: [String]
   ): [Categories]
 
   archivalLevels(

@@ -283,12 +283,21 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('category' in args && args.category !== '') {
+    if (!Array.isArray(args.category)) args.category = [args.category]
+    const should = []
+    args.category.forEach((category) => {
+      should.push({
+        multi_match: {
+          query: category,
+          type: 'best_fields',
+          fields: [`category.lang.${args.lang}.title.keyword`, `category.lang.${args.lang}.slug.keyword`, `category.lang.en.slug.keyword`],
+          operator: 'or'
+        }
+      })
+    })
     must.push({
-      multi_match: {
-        query: args.category,
-        type: 'best_fields',
-        fields: [`category.lang.${args.lang}.title.keyword`, `category.lang.${args.lang}.slug.keyword`, `category.lang.en.slug.keyword`],
-        operator: 'or'
+      bool: {
+        should
       }
     })
   }

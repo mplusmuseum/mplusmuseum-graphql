@@ -10,9 +10,9 @@ type Query {
     lang: String = "en"
     sort: String = "asc"
     sort_field: String = "id"
-    category: String
-    area: String
-    archivalLevel: String
+    category: [String]
+    area: [String]
+    archivalLevel: [String]
     collectionType: String
     collectionCode: String
     fonds: String
@@ -104,8 +104,8 @@ type Query {
     page: Int
     per_page: Int
     publicAccess: Boolean
-    category: String
-    area: String
+    category: [String]
+    area: [String]
     title: String
     displayDate: String
     beginDate: Int
@@ -144,8 +144,8 @@ type Query {
     page: Int
     per_page: Int
     publicAccess: Boolean
-    category: String
-    area: String
+    category: [String]
+    area: [String]
     title: String
     displayDate: String
     beginDate: Int
@@ -184,8 +184,8 @@ type Query {
     page: Int
     per_page: Int
     publicAccess: Boolean
-    category: String
-    area: String
+    category: [String]
+    area: [String]
     title: String
     displayDate: String
     beginDate: Int
@@ -237,8 +237,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Area]
   
@@ -256,8 +256,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Categories]
 
@@ -275,8 +275,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [ArchivalLevels]
 
@@ -294,8 +294,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Statuses]
 
@@ -313,8 +313,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Names]
 
@@ -332,8 +332,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [CollectionTypes]
 
@@ -351,8 +351,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [CollectionCodes]
 
@@ -370,8 +370,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [CollectionCodes]
 
@@ -388,8 +388,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [CollectionNames]
 
@@ -406,8 +406,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Departments]
 
@@ -424,8 +424,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Styles]
 
@@ -452,8 +452,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Tags]
 
@@ -478,8 +478,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [ConActiveCities]
 
@@ -495,8 +495,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [ConBirthCities]
 
@@ -512,8 +512,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [ConDeathCities]
 
@@ -529,8 +529,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Genders]
 
@@ -546,8 +546,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [Nationalities]
 
@@ -563,8 +563,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [ConRegions]
 
@@ -580,8 +580,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [ConTypes]
 
@@ -597,8 +597,8 @@ type Query {
     department: String
     style: String
     constituent: Int
-    area: String
-    category: String
+    area: [String]
+    category: [String]
     keyword: String
   ): [ConRoles]
 
