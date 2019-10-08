@@ -998,6 +998,16 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     delete record.scopeNContentHTML
     if (match !== null) record.scopeNContentHTML = match
 
+    //  Get the default value of randomFact
+    match = common.getSingleTextFromArrayByLang(record.randomFact, args.lang)
+    delete record.randomFact
+    if (match !== null) record.randomFact = match
+
+    //  Get the default value of randomFactHTML
+    match = common.getSingleTextFromArrayByLang(record.randomFactHTML, args.lang)
+    delete record.randomFactHTML
+    if (match !== null) record.randomFactHTML = match
+
     //  Get the default value of baselineDescription
     match = common.getSingleTextFromArrayByLang(record.baselineDescription, args.lang)
     delete record.baselineDescription

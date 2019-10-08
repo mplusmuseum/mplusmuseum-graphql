@@ -690,6 +690,8 @@ type LevelOneObject {
   collection: Collection
   scopeNContent: String
   scopeNContentHTML: String
+  randomFact: String
+  randomFactHTML: String
   baselineDescription: String
   baselineDescriptionHTML: String
   isRecommended: Boolean
@@ -752,6 +754,8 @@ type SingleObject {
   collection: Collection
   scopeNContent: String
   scopeNContentHTML: String
+  randomFact: String
+  randomFactHTML: String
   baselineDescription: String
   baselineDescriptionHTML: String
   isRecommended: Boolean
@@ -822,6 +826,8 @@ type LevelTwoObject {
   collection: Collection
   scopeNContent: String
   scopeNContentHTML: String
+  randomFact: String
+  randomFactHTML: String
   baselineDescription: String
   baselineDescriptionHTML: String
   isRecommended: Boolean
@@ -878,6 +884,8 @@ type LevelThreeObject {
   collection: Collection
   scopeNContent: String
   scopeNContentHTML: String
+  randomFact: String
+  randomFactHTML: String
   baselineDescription: String
   baselineDescriptionHTML: String
   isRecommended: Boolean
@@ -937,6 +945,8 @@ type RelatedObject {
   collection: Collection
   scopeNContent: String
   scopeNContentHTML: String
+  randomFact: String
+  randomFactHTML: String
   baselineDescription: String
   baselineDescriptionHTML: String
   isRecommended: Boolean
