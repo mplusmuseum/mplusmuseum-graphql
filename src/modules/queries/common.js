@@ -178,6 +178,9 @@ const getAggregates = async (args, context, field, index) => {
   const perPage = getAggPerPage(args)
   const body = {}
 
+  //  use the default language
+  if (!args.lang) args.lang = 'en'
+
   body.aggs = {
     'results': {
       'terms': {
@@ -253,26 +256,62 @@ const getAggregates = async (args, context, field, index) => {
   }
 
   if ('area' in args && args.area !== '') {
-    const match = {}
-    match[`areas.lang.${args.lang}.title.keyword`] = args.area
+    if (!Array.isArray(args.area)) args.area = [args.area]
+    const should = []
+    args.area.forEach((area) => {
+      should.push({
+        multi_match: {
+          query: area,
+          type: 'best_fields',
+          fields: [`areas.lang.${args.lang}.title.keyword`, `areas.lang.${args.lang}.slug.keyword`, `areas.lang.en.slug.keyword`],
+          operator: 'or'
+        }
+      })
+    })
     must.push({
-      match
+      bool: {
+        should
+      }
     })
   }
 
   if ('category' in args && args.category !== '') {
-    const match = {}
-    match[`category.lang.${args.lang}.title.keyword`] = args.category
+    if (!Array.isArray(args.category)) args.category = [args.category]
+    const should = []
+    args.category.forEach((category) => {
+      should.push({
+        multi_match: {
+          query: category,
+          type: 'best_fields',
+          fields: [`category.lang.${args.lang}.title.keyword`, `category.lang.${args.lang}.slug.keyword`, `category.lang.en.slug.keyword`],
+          operator: 'or'
+        }
+      })
+    })
     must.push({
-      match
+      bool: {
+        should
+      }
     })
   }
 
   if ('archivalLevel' in args && args.archivalLevel !== '') {
-    const match = {}
-    match[`archivalLevel.lang.${args.lang}.title.keyword`] = args.archivalLevel
+    if (!Array.isArray(args.archivalLevel)) args.archivalLevel = [args.archivalLevel]
+    const should = []
+    args.archivalLevel.forEach((archivalLevel) => {
+      should.push({
+        multi_match: {
+          query: archivalLevel,
+          type: 'best_fields',
+          fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`, `archivalLevel.lang.en.slug.keyword`],
+          operator: 'or'
+        }
+      })
+    })
     must.push({
-      match
+      bool: {
+        should
+      }
     })
   }
 
