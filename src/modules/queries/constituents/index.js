@@ -481,8 +481,10 @@ exports.getConstituent = async (args, context, initialCall = false) => {
       if (objectsForCount) {
         objectsForCount.forEach((object) => {
           if (object.id && object.constituents) {
-            const categorySlugs = JSON.parse(object.categorySlugs)
-            const areasSlugs = JSON.parse(object.areasSlugs)
+            let categorySlugs = {}
+            let areasSlugs = {}
+            if (object.categorySlugs) categorySlugs = JSON.parse(object.categorySlugs)
+            if (object.areasSlugs) areasSlugs = JSON.parse(object.areasSlugs)
             object.constituents.forEach((constituent) => {
               if (constituent.id === thisConstituent.id && constituent.isMakerOfObject) {
                 //  Get the categories & areas
