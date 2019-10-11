@@ -240,6 +240,7 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    isMaker: Boolean
   ): [Area]
   
   categories(
@@ -259,6 +260,7 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    isMaker: Boolean
   ): [Categories]
 
   archivalLevels(
@@ -278,6 +280,7 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    isMaker: Boolean
   ): [ArchivalLevels]
 
   statuses(
@@ -998,6 +1001,9 @@ type LevelOneConstituent {
   artInt: Int
   region: String
   storyUrl: String
+  categories: [titleSlugCount]
+  areas: [titleSlugCount]
+  collectionNames: [titleSlugCount]
   _sys: Sys
 }
 
@@ -1441,5 +1447,11 @@ type DimensionDetails {
 type Lookup {
   id: String
   data: String
+}
+
+type titleSlugCount {
+  title: String
+  slug: String
+  count: Int
 }
 `

@@ -462,7 +462,96 @@ exports.getConstituent = async (args, context, initialCall = false) => {
     ms: new Date().getTime() - startTime
   })
 
-  if (Array.isArray(constituentArray)) return constituentArray[0]
+  if (Array.isArray(constituentArray)) {
+    const thisConstituent = constituentArray[0]
+
+    //  Now we want to get a bunch of information about areas and categories
+    //  and collections
+    const newArgs = {}
+    newArgs.constituent = thisConstituent.id
+    newArgs.perPage = 999
+    if (args.publicAccess) newArgs.publicAccess = args.publicAccess
+    if (args.lang) newArgs.lang = args.lang
+
+    const areasAgg = {}
+    const categoriesAgg = {}
+    const collectionAgg = {}
+
+    const objectsForCount = await queryObjects.getObjects(newArgs, context, 1)
+    if (objectsForCount) {
+      objectsForCount.forEach((object) => {
+        if (object.constituents) {
+          const categorySlugs = JSON.parse(object.categorySlugs)
+          const areasSlugs = JSON.parse(object.areasSlugs)
+          object.constituents.forEach((constituent) => {
+            if (constituent.id === thisConstituent.id && constituent.isMakerOfObject) {
+              //  Get the categories & areas
+              if (object.classification) {
+                //  Categories
+                if (object.classification.category) {
+                  object.classification.category.forEach((category) => {
+                    if (!categoriesAgg[category]) {
+                      categoriesAgg[category] = {
+                        title: category,
+                        slug: categorySlugs[category],
+                        count: 0
+                      }
+                    }
+                    categoriesAgg[category].count++
+                  })
+                }
+
+                //  areas
+                if (object.classification.area) {
+                  object.classification.area.forEach((area) => {
+                    if (!areasAgg[area]) {
+                      areasAgg[area] = {
+                        title: area,
+                        slug: areasSlugs[area],
+                        count: 0
+                      }
+                    }
+                    areasAgg[area].count++
+                  })
+                }
+              }
+
+              //  If we have a collection
+              if (object.collectionName) {
+                if (!collectionAgg[object.collectionName]) {
+                  collectionAgg[object.collectionName] = {
+                    title: object.collectionName,
+                    slug: null,
+                    count: 0
+                  }
+                }
+                collectionAgg[object.collectionName].count++
+              }
+            }
+          })
+        }
+      })
+    }
+    const categoriesArr = []
+    Object.entries(categoriesAgg).forEach((entry) => {
+      categoriesArr.push(entry[1])
+    })
+    if (categoriesArr.length > 0) thisConstituent.categories = categoriesArr
+
+    const areasArr = []
+    Object.entries(areasAgg).forEach((entry) => {
+      areasArr.push(entry[1])
+    })
+    if (areasArr.length > 0) thisConstituent.areas = areasArr
+
+    const collectionsArr = []
+    Object.entries(collectionAgg).forEach((entry) => {
+      collectionsArr.push(entry[1])
+    })
+    if (collectionsArr.length > 0) thisConstituent.collectionNames = collectionsArr
+
+    return thisConstituent
+  }
   return null
 }
 
