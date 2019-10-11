@@ -713,6 +713,7 @@ type LevelOneObject {
   objectNumberSlug: String
   objectStatusSlug: String
   titleSlug: String
+  highlight: String
   _sys: Sys
 }
 
@@ -775,6 +776,7 @@ type SingleObject {
   objectNumberSlug: String
   objectStatusSlug: String
   titleSlug: String
+  highlight: String
   _sys: Sys
 }
 
@@ -847,6 +849,7 @@ type LevelTwoObject {
   objectNumberSlug: String
   objectStatusSlug: String
   titleSlug: String
+  highlight: String
   _sys: Sys
 }
 
@@ -905,6 +908,7 @@ type LevelThreeObject {
   objectNumberSlug: String
   objectStatusSlug: String
   titleSlug: String
+  highlight: String
   _sys: Sys
 }
 
@@ -966,6 +970,7 @@ type RelatedObject {
   objectNumberSlug: String
   objectStatusSlug: String
   titleSlug: String
+  highlight: String
   _sys: Sys
 }
 

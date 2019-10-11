@@ -567,14 +567,23 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   if ('keyword' in args && args.keyword !== '') {
     //  Don't cache when doing keyword searches
     cacheable = false
+    const fields = ['title.en', 'title.zh-hant', 'baselineDescription.en', 'baselineDescription.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'classification.archivalLevel.areacat.en', 'classification.archivalLevel.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectNumber', 'objectNumber.keyword', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant']
     must.push({
       multi_match: {
         query: args.keyword,
         type: 'best_fields',
-        fields: ['title.en', 'title.zh-hant', 'baselineDescription.en', 'baselineDescription.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'classification.archivalLevel.areacat.en', 'classification.archivalLevel.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectNumber', 'objectNumber.keyword', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant'],
+        fields,
         operator: 'or'
       }
     })
+    const newFields = fields.map((field) => {
+      const x = {}
+      x[field] = {}
+      return x
+    })
+    body.highlight = {
+      fields: newFields
+    }
   }
 
   if ('color' in args && args.color !== '') {
@@ -864,7 +873,12 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   const objects = await common.doCacheQuery(cacheable, index, body)
   let total = null
   if (objects.hits.total) total = objects.hits.total
-  let records = objects.hits.hits.map((hit) => hit._source).map((record) => {
+
+  let records = objects.hits.hits.map((hit) => {
+    const result = hit._source
+    if (hit.highlight) result.highlight = JSON.stringify(hit.highlight)
+    return result
+  }).map((record) => {
     return record
   })
 
