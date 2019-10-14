@@ -462,96 +462,51 @@ exports.getConstituent = async (args, context, initialCall = false) => {
     ms: new Date().getTime() - startTime
   })
 
+  let lang = 'en'
+  if (args.lang) lang = args.lang
+
   if (Array.isArray(constituentArray)) {
     const thisConstituent = constituentArray[0]
-    if (thisConstituent && thisConstituent.id) {
-      //  Now we want to get a bunch of information about areas and categories
-      //  and collections
-      const newArgs = {}
-      newArgs.constituent = thisConstituent.id
-      newArgs.perPage = 999
-      if (args.publicAccess) newArgs.publicAccess = args.publicAccess
-      if (args.lang) newArgs.lang = args.lang
 
-      const areasAgg = {}
-      const categoriesAgg = {}
-      const collectionAgg = {}
-
-      const objectsForCount = await queryObjects.getObjects(newArgs, context, 1)
-      if (objectsForCount) {
-        objectsForCount.forEach((object) => {
-          if (object.id && object.constituents) {
-            let categorySlugs = {}
-            let areasSlugs = {}
-            if (object.categorySlugs) categorySlugs = JSON.parse(object.categorySlugs)
-            if (object.areasSlugs) areasSlugs = JSON.parse(object.areasSlugs)
-            object.constituents.forEach((constituent) => {
-              if (constituent.id === thisConstituent.id && constituent.isMakerOfObject) {
-                //  Get the categories & areas
-                if (object.classification) {
-                  //  Categories
-                  if (object.classification.category) {
-                    object.classification.category.forEach((category) => {
-                      if (!categoriesAgg[category]) {
-                        categoriesAgg[category] = {
-                          title: category,
-                          slug: categorySlugs[category],
-                          count: 0
-                        }
-                      }
-                      categoriesAgg[category].count++
-                    })
-                  }
-
-                  //  areas
-                  if (object.classification.area) {
-                    object.classification.area.forEach((area) => {
-                      if (!areasAgg[area]) {
-                        areasAgg[area] = {
-                          title: area,
-                          slug: areasSlugs[area],
-                          count: 0
-                        }
-                      }
-                      areasAgg[area].count++
-                    })
-                  }
-                }
-
-                //  If we have a collection
-                if (object.collectionName) {
-                  if (!collectionAgg[object.collectionName]) {
-                    collectionAgg[object.collectionName] = {
-                      title: object.collectionName,
-                      slug: null,
-                      count: 0
-                    }
-                  }
-                  collectionAgg[object.collectionName].count++
-                }
-              }
+    if (thisConstituent.aggregateCounts) {
+      const aggregateCounts = JSON.parse(thisConstituent.aggregateCounts)
+      if (aggregateCounts.lang[lang]) {
+        if (aggregateCounts.lang[lang].categoriesAgg) {
+          thisConstituent.categories = []
+          Object.entries(aggregateCounts.lang[lang].categoriesAgg).forEach((data) => {
+            thisConstituent.categories.push({
+              title: data[1].title,
+              slug: data[1].slug,
+              count: data[1].count
             })
-          }
-        })
+          })
+        }
+        if (aggregateCounts.lang[lang].areasAgg) {
+          thisConstituent.areas = []
+          Object.entries(aggregateCounts.lang[lang].areasAgg).forEach((data) => {
+            thisConstituent.areas.push({
+              title: data[1].title,
+              slug: data[1].slug,
+              count: data[1].count
+            })
+          })
+        }
+        if (aggregateCounts.lang[lang].collectionAgg) {
+          thisConstituent.collectionNames = []
+          Object.entries(aggregateCounts.lang[lang].collectionAgg).forEach((data) => {
+            thisConstituent.collectionNames.push({
+              title: data[1].title,
+              slug: data[1].slug,
+              count: data[1].count
+            })
+          })
+        }
       }
-      const categoriesArr = []
-      Object.entries(categoriesAgg).forEach((entry) => {
-        categoriesArr.push(entry[1])
-      })
-      if (categoriesArr.length > 0) thisConstituent.categories = categoriesArr
-
-      const areasArr = []
-      Object.entries(areasAgg).forEach((entry) => {
-        areasArr.push(entry[1])
-      })
-      if (areasArr.length > 0) thisConstituent.areas = areasArr
-
-      const collectionsArr = []
-      Object.entries(collectionAgg).forEach((entry) => {
-        collectionsArr.push(entry[1])
-      })
-      if (collectionsArr.length > 0) thisConstituent.collectionNames = collectionsArr
     }
+    if (thisConstituent.categories.length === 0) thisConstituent.categories = null
+    if (thisConstituent.areas.length === 0) thisConstituent.areas = null
+    if (thisConstituent.collectionNames.length === 0) thisConstituent.collectionNames = null
+
     return thisConstituent
   }
   return null
