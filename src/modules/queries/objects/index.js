@@ -567,7 +567,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   if ('keyword' in args && args.keyword !== '') {
     //  Don't cache when doing keyword searches
     cacheable = false
-    const fields = ['title.en', 'title.zh-hant', 'baselineDescription.en', 'baselineDescription.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'classification.archivalLevel.areacat.en', 'classification.archivalLevel.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectNumber', 'objectNumber.keyword', 'objectStatus.en', 'objectStatus.zh-hant', 'title.en', 'title.zh-hant']
+    const fields = ['title.en', 'title.zh-hant', 'baselineDescription.en', 'baselineDescription.zh-hant', 'classification.area.areacat.en', 'classification.area.areacat.zh-hant', 'classification.category.areacat.en', 'classification.category.areacat.zh-hant', 'classification.archivalLevel.areacat.en', 'classification.archivalLevel.areacat.zh-hant', 'creditLine.en', 'creditLine.zh-hant', 'displayDate.en', 'displayDate.zh-hant', 'exhibition.exhibitionLabelText.en.labels.text', 'exhibition.exhibitionLabelText.zh-hant.labels.text', 'images.AltText', 'images.AltTextTC', 'images.Copyright', 'medium.en', 'medium.zh-hant', 'objectNumber', 'objectNumber.keyword', 'objectStatus.en', 'objectStatus.zh-hant']
     must.push({
       multi_match: {
         query: args.keyword,
@@ -876,7 +876,68 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   let records = objects.hits.hits.map((hit) => {
     const result = hit._source
-    if (hit.highlight) result.highlight = JSON.stringify(hit.highlight)
+    if (hit.highlight) {
+      const highlight = hit.highlight
+      if (args.lang === 'en') {
+        if (highlight['title.en']) highlight.title = highlight['title.en']
+        if (highlight['baselineDescription.en']) highlight.baselineDescription = highlight['baselineDescription.en']
+        if (highlight['classification.area.areacat.en']) highlight.area = highlight['classification.area.areacat.en']
+        if (highlight['classification.category.areacat.en']) highlight.category = highlight['classification.category.areacat.en']
+        if (highlight['classification.archivalLevel.areacat.en']) highlight.archivalLevel = highlight['classification.archivalLevel.areacat.en']
+        if (highlight['creditLine.en']) highlight.creditLine = highlight['creditLine.en']
+        if (highlight['displayDate.en']) highlight.displayDate = highlight['displayDate.en']
+        if (highlight['exhibition.exhibitionLabelText.en.labels.text']) highlight.exhibitionLabelText = highlight['exhibition.exhibitionLabelText.en.labels.text']
+        if (highlight['images.AltText']) highlight.imageAltText = highlight['images.AltText']
+        if (highlight['medium.en']) highlight.medium = highlight['medium.en']
+        if (highlight['objectStatus.en']) highlight.objectStatus = highlight['objectStatus.en']
+      }
+
+      if (args.lang === 'zh-hant') {
+        if (highlight['title.zh-hant']) highlight.title = highlight['title.zh-hant']
+        if (highlight['baselineDescription.zh-hant']) highlight.baselineDescription = highlight['baselineDescription.zh-hant']
+        if (highlight['classification.area.areacat.zh-hant']) highlight.area = highlight['classification.area.areacat.zh-hant']
+        if (highlight['classification.category.areacat.zh-hant']) highlight.category = highlight['classification.category.areacat.zh-hant']
+        if (highlight['classification.archivalLevel.areacat.zh-hant']) highlight.archivalLevel = highlight['classification.archivalLevel.areacat.zh-hant']
+        if (highlight['creditLine.zh-hant']) highlight.creditLine = highlight['creditLine.zh-hant']
+        if (highlight['displayDate.zh-hant']) highlight.displayDate = highlight['displayDate.zh-hant']
+        if (highlight['exhibition.exhibitionLabelText.zh-hant.labels.text']) highlight.exhibitionLabelText = highlight['exhibition.exhibitionLabelText.zh-hant.labels.text']
+        if (highlight['images.AltTextTC']) highlight.imageAltText = highlight['images.AltTextTC']
+        if (highlight['medium.zh-hant']) highlight.medium = highlight['medium.zh-hant']
+        if (highlight['objectStatus.zh-hant']) highlight.objectStatus = highlight['objectStatus.zh-hant']
+      }
+
+      if (highlight['images.Copyright']) highlight.imageCopyright = highlight['images.Copyright']
+      if (highlight['objectNumber']) highlight.objectNumber = highlight['objectNumber']
+      if (highlight['objectNumber.keyword']) highlight.objectNumber = highlight['objectNumber.keyword']
+
+      delete highlight['title.zh-hant']
+      delete highlight['title.en']
+      delete highlight['baselineDescription.zh-hant']
+      delete highlight['baselineDescription.en']
+      delete highlight['classification.area.areacat.en']
+      delete highlight['classification.area.areacat.zh-hant']
+      delete highlight['classification.category.areacat.en']
+      delete highlight['classification.category.areacat.zh-hant']
+      delete highlight['classification.archivalLevel.areacat.en']
+      delete highlight['classification.archivalLevel.areacat.zh-hant']
+      delete highlight['creditLine.zh-hant']
+      delete highlight['creditLine.en']
+      delete highlight['displayDate.zh-hant']
+      delete highlight['displayDate.en']
+      delete highlight['exhibition.exhibitionLabelText.en.labels.text']
+      delete highlight['exhibition.exhibitionLabelText.zh-hant.labels.text']
+      delete highlight['images.AltTextTC']
+      delete highlight['images.AltText']
+      delete highlight['images.Copyright']
+      delete highlight['medium.zh-hant']
+      delete highlight['medium.en']
+      delete highlight['objectNumber']
+      delete highlight['objectNumber.keyword']
+      delete highlight['objectStatus.zh-hant']
+      delete highlight['objectStatus.en']
+
+      result.highlight = JSON.stringify(highlight)
+    }
     return result
   }).map((record) => {
     return record
