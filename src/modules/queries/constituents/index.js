@@ -210,9 +210,7 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     })
   }
 
-  if ('name' in args && args.title !== '') {
-    //  Don't cache when doing string searches
-    cacheable = false
+  if ('name' in args && args.name !== '') {
     must.push({
       multi_match: {
         query: args.name,
@@ -224,8 +222,6 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
   }
 
   if ('keyword' in args && args.title !== '') {
-    //  Don't cache when doing string searches
-    cacheable = false
     must.push({
       multi_match: {
         query: args.keyword,
