@@ -1006,6 +1006,8 @@ type LevelOneConstituent {
   artInt: Int
   region: String
   storyUrl: String
+  storyTitle: String
+  storyImage: String
   categories: [titleSlugCount]
   areas: [titleSlugCount]
   collectionNames: [titleSlugCount]

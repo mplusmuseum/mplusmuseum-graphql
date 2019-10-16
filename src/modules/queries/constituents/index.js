@@ -1,7 +1,7 @@
 const Config = require('../../../classes/config')
 const common = require('../common.js')
 const logging = require('../../logging')
-
+const request = require('request-promise')
 /*
 ##########################################################
 ##########################################################
@@ -503,9 +503,54 @@ exports.getConstituent = async (args, context, initialCall = false) => {
     if (thisConstituent.areas.length === 0) thisConstituent.areas = null
     if (thisConstituent.collectionNames.length === 0) thisConstituent.collectionNames = null
 
+    //  Now wee if there's a story URL, and we've asked for the story URL
+    //  If we have a storyURL and we have been asked for a storyURL then go get the data
+    if (thisConstituent.storyUrl && context.query.indexOf('storyUrl') >= 0) {
+      let url = thisConstituent.storyUrl
+      if (args.lang !== 'en') url = url.replace('/en/', '/tc/')
+      //  Grab the data from the story page
+      const body = await fetchPage(url)
+      //  Try and get the title
+      thisConstituent.storyTitle = null
+      const titleSplit = body.split('og:title" content="')
+      if (titleSplit.length > 1) {
+        thisConstituent.storyTitle = titleSplit[1].split('"')[0].replace(' - M+ Stories', '').replace(' - M+故事', '')
+      }
+
+      thisConstituent.storyImage = null
+      const imageSplit = body.split('og:image" content="')
+      if (imageSplit.length > 1) {
+        thisConstituent.storyImage = imageSplit[1].split('"')[0]
+      }
+    }
     return thisConstituent
   }
   return null
 }
 
+const fetchPage = async (url) => {
+  if (global.urlCache && global.urlCache[url] && global.urlCache[url].expire > new Date().getTime()) {
+    const deepStringResult = JSON.stringify(global.urlCache[url].body)
+    return JSON.parse(deepStringResult)
+  }
+
+  return request({
+    url,
+    method: 'GET'
+  })
+    .then(response => {
+      if (!global.urlCache) global.urlCache = {}
+      const deepStringReponse = JSON.stringify(response)
+      const cacheExpiresLimitMins = 60 * 24 // Cache for 60 * 24 minutes
+      global.urlCache[url] = {
+        expire: new Date().getTime() + (cacheExpiresLimitMins * 60 * 1000),
+        body: JSON.parse(deepStringReponse)
+      }
+      return response
+    })
+    .catch(error => {
+      console.log(error)
+      return null
+    })
+}
 const queryObjects = require('../objects')

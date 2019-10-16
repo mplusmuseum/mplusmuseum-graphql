@@ -194,7 +194,7 @@ router.use(function (req, res, next) {
 
 //  This is the resolver
 const root = {
-  hello: () => {
+  hello: (args, context) => {
     return `world`
   },
   killCache: (args, context) => {
@@ -335,12 +335,13 @@ const root = {
   }
 }
 
-const getGrpObj = (isPlayground, isVendor, token) => {
+const getGrpObj = (isPlayground, isVendor, token, query) => {
   const grpObj = {
     schema: buildSchema(schemaPublic.schema),
     rootValue: root,
     context: {
-      token
+      token,
+      query
     },
     graphiql: isPlayground
   }
@@ -440,12 +441,12 @@ router.use('/graphql', bodyParser.json(), expressGraphql(async (req) => {
     if (tokenSplit[1]) token = tokenSplit[1]
   }
   const isVendor = await getIsVendor(token)
-  return (getGrpObj(false, isVendor, token))
+  return (getGrpObj(false, isVendor, token, req.body.query))
 }))
 
 router.use('/:token/playground', bodyParser.json(), expressGraphql(async (req) => {
   const isVendor = await getIsVendor(req.params.token)
-  return (getGrpObj(true, isVendor, req.params.token))
+  return (getGrpObj(true, isVendor, req.params.token, req.body.query))
 }))
 
 // ############################################################################
