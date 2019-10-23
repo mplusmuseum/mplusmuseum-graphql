@@ -83,6 +83,7 @@ type Query {
     ids: [Int]
     publicAccess: Boolean
     name: String
+    nameX: String
     role: String
     gender: String
     beginDate: Int

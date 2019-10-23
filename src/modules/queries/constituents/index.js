@@ -221,6 +221,18 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     })
   }
 
+  if ('nameX' in args && args.nameX !== '') {
+    const pushThis = {
+      match: {}
+    }
+    if (args.lang && args.lang !== 'en') {
+      pushThis.match[`name.zh-hant.displayName.keyword`] = args.nameX
+    } else {
+      pushThis.match[`name.en.displayName.keyword`] = args.nameX
+    }
+    must.push(pushThis)
+  }
+
   if ('keyword' in args && args.title !== '') {
     must.push({
       multi_match: {
