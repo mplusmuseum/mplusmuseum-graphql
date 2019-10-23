@@ -5,7 +5,7 @@
  * There is a lot of scripting at the top of this file, most of which
  * is to make sure the user has completed all the steps needed to
  * actually run the dashboard properly. This will be checking for
- * things like `yarn install` and the usual stuff having been run.
+ * things like `npm install` and the usual stuff having been run.
  *
  * You'll see!
  */
@@ -18,8 +18,8 @@ const rootDir = __dirname
 console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
 console.log('Making sure we are up to date, please wait...')
 const spawnSync = require('child_process').spawnSync
-const yarn = spawnSync('yarn', ['install'])
-console.log(yarn.stdout.toString())
+const npm = spawnSync('npm', ['install'])
+console.log(npm.stdout.toString())
 
 const colours = require('colors')
 const prompt = require('prompt-sync')()
@@ -43,35 +43,35 @@ console.log(`server.js exists in this directory: ${rootDir}`.help)
  * the port, host, environment and if we want to skip any build steps
  */
 const argOptionDefinitions = [{
-  name: 'port',
-  alias: 'p',
-  type: Number
-},
-{
-  name: 'host',
-  alias: 'h',
-  type: String
-},
-{
-  name: 'env',
-  alias: 'e',
-  type: String
-},
-{
-  name: 'skipBuild',
-  alias: 's',
-  type: Boolean,
-  defaultOption: false
-},
-{
-  name: 'buildOnly',
-  alias: 'b',
-  type: Boolean
-},
-{
-  name: 'skipOpen',
-  type: Boolean
-}
+    name: 'port',
+    alias: 'p',
+    type: Number
+  },
+  {
+    name: 'host',
+    alias: 'h',
+    type: String
+  },
+  {
+    name: 'env',
+    alias: 'e',
+    type: String
+  },
+  {
+    name: 'skipBuild',
+    alias: 's',
+    type: Boolean,
+    defaultOption: false
+  },
+  {
+    name: 'buildOnly',
+    alias: 'b',
+    type: Boolean
+  },
+  {
+    name: 'skipOpen',
+    type: Boolean
+  }
 ]
 const commandLineArgs = require('command-line-args')
 const argOptions = commandLineArgs(argOptionDefinitions)
@@ -326,6 +326,7 @@ const hbs = exphbs.create({
 
 app.engine('html', hbs.engine)
 app.set('view engine', 'html')
+app.locals.layout = false
 app.set('views', `${__dirname}/app/templates`)
 app.use(
   express.static(`${__dirname}/app/public`, {
@@ -375,14 +376,14 @@ const auth0 = config.get('auth0')
 if (auth0 !== null) {
   // Configure Passport to use Auth0
   const strategy = new Auth0Strategy({
-    domain: auth0.AUTH0_DOMAIN,
-    clientID: auth0.AUTH0_CLIENT_ID,
-    clientSecret: auth0.AUTH0_SECRET,
-    callbackURL: auth0.AUTH0_CALLBACK_URL
-  },
-  (accessToken, refreshToken, extraParams, profile, done) => {
-    return done(null, profile)
-  }
+      domain: auth0.AUTH0_DOMAIN,
+      clientID: auth0.AUTH0_CLIENT_ID,
+      clientSecret: auth0.AUTH0_SECRET,
+      callbackURL: auth0.AUTH0_CALLBACK_URL
+    },
+    (accessToken, refreshToken, extraParams, profile, done) => {
+      return done(null, profile)
+    }
   )
 
   passport.use(strategy)
@@ -477,7 +478,7 @@ if (process.env.NODE_ENV === 'development') {
   console.log(
     `
 >> Welcome to the Dashboard, please visit the site however you have your host and ports setup to see it from the outside world`
-      .info
+    .info
   )
   if (config.get('auth0') === null) {
     console.log(
