@@ -495,7 +495,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   if ('collectionName' in args && args.collectionName !== '') {
     must.push({
       match: {
-        'collectionName': args.collectionName
+        'collectionName.keyword': args.collectionName
       }
     })
   }
