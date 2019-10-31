@@ -55,6 +55,7 @@ type Query {
     onlyNotObjects: Boolean
     shuffle: Boolean
     shuffleSeed: String
+    hasRandomFact: Boolean
   ): [LevelOneObject]
 
   randomobjects(
@@ -242,6 +243,9 @@ type Query {
     category: [String]
     keyword: String
     isMaker: Boolean
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Area]
   
   categories(
@@ -262,6 +266,9 @@ type Query {
     category: [String]
     keyword: String
     isMaker: Boolean
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Categories]
 
   archivalLevels(
@@ -282,6 +289,9 @@ type Query {
     category: [String]
     keyword: String
     isMaker: Boolean
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [ArchivalLevels]
 
   statuses(
@@ -301,6 +311,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Statuses]
 
   names(
@@ -320,7 +333,10 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
-  ): [Names]
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
+): [Names]
 
   collectionTypes(
     page: Int
@@ -339,6 +355,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [CollectionTypes]
 
   collectionCodes(
@@ -358,6 +377,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [CollectionCodes]
 
   fonds(
@@ -377,6 +399,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [CollectionCodes]
 
   collectionNames(
@@ -395,6 +420,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [CollectionNames]
 
   departments(
@@ -413,6 +441,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Departments]
 
   styles(
@@ -431,6 +462,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Styles]
 
   mediums(
@@ -459,6 +493,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Tags]
 
   makertypes(
@@ -485,6 +522,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [ConActiveCities]
 
   conBirthCities(
@@ -502,6 +542,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [ConBirthCities]
 
   conDeathCities(
@@ -519,6 +562,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [ConDeathCities]
 
   genders(
@@ -536,6 +582,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Genders]
 
   nationalities(
@@ -553,6 +602,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [Nationalities]
 
   conRegions(
@@ -570,6 +622,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [ConRegions]
 
   conTypes(
@@ -587,6 +642,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [ConTypes]
 
   conRoles(
@@ -604,6 +662,9 @@ type Query {
     area: [String]
     category: [String]
     keyword: String
+    archivalLevel: [String]
+    onlyObjects: Boolean
+    onlyNotObjects: Boolean
   ): [ConRoles]
 
   factoids(

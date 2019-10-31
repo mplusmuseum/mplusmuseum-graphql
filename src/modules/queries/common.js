@@ -255,6 +255,52 @@ const getAggregates = async (args, context, field, index) => {
     })
   }
 
+  const notObjectNames = ['Fonds', 'Series', 'Sub-fonds', 'Sub-subseries', 'Subseries']
+  const notObjects = notObjectNames.map((name) => {
+    return {
+      term: {
+        'classification.archivalLevel.areacat.en.keyword': name
+      }
+    }
+  })
+
+  //  Check for objects or not objects
+  if (args.onlyObjects && args.onlyObjects === true) {
+    must.push({
+      bool: {
+        must_not: notObjects
+      }
+    })
+  }
+
+  if (args.onlyNotObjects && args.onlyNotObjects === true) {
+    must.push({
+      bool: {
+        should: notObjects
+      }
+    })
+  }
+
+  if ('archivalLevel' in args && args.archivalLevel !== '') {
+    if (!Array.isArray(args.archivalLevel)) args.archivalLevel = [args.archivalLevel]
+    const should = []
+    args.archivalLevel.forEach((archivalLevel) => {
+      should.push({
+        multi_match: {
+          query: archivalLevel,
+          type: 'best_fields',
+          fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`, `archivalLevel.lang.en.slug.keyword`],
+          operator: 'or'
+        }
+      })
+    })
+    must.push({
+      bool: {
+        should
+      }
+    })
+  }
+
   if ('area' in args && args.area !== '') {
     if (!Array.isArray(args.area)) args.area = [args.area]
     const should = []

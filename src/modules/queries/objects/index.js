@@ -809,6 +809,22 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
   }
 
+  if (args.hasRandomFact) {
+    must.push({
+      bool: {
+        should: [{
+          exists: {
+            field: `randomFact`
+          }
+        }, {
+          exists: {
+            field: `randomFactHTML`
+          }
+        }]
+      }
+    })
+  }
+
   const notObjectNames = ['Fonds', 'Series', 'Sub-fonds', 'Sub-subseries', 'Subseries']
   const notObjects = notObjectNames.map((name) => {
     return {
@@ -1263,6 +1279,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     const exhibitionSectionsMap = {}
     if (record.exhibition && record.exhibition.sections) {
       exhibitionSections = JSON.parse(record.exhibition.sections)
+      if (!Array.isArray(exhibitionSections)) exhibitionSections = []
     }
 
     //  Turn the array into a map
