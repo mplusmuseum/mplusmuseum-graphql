@@ -413,6 +413,50 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     }
   })
 
+  //  Unfold the aggregrate counts
+  let lang = 'en'
+  if (args.lang) lang = args.lang
+  records.forEach((thisConstituent) => {
+    if (thisConstituent.aggregateCounts) {
+      const aggregateCounts = JSON.parse(thisConstituent.aggregateCounts)
+      if (aggregateCounts.lang[lang]) {
+        if (aggregateCounts.lang[lang].categoriesAgg) {
+          thisConstituent.categories = []
+          Object.entries(aggregateCounts.lang[lang].categoriesAgg).forEach((data) => {
+            thisConstituent.categories.push({
+              title: data[1].title,
+              slug: data[1].slug,
+              count: data[1].count
+            })
+          })
+        }
+        if (aggregateCounts.lang[lang].areasAgg) {
+          thisConstituent.areas = []
+          Object.entries(aggregateCounts.lang[lang].areasAgg).forEach((data) => {
+            thisConstituent.areas.push({
+              title: data[1].title,
+              slug: data[1].slug,
+              count: data[1].count
+            })
+          })
+        }
+        if (aggregateCounts.lang[lang].collectionAgg) {
+          thisConstituent.collectionNames = []
+          Object.entries(aggregateCounts.lang[lang].collectionAgg).forEach((data) => {
+            thisConstituent.collectionNames.push({
+              title: data[1].title,
+              slug: data[1].slug,
+              count: data[1].count
+            })
+          })
+        }
+      }
+    }
+    if (thisConstituent.categories.length === 0) thisConstituent.categories = null
+    if (thisConstituent.areas.length === 0) thisConstituent.areas = null
+    if (thisConstituent.collectionNames.length === 0) thisConstituent.collectionNames = null
+  })
+
   //  Finally, add the pagination information
   const sys = {
     pagination: {
@@ -470,69 +514,28 @@ exports.getConstituent = async (args, context, initialCall = false) => {
     ms: new Date().getTime() - startTime
   })
 
-  let lang = 'en'
-  if (args.lang) lang = args.lang
-
   if (Array.isArray(constituentArray)) {
     const thisConstituent = constituentArray[0]
-
-    if (thisConstituent.aggregateCounts) {
-      const aggregateCounts = JSON.parse(thisConstituent.aggregateCounts)
-      if (aggregateCounts.lang[lang]) {
-        if (aggregateCounts.lang[lang].categoriesAgg) {
-          thisConstituent.categories = []
-          Object.entries(aggregateCounts.lang[lang].categoriesAgg).forEach((data) => {
-            thisConstituent.categories.push({
-              title: data[1].title,
-              slug: data[1].slug,
-              count: data[1].count
-            })
-          })
+    if (thisConstituent) {
+      //  Now wee if there's a story URL, and we've asked for the story URL
+      //  If we have a storyURL and we have been asked for a storyURL then go get the data
+      if (thisConstituent.storyUrl && context.query.indexOf('storyUrl') >= 0) {
+        let url = thisConstituent.storyUrl
+        if (args.lang !== 'en') url = url.replace('/en/', '/tc/')
+        //  Grab the data from the story page
+        const body = await fetchPage(url)
+        //  Try and get the title
+        thisConstituent.storyTitle = null
+        const titleSplit = body.split('og:title" content="')
+        if (titleSplit.length > 1) {
+          thisConstituent.storyTitle = titleSplit[1].split('"')[0].replace(' - M+ Stories', '').replace(' - M+故事', '')
         }
-        if (aggregateCounts.lang[lang].areasAgg) {
-          thisConstituent.areas = []
-          Object.entries(aggregateCounts.lang[lang].areasAgg).forEach((data) => {
-            thisConstituent.areas.push({
-              title: data[1].title,
-              slug: data[1].slug,
-              count: data[1].count
-            })
-          })
-        }
-        if (aggregateCounts.lang[lang].collectionAgg) {
-          thisConstituent.collectionNames = []
-          Object.entries(aggregateCounts.lang[lang].collectionAgg).forEach((data) => {
-            thisConstituent.collectionNames.push({
-              title: data[1].title,
-              slug: data[1].slug,
-              count: data[1].count
-            })
-          })
-        }
-      }
-    }
-    if (thisConstituent.categories.length === 0) thisConstituent.categories = null
-    if (thisConstituent.areas.length === 0) thisConstituent.areas = null
-    if (thisConstituent.collectionNames.length === 0) thisConstituent.collectionNames = null
 
-    //  Now wee if there's a story URL, and we've asked for the story URL
-    //  If we have a storyURL and we have been asked for a storyURL then go get the data
-    if (thisConstituent.storyUrl && context.query.indexOf('storyUrl') >= 0) {
-      let url = thisConstituent.storyUrl
-      if (args.lang !== 'en') url = url.replace('/en/', '/tc/')
-      //  Grab the data from the story page
-      const body = await fetchPage(url)
-      //  Try and get the title
-      thisConstituent.storyTitle = null
-      const titleSplit = body.split('og:title" content="')
-      if (titleSplit.length > 1) {
-        thisConstituent.storyTitle = titleSplit[1].split('"')[0].replace(' - M+ Stories', '').replace(' - M+故事', '')
-      }
-
-      thisConstituent.storyImage = null
-      const imageSplit = body.split('og:image" content="')
-      if (imageSplit.length > 1) {
-        thisConstituent.storyImage = imageSplit[1].split('"')[0]
+        thisConstituent.storyImage = null
+        const imageSplit = body.split('og:image" content="')
+        if (imageSplit.length > 1) {
+          thisConstituent.storyImage = imageSplit[1].split('"')[0]
+        }
       }
     }
     return thisConstituent

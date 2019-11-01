@@ -1278,8 +1278,12 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     let exhibitionSections = []
     const exhibitionSectionsMap = {}
     if (record.exhibition && record.exhibition.sections) {
-      exhibitionSections = JSON.parse(record.exhibition.sections)
-      if (!Array.isArray(exhibitionSections)) exhibitionSections = []
+      try {
+        exhibitionSections = JSON.parse(record.exhibition.sections)
+        if (!Array.isArray(exhibitionSections)) exhibitionSections = []
+      } catch (er) {
+        exhibitionSections = []
+      }
     }
 
     //  Turn the array into a map

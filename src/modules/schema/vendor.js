@@ -1104,6 +1104,9 @@ type LevelTwoConstituent {
   artInt: Int
   region: String
   storyUrl: String
+  categories: [titleSlugCount]
+  areas: [titleSlugCount]
+  collectionNames: [titleSlugCount]
   _sys: Sys
 }
 
@@ -1131,6 +1134,9 @@ type LevelThreeConstituent {
   artInt: Int
   region: String
   storyUrl: String
+  categories: [titleSlugCount]
+  areas: [titleSlugCount]
+  collectionNames: [titleSlugCount]
   _sys: Sys
 }
 
