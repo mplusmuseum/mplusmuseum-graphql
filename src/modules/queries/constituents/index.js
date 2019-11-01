@@ -110,6 +110,30 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     })
   }
 
+  if ('category' in args) {
+    must.push({
+      match: {
+        'categories.keyword': args.category
+      }
+    })
+  }
+
+  if ('area' in args) {
+    must.push({
+      match: {
+        'areas.keyword': args.area
+      }
+    })
+  }
+
+  if ('collectionName' in args) {
+    must.push({
+      match: {
+        'collections.keyword': args.collectionName
+      }
+    })
+  }
+
   if ('gender' in args && args.gender !== '') {
     const pushThis = {
       match: {}
@@ -452,9 +476,9 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
         }
       }
     }
-    if (thisConstituent.categories.length === 0) thisConstituent.categories = null
-    if (thisConstituent.areas.length === 0) thisConstituent.areas = null
-    if (thisConstituent.collectionNames.length === 0) thisConstituent.collectionNames = null
+    if (thisConstituent.categories && thisConstituent.categories.length === 0) thisConstituent.categories = null
+    if (thisConstituent.areas && thisConstituent.areas.length === 0) thisConstituent.areas = null
+    if (thisConstituent.collectionNames && thisConstituent.collectionNames.length === 0) thisConstituent.collectionNames = null
   })
 
   //  Finally, add the pagination information

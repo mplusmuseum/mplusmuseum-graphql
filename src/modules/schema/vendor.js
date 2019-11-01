@@ -97,6 +97,9 @@ type Query {
     region: String
     keyword: String
     isMaker: Boolean
+    category: String
+    area: String
+    collectionName: String
   ): [LevelThreeConstituent]
   
   constituent(
