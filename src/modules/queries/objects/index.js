@@ -498,24 +498,33 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
 
   if ('collectionName' in args && args.collectionName !== '') {
     must.push({
-      match: {
-        'collectionName.keyword': args.collectionName
+      multi_match: {
+        query: args.collectionName,
+        type: 'best_fields',
+        fields: ['collectionName.keyword', 'collectionNameSlug.keyword'],
+        operator: 'or'
       }
     })
   }
 
   if ('department' in args && args.department !== '') {
     must.push({
-      match: {
-        'department': args.department
+      multi_match: {
+        query: args.department,
+        type: 'best_fields',
+        fields: ['department.keyword', 'departmentSlug.keyword'],
+        operator: 'or'
       }
     })
   }
 
   if ('style' in args && args.style !== '') {
     must.push({
-      match: {
-        'style': args.style
+      multi_match: {
+        query: args.style,
+        type: 'best_fields',
+        fields: ['style.keyword', 'styleSlug.keyword'],
+        operator: 'or'
       }
     })
   }
