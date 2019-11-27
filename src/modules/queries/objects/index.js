@@ -241,9 +241,13 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   }
 
   if ('slug' in args && args.slug !== '') {
+    cacheable = false
     must.push({
-      match: {
-        'slug.keyword': args.slug
+      multi_match: {
+        query: args.title,
+        type: 'best_fields',
+        fields: [`titleSlug.en.keyword`, `titleSlug.zh-hant.keyword`],
+        operator: 'or'
       }
     })
   }
