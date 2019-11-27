@@ -244,9 +244,9 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     cacheable = false
     must.push({
       multi_match: {
-        query: args.title,
+        query: args.slug,
         type: 'best_fields',
-        fields: [`titleSlug.en.keyword`, `titleSlug.zh-hant.keyword`],
+        fields: [`titleSlug.keyword`, `titleSlug.en.keyword`, `titleSlug.zh-hant.keyword`],
         operator: 'or'
       }
     })
