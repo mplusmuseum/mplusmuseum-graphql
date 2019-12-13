@@ -164,6 +164,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   const keywordFields = ['objectnumber', 'displaydate', 'sortnumber']
   const validFields = ['id', 'artint', 'objectnumber', 'sortnumber', 'title', 'medium', 'displaydate', 'begindate', 'enddate', 'popularcount', 'area', 'category', 'archivalLevel']
   const validSorts = ['asc', 'desc']
+  let defaultSort = true
   if ('sort_field' in args && validFields.includes(args.sort_field.toLowerCase()) && 'sort' in args && (validSorts.includes(args.sort.toLowerCase()))) {
     //  To actually sort on a title we need to really sort on `title.keyword`
     let sortField = args.sort_field
@@ -182,6 +183,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       order: args.sort
     }
     body.sort = [sortObj]
+    defaultSort = false
   } else {
     body.sort = [{
       id: {
@@ -596,6 +598,12 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
     })
     body.highlight = {
       fields: newFields
+    }
+
+    //  If we are doing a keyword search, and there's no sort order set, then remove the sort order
+    //  and let ES handle the sorting
+    if (defaultSort === true) {
+      delete body.sort
     }
   }
 

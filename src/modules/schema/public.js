@@ -6,8 +6,8 @@ type Query {
     per_page: Int
     ids: [Int]
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     publicAccess: Boolean
     objectNumber: String
     category: [String]
@@ -46,8 +46,8 @@ type Query {
     page: Int
     per_page: Int
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     ids: [Int]
     publicAccess: Boolean
     name: String
@@ -91,8 +91,8 @@ type Query {
     per_page: Int = 500
     ids: [Int]
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     type: String
     title: String
     keyword: String
@@ -127,8 +127,8 @@ type Query {
     page: Int
     per_page: Int
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     fonds: String
     area: [String]
     category: [String]
@@ -139,16 +139,16 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
   ): [CollectionCodes]
   
   categories(
     page: Int
     per_page: Int
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     fonds: String
     area: [String]
     category: [String]
@@ -159,24 +159,24 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
   ): [ArchivalLevels]
 
   mediums(
     page: Int
     per_page: Int
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
   ): [Mediums]
 
   tags(
     page: Int
     per_page: Int
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
   ): [Tags]
 
   makertypes(

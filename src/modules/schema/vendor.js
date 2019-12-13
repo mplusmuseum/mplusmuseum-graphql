@@ -8,8 +8,8 @@ type Query {
     publicAccess: Boolean
     ids: [Int]
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     category: [String]
     area: [String]
     archivalLevel: [String]
@@ -79,8 +79,8 @@ type Query {
     page: Int
     per_page: Int
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     ids: [Int]
     publicAccess: Boolean
     name: String
@@ -136,8 +136,8 @@ type Query {
     per_page: Int = 500
     ids: [Int]
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     type: String
     title: String
     keyword: String
@@ -176,8 +176,8 @@ type Query {
     per_page: Int = 500
     ids: [Int]
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     conceptUse: String
     title: String
     keyword: String
@@ -215,8 +215,8 @@ type Query {
     page: Int
     per_page: Int = 500
     ids: [Int]
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
   ): [LevelThreeBibliography]
   
   bibliography(
@@ -233,8 +233,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -256,8 +256,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -279,8 +279,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -302,8 +302,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -324,8 +324,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -346,8 +346,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -368,8 +368,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -390,8 +390,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -411,8 +411,8 @@ type Query {
     page: Int
     per_page: Int
     publicAccess: Boolean
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -432,8 +432,8 @@ type Query {
     page: Int
     per_page: Int
     publicAccess: Boolean
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -453,8 +453,8 @@ type Query {
     page: Int
     per_page: Int
     publicAccess: Boolean
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -475,8 +475,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
   ): [Mediums]
 
   tags(
@@ -484,8 +484,8 @@ type Query {
     per_page: Int
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -513,8 +513,8 @@ type Query {
   conActiveCities(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -533,8 +533,8 @@ type Query {
   conBirthCities(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -553,8 +553,8 @@ type Query {
   conDeathCities(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -573,8 +573,8 @@ type Query {
   genders(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -593,8 +593,8 @@ type Query {
   nationalities(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -613,8 +613,8 @@ type Query {
   conRegions(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -633,8 +633,8 @@ type Query {
   conTypes(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
@@ -653,8 +653,8 @@ type Query {
   conRoles(
     publicAccess: Boolean
     lang: String = "en"
-    sort: String = "asc"
-    sort_field: String = "id"
+    sort: String
+    sort_field: String
     collectionCode: String
     fonds: String
     collectionType: String
