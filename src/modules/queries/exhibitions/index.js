@@ -148,6 +148,14 @@ const getExhibitions = async (args, context, levelDown = 3, initialCall = false)
     //  If there aren't any, return null
     if (venues.length === 0) venues = null
     record.venues = venues
+
+    record.exhCitationOnline = common.getSingleTextFromArrayByLang(record.exhCitationOnline, args.lang)
+
+    //  Fill things with deafult language if null
+    if (args.lang !== 'en') {
+      if (!record.exhCitationOnline) common.getSingleTextFromArrayByLang(record.exhCitationOnline, 'en')
+    }
+
     return record
   })
 

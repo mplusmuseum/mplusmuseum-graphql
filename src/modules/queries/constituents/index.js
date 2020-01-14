@@ -358,6 +358,13 @@ const getConstituents = async (args, context, levelDown = 3, initialCall = false
     record.activeCity = common.getSingleTextFromArrayByLang(record.activeCity, args.lang)
     record.birthCity = common.getSingleTextFromArrayByLang(record.birthCity, args.lang)
     record.deathCity = common.getSingleTextFromArrayByLang(record.deathCity, args.lang)
+    record.biography = common.getSingleTextFromArrayByLang(record.biography, args.lang)
+
+    //  Fill things with deafult language if null
+    if (args.lang !== 'en') {
+      if (!record.biography) common.getSingleTextFromArrayByLang(record.biography, 'en')
+    }
+
     // record.endDate = getSingleTextFromArrayByLang(record.deathyear, args.lang)
 
     return record

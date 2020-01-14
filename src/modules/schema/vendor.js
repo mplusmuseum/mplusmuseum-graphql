@@ -1057,6 +1057,7 @@ type LevelOneConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
+  biography: String
   type: String
   rank: Int
   isMaker: Boolean
@@ -1091,6 +1092,7 @@ type LevelTwoConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
+  biography: String
   type: String
   rank: Int
   isMaker: Boolean
@@ -1125,6 +1127,7 @@ type LevelThreeConstituent {
   beginDate: Int
   endDate: Int
   nationality: String
+  biography: String
   type: String
   isMaker: Boolean
   roles: [String]
@@ -1149,6 +1152,9 @@ type LevelOneExhibition {
   type: String
   beginDate: String
   endDate: String
+  relatedEvents: [Int]
+  exhCitation: String
+  exhCitationOnline: String
   venues: [Venue]
   objects: [LevelOneObject]
   artInt: Int
@@ -1161,6 +1167,9 @@ type LevelThreeExhibition {
   type: String
   beginDate: String
   endDate: String
+  relatedEvents: [Int]
+  exhCitation: String
+  exhCitationOnline: String
   venues: [Venue]
   artInt: Int
   _sys: Sys
@@ -1214,6 +1223,8 @@ type LevelOneBibliography {
   format: String
   placePublished: String
   yearPublished: String
+  pageNumber: String
+  altNumURL: String
   _sys: Sys
 }
 
@@ -1225,6 +1236,7 @@ type LevelTwoBibliography {
   placePublished: String
   yearPublished: String
   pageNumber: String
+  altNumURL: String
   _sys: Sys
 }
 
@@ -1235,6 +1247,8 @@ type LevelThreeBibliography {
   format: String
   placePublished: String
   yearPublished: String
+  pageNumber: String
+  altNumURL: String
   _sys: Sys
 }
 
@@ -1250,6 +1264,9 @@ type ExhibitionShort {
   type: String
   beginDate: String
   endDate: String
+  relatedEvents: [Int]
+  exhCitation: String
+  exhCitationOnline: String
   venues: [Venue]
   section: String
   _sys: Sys
@@ -1257,6 +1274,8 @@ type ExhibitionShort {
 
 type ExhibitionLabels {
   purpose: String
+  exhibitionID: String
+  date: String
   text: String
   html: String
 }
