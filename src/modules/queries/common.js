@@ -309,7 +309,7 @@ const getAggregates = async (args, context, field, index) => {
         multi_match: {
           query: area,
           type: 'best_fields',
-          fields: [`areas.lang.${args.lang}.title.keyword`, `areas.lang.${args.lang}.slug.keyword`, `areas.lang.en.slug.keyword`],
+          fields: [`areas.lang.en.title.keyword`, `areas.lang.zh-hant.title.keyword`, `areas.lang.en.slug.keyword`, `areas.lang.zh-hant.slug.keyword`],
           operator: 'or'
         }
       })
@@ -329,7 +329,7 @@ const getAggregates = async (args, context, field, index) => {
         multi_match: {
           query: category,
           type: 'best_fields',
-          fields: [`category.lang.${args.lang}.title.keyword`, `category.lang.${args.lang}.slug.keyword`, `category.lang.en.slug.keyword`],
+          fields: [`category.lang.en.title.keyword`, `category.lang.zh-hant.title.keyword`, `category.lang.en.slug.keyword`, `category.lang.zh-hant.slug.keyword`],
           operator: 'or'
         }
       })
@@ -349,7 +349,7 @@ const getAggregates = async (args, context, field, index) => {
         multi_match: {
           query: archivalLevel,
           type: 'best_fields',
-          fields: [`archivalLevel.lang.${args.lang}.title.keyword`, `archivalLevel.lang.${args.lang}.slug.keyword`, `archivalLevel.lang.en.slug.keyword`],
+          fields: [`archivalLevel.lang.en.title.keyword`, `archivalLevel.lang.zh-hant.title.keyword`, `archivalLevel.lang.en.slug.keyword`, `archivalLevel.lang.zh-hant.slug.keyword`],
           operator: 'or'
         }
       })
@@ -396,6 +396,8 @@ const getAggregates = async (args, context, field, index) => {
       }
     }
   }
+
+  console.log(JSON.stringify(body, null, 4))
 
   //  Run the search
   const results = await doCacheQuery(cacheable, index, body)
@@ -679,8 +681,6 @@ exports.getCollectionNames = async (args, context, levelDown = 3, initialCall = 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
-  //  Always get the collection names in English
-  delete args.lang
   const aggs = getAggregates(args, context, `collectionName.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`collectionName query`, {
