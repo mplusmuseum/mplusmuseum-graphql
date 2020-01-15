@@ -679,6 +679,8 @@ exports.getCollectionNames = async (args, context, levelDown = 3, initialCall = 
   const baseTMS = config.get('baseTMS')
   if (baseTMS === null) return []
 
+  //  Always get the collection names in English
+  delete args.lang
   const aggs = getAggregates(args, context, `collectionName.keyword`, `objects_${baseTMS}`)
   const apiLogger = logging.getAPILogger()
   apiLogger.object(`collectionName query`, {
