@@ -47,21 +47,12 @@ const addCollectionInformation = async (lang, objects) => {
           if (object.title.en) titleEN = object.title.en
           if (object.title['zh-hant']) titleTC = object.title['zh-hant']
         }
-        if (lang === 'en') {
-          global.collectionMap.collections[object.collectionCode] = {
-            id: object.id,
-            title: titleEN,
-            titleOther: titleTC
-          }
-        } else {
-          global.collectionMap.collections[object.collectionCode] = {
-            id: object.id,
-            title: titleTC,
-            titleOther: titleEN
-          }
-          if (titleTC === null) {
-            global.collectionMap.collections[object.collectionCode].title = titleEN
-            global.collectionMap.collections[object.collectionCode].titleOther = null
+        if (titleTC === null) titleTC = titleEN
+        global.collectionMap.collections[object.collectionCode] = {
+          id: object.id,
+          title: {
+            'en': titleEN,
+            'zh-hant': titleTC
           }
         }
       })
@@ -78,8 +69,12 @@ const addCollectionInformation = async (lang, objects) => {
     }
     if (global.collectionMap && global.collectionMap.collections && global.collectionMap.collections[object.collectionCode]) {
       object.collection.objectId = global.collectionMap.collections[object.collectionCode].id
-      object.collection.title = global.collectionMap.collections[object.collectionCode].title
-      object.collection.titleOther = global.collectionMap.collections[object.collectionCode].titleOther
+      object.collection.title = global.collectionMap.collections[object.collectionCode].title['en']
+      object.collection.titleOther = global.collectionMap.collections[object.collectionCode].title['zh-hant']
+      if (lang !== 'en') {
+        object.collection.title = global.collectionMap.collections[object.collectionCode].title['zh-hant']
+        object.collection.titleOther = global.collectionMap.collections[object.collectionCode].title['en']
+      }
     }
     return object
   })
