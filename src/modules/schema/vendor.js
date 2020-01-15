@@ -1074,6 +1074,7 @@ type LevelOneConstituent {
   storyUrl: String
   storyTitle: String
   storyImage: String
+  makerBioCounts: String
   categories: [titleSlugCount]
   areas: [titleSlugCount]
   collectionNames: [titleSlugCount]
@@ -1109,6 +1110,7 @@ type LevelTwoConstituent {
   artInt: Int
   region: String
   storyUrl: String
+  makerBioCounts: String
   categories: [titleSlugCount]
   areas: [titleSlugCount]
   collectionNames: [titleSlugCount]
@@ -1140,6 +1142,7 @@ type LevelThreeConstituent {
   artInt: Int
   region: String
   storyUrl: String
+  makerBioCounts: String
   categories: [titleSlugCount]
   areas: [titleSlugCount]
   collectionNames: [titleSlugCount]
