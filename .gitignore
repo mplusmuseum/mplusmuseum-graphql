@@ -6,3 +6,4 @@
 /app
 /sessions
 /logs
+/config copy.json

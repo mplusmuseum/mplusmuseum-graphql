@@ -1408,7 +1408,8 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
   //  If we have some then we need to go and get the records
   if (bibliographiesIds.length !== 0) {
     const newArgs = {
-      ids: bibliographiesIds
+      ids: bibliographiesIds,
+      per_page: 999
     }
     const bibliographies = await queryBibliographies.getBibliographies(newArgs, context, levelDown + 1)
     const bibliographiesMap = {}

@@ -397,7 +397,7 @@ const getAggregates = async (args, context, field, index) => {
     }
   }
 
-  console.log(JSON.stringify(body, null, 4))
+  // console.log(JSON.stringify(body, null, 4))
 
   //  Run the search
   const results = await doCacheQuery(cacheable, index, body)
