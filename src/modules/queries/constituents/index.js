@@ -559,7 +559,7 @@ exports.getConstituent = async (args, context, initialCall = false) => {
         thisConstituent.storyTitle = null
         const titleSplit = body.split('og:title" content="')
         if (titleSplit.length > 1) {
-          thisConstituent.storyTitle = titleSplit[1].split('"')[0].replace(' - M+ Stories', '').replace(' - M+故事', '')
+          thisConstituent.storyTitle = titleSplit[1].split('"')[0].replace(' - M+ Stories', '').replace(' - M+故事', '').replace(/&#39;/g, "'")
         }
 
         thisConstituent.storyImage = null
