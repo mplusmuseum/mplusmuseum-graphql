@@ -704,28 +704,28 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       const colourSearch = {
         bool: {
           must: [{
-            range: {
-              'colorHSLInt.h': {
-                gte: hue - 30,
-                lte: hue + 30
+              range: {
+                'colorHSLInt.h': {
+                  gte: hue - 30,
+                  lte: hue + 30
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.l': {
+                  gte: thisLum - 25,
+                  lte: thisLum + 25
+                }
+              }
+            },
+            {
+              range: {
+                'colorHSLInt.s': {
+                  gte: thisSat
+                }
               }
             }
-          },
-          {
-            range: {
-              'colorHSLInt.l': {
-                gte: thisLum - 25,
-                lte: thisLum + 25
-              }
-            }
-          },
-          {
-            range: {
-              'colorHSLInt.s': {
-                gte: thisSat
-              }
-            }
-          }
           ]
         }
       }
@@ -777,15 +777,15 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
       must.push({
         bool: {
           must: [{
-            match: {
-              'remote.status': 'ok'
+              match: {
+                'remote.status': 'ok'
+              }
+            },
+            {
+              exists: {
+                field: 'color.predominant'
+              }
             }
-          },
-          {
-            exists: {
-              field: 'color.predominant'
-            }
-          }
           ]
         }
       })
@@ -892,7 +892,7 @@ const getObjects = async (args, context, levelDown = 2, initialCall = false) => 
         query: body.query,
         random_score: {
           seed,
-          field: 'popularCount'
+          field: 'id'
         }
       }
     }
