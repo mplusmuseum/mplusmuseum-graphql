@@ -33,7 +33,7 @@
     "graphql": "^0.13.2",
     "is-running": "^2.1.0",
     "moment": "^2.22.1",
-    "node-sass": "^4.8.3",
+    "node-sass": "^4.13.1",
     "passport": "^0.4.0",
     "passport-auth0": "^0.6.1",
     "prismjs": "^1.16.0",
