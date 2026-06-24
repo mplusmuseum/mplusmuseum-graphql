@@ -406,13 +406,8 @@ const getIsVendor = async (token) => {
 
   // If we've been given an array back, then an error happened, so lets say this isn't a vendor
   if (Array.isArray(rtnObj)) {
-    //  TODO: put the token in the globals saying it's not a vendor
-    global.tokens[token] = {
-      valid: false,
-      isVendor: false,
-      expires: (new Date().getTime()) + (86400 * 1000)
-    }
-    return false
+    // should throw error if token not found
+    throw new Error('Invalid token');
   }
 
   if (rtnObj.status && rtnObj.status === 'ok' && rtnObj.roles && 'isVendor' in rtnObj.roles && rtnObj.expires_in) {
